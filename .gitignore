@@ -1,0 +1,6 @@
+node_modules/
+.netlify/
+.env
+.claude/
+secrets.local.json
+pipeline/leads/*/secrets.local.json

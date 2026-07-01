@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin</title>
+  <!-- Prevent search engines from indexing the admin panel -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Public site CSS first, then admin chrome layered on top -->
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎣</text></svg>" />
+</head>
+
+<body>
+
+  <!-- ── Loading screen (shown while checking auth + fetching draft) ─── -->
+  <div id="adminLoading">
+    <div class="admin-spinner"></div>
+    <span>Loading editor…</span>
+  </div>
+
+  <!-- ── Login overlay (shown when not authenticated) ──────────────── -->
+  <div id="adminLoginOverlay" style="display:none">
+    <div class="admin-login">
+      <div class="admin-login__logo">🪷</div>
+      <h2>Admin Login</h2>
+      <p>Enter your admin password to edit this site.</p>
+      <input type="password" id="adminPassword" placeholder="Password" autocomplete="current-password" />
+      <button class="admin-login__submit" id="adminLoginBtn">Sign in</button>
+      <div class="admin-login__error" id="adminLoginError"></div>
+    </div>
+  </div>
+
+  <!-- ── Admin top bar (hidden until logged in) ────────────────────── -->
+  <div class="admin-bar" id="adminBar" style="display:none">
+    <span class="admin-bar__brand">✎ Admin</span>
+    <span class="admin-bar__status" id="adminStatus">Loading…</span>
+    <button class="admin-bar__btn admin-bar__btn--preview" id="adminPreviewBtn" title="Preview the live published site">Preview live</button>
+    <button class="admin-bar__btn admin-bar__btn--discard" id="adminDiscardBtn" title="Discard all draft changes">Discard</button>
+    <button class="admin-bar__btn admin-bar__btn--publish" id="adminPublishBtn" title="Publish draft to live site">Publish</button>
+    <button class="admin-bar__btn admin-bar__btn--logout" id="adminLogoutBtn">Logout</button>
+  </div>
+
+  <!-- ── Side edit panel ───────────────────────────────────────────── -->
+  <div id="adminPanelOverlay"></div>
+  <div id="adminPanel" role="dialog" aria-modal="true" aria-label="Edit panel">
+    <div class="admin-panel__head">
+      <span class="admin-panel__title" id="adminPanelTitle">Edit</span>
+      <button class="admin-panel__close" id="adminPanelClose" aria-label="Close panel">✕</button>
+    </div>
+    <div class="admin-panel__body" id="adminPanelBody"></div>
+    <div class="admin-panel__footer" id="adminPanelFooter"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SITE CONTENT (same structure as index.html)
+       Scripts will render dynamic sections (menu / gallery / reviews)
+       from window.* globals, just like the public site.
+  ══════════════════════════════════════════════════════════════════ -->
+
+  <!-- ===== BLOCK: NAV | START ===== -->
+  <header class="nav" id="nav" data-admin-section="nav">
+    <div class="container nav__inner">
+      <a href="#home" class="nav__logo">
+        <span class="nav__logo-mark" data-fact="logo">🎣</span>
+        <span class="nav__logo-text" data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="#menu" data-i18n="nav.menu">Menu</a>
+        <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
+        <a href="#visit" data-i18n="nav.visit">Visit</a>
+        <a href="#reserve" class="btn btn--ghost btn--sm" data-i18n="nav.reserve">Book a table</a>
+      </nav>
+      <div class="nav__actions">
+        <div class="lang" role="group" aria-label="Language">
+          <button class="lang__btn is-active" data-lang="en" type="button">EN</button>
+          <button class="lang__btn" data-lang="vi" type="button">VI</button>
+        </div>
+        <button class="cart-toggle" id="cartToggle" type="button" aria-label="Open cart">
+          🛒 <span class="cart-toggle__count" id="cartCount">0</span>
+        </button>
+        <button class="nav__burger" id="navBurger" type="button" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <!-- ===== BLOCK: NAV | END ===== -->
+
+  <main>
+    <!-- ===== BLOCK: HERO | START ===== -->
+    <section class="hero" id="home" data-admin-section="hero">
+      <div class="hero__bg"></div>
+      <div class="hero__overlay"></div>
+      <div class="container hero__content">
+        <p class="hero__eyebrow" data-i18n="hero.eyebrow">An Bang Beach · Hội An</p>
+        <h1 class="hero__title" data-i18n="hero.title">Beachfront vegan food at The Fisherman</h1>
+        <p class="hero__subtitle" data-i18n="hero.subtitle">An Bang's first vegan restaurant by the sea — plant-based food cooked with love in a tranquil garden, by a family of former fishermen.</p>
+        <div class="hero__cta">
+          <a href="#menu" class="btn btn--primary" data-i18n="hero.viewMenu">View menu</a>
+          <a href="#reserve" class="btn btn--outline" data-i18n="hero.book">Book a table</a>
+        </div>
+        <ul class="hero__badges">
+          <li>⭐ 4.9 <span data-i18n="hero.badgeReviews">(Highly rated by guests)</span></li>
+          <li>🌿 <span data-i18n="hero.badgeVeg">100% vegan menu</span></li>
+          <li>🕒 <span data-i18n="hero.badgeOpen">Open daily 08:00–21:00</span></li>
+        </ul>
+      </div>
+    </section>
+    <!-- ===== BLOCK: HERO | END ===== -->
+
+    <!-- ===== BLOCK: HIGHLIGHTS | START ===== -->
+    <section class="highlights container" data-admin-section="highlights">
+      <div class="highlight" data-admin-item="highlight-0">
+        <span class="highlight__icon">🍜</span>
+        <h3 data-i18n="highlight.fresh.title">Fresh every day</h3>
+        <p data-i18n="highlight.fresh.text">Fresh local produce, herbs and plant-based ingredients prepared every morning.</p>
+      </div>
+      <div class="highlight" data-admin-item="highlight-1">
+        <span class="highlight__icon">📜</span>
+        <h3 data-i18n="highlight.recipes.title">Creative vegan kitchen</h3>
+        <p data-i18n="highlight.recipes.text">International and Vietnamese plant-based dishes, juices and smoothie bowls.</p>
+      </div>
+      <div class="highlight" data-admin-item="highlight-2">
+        <span class="highlight__icon">🌏</span>
+        <h3 data-i18n="highlight.friendly.title">Traveler-friendly</h3>
+        <p data-i18n="highlight.friendly.text">English-speaking staff, allergy info, and easy online ordering.</p>
+      </div>
+    </section>
+    <!-- ===== BLOCK: HIGHLIGHTS | END ===== -->
+
+    <!-- ===== BLOCK: MENU | START ===== -->
+    <section class="menu section" id="menu" data-admin-section="menu">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow" data-i18n="menu.eyebrow">Our kitchen</p>
+          <h2 class="section__title" data-i18n="menu.title">Menu</h2>
+          <p class="section__lead" data-i18n="menu.lead">Our full plant-based menu — tap a dish to add it to your order. Prices include tax.</p>
+        </header>
+        <div class="menu__tabs" id="menuTabs" role="tablist"></div>
+        <div class="menu__grid" id="menuGrid"></div>
+      </div>
+    </section>
+    <!-- ===== BLOCK: MENU | END ===== -->
+
+    <!-- ===== BLOCK: GALLERY | START ===== -->
+    <section class="gallery section" id="gallery" data-admin-section="gallery">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow" data-i18n="gallery.eyebrow">A look inside</p>
+          <h2 class="section__title" data-i18n="gallery.title">Gallery</h2>
+        </header>
+        <div class="gallery__grid" id="galleryGrid"></div>
+      </div>
+    </section>
+    <!-- ===== BLOCK: GALLERY | END ===== -->
+
+    <!-- ===== BLOCK: AMENITIES | START ===== -->
+    <section class="amenities-section section section--alt" id="amenities" data-admin-section="amenities" aria-labelledby="amenitiesTitle">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow" data-i18n="amenities.eyebrow">Good to know</p>
+          <h2 id="amenitiesTitle" class="section__title" data-i18n="amenities.title">Amenities</h2>
+        </header>
+        <div class="amenities-section__body" id="amenitiesBody"></div>
+      </div>
+    </section>
+    <!-- ===== BLOCK: AMENITIES | END ===== -->
+
+    <!-- ===== BLOCK: REVIEWS | START ===== -->
+    <section class="reviews section" data-admin-section="reviews">
+      <div class="container">
+        <header class="section__head">
+          <p class="section__eyebrow" data-i18n="reviews.eyebrow">Guest reviews</p>
+          <h2 class="section__title" data-i18n="reviews.title">What our guests say</h2>
+        </header>
+        <div class="reviews__grid" id="reviewsGrid"></div>
+      </div>
+    </section>
+    <!-- ===== BLOCK: REVIEWS | END ===== -->
+
+    <!-- ===== BLOCK: RESERVE | START ===== -->
+    <section class="reserve section" id="reserve" data-admin-section="reserve">
+      <div class="container reserve__inner">
+        <div class="reserve__text">
+          <p class="section__eyebrow" data-i18n="reserve.eyebrow">Plan your visit</p>
+          <h2 class="section__title" data-i18n="reserve.title">Book a table</h2>
+          <p data-i18n="reserve.lead">Tell us when you're coming and we'll have a spot ready.</p>
+          <ul class="reserve__perks">
+            <li>✅ <span data-i18n="reserve.perk1">Free of charge, instant confirmation</span></li>
+            <li>👨‍👩‍👧 <span data-i18n="reserve.perk2">Groups of any size welcome</span></li>
+            <li>🌿 <span data-i18n="reserve.perk3">Tell us about allergies &amp; diets</span></li>
+          </ul>
+        </div>
+        <form class="form card" id="reserveForm" novalidate>
+          <div class="form__row">
+            <label class="form__field">
+              <span data-i18n="form.name">Name</span>
+              <input type="text" name="name" required autocomplete="name" />
+            </label>
+            <div class="form__field">
+              <div class="contact-head">
+                <span data-i18n="contact.label">Contact</span>
+                <div class="contact-toggle" id="reserveMethod" role="group">
+                  <button type="button" class="contact-toggle__btn is-active" data-method="phone" aria-label="Phone">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                  </button>
+                  <button type="button" class="contact-toggle__btn" data-method="email" aria-label="Email">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                  </button>
+                </div>
+              </div>
+              <input type="tel" name="contact" id="reserveContact" required autocomplete="tel" placeholder="Phone" />
+            </div>
+          </div>
+          <div class="form__row">
+            <label class="form__field">
+              <span data-i18n="form.date">Date</span>
+              <input type="date" name="date" required />
+            </label>
+            <label class="form__field">
+              <span data-i18n="form.time">Time</span>
+              <input type="time" name="time" required />
+            </label>
+            <label class="form__field form__field--sm">
+              <span data-i18n="form.guests">Guests</span>
+              <input type="number" name="guests" min="1" max="40" value="2" required />
+            </label>
+          </div>
+          <label class="form__field">
+            <span data-i18n="form.notes">Notes (allergies, occasion…)</span>
+            <textarea name="notes" rows="2"></textarea>
+          </label>
+          <div class="form__actions">
+            <div class="chan" id="reserveChan" hidden></div>
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <button class="btn btn--primary btn--block" id="reserveNow" type="button">
+              <span data-i18n="form.bookNow">Book now</span>
+            </button>
+            <div class="confirm" id="reserveConfirm" hidden>
+              <p class="confirm__status" id="reserveConfirmStatus"></p>
+              <div class="confirm__fallback" id="reserveConfirmFallback" hidden></div>
+            </div>
+            <p class="form__hint" data-i18n="privacy.note">We only use your details to confirm this order or booking.</p>
+          </div>
+          <p class="form__hint" data-i18n="form.hint">No payment required to reserve.</p>
+        </form>
+      </div>
+    </section>
+    <!-- ===== BLOCK: RESERVE | END ===== -->
+
+    <!-- ===== BLOCK: VISIT | START ===== -->
+    <section class="visit section section--alt" id="visit" data-admin-section="visit">
+      <div class="container visit__inner">
+        <div class="visit__info">
+          <p class="section__eyebrow" data-i18n="visit.eyebrow">Find us</p>
+          <h2 class="section__title" data-i18n="visit.title">Visit The Fisherman</h2>
+          <ul class="visit__list">
+            <li>
+              <strong data-i18n="visit.addressLabel">Address</strong>
+              <span data-fact="address">An Bang Beach, Hội An Tây, Đà Nẵng, Vietnam</span>
+            </li>
+            <li>
+              <strong data-i18n="visit.hoursLabel">Hours</strong>
+              <span data-i18n="visit.hours">Mon–Sun · 08:00 – 21:00</span>
+            </li>
+            <li>
+              <strong data-i18n="visit.phoneLabel">Phone</strong>
+              <a data-fact="tel" href="tel:+84905660623">+84 905 660 623</a>
+            </li>
+            <li>
+              <strong data-i18n="visit.emailLabel">Email</strong>
+              <a data-fact="email" href="mailto:thefisherman.veganrestaurant@gmail.com">thefisherman.veganrestaurant@gmail.com</a>
+            </li>
+          </ul>
+          <div class="visit__actions">
+            <a class="btn btn--primary" target="_blank" rel="noopener" data-fact="directions"
+              href="https://www.google.com/maps/search/?api=1&amp;query=An%20Bang%20Beach%2C%20H%E1%BB%99i%20An%20T%C3%A2y%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng%2C%20Vietnam"
+              data-i18n="visit.directions">Get directions</a>
+            <a class="btn btn--whatsapp" target="_blank" rel="noopener" data-fact="whatsapp"
+              href="https://wa.me/84905660623" data-i18n="visit.whatsapp">Chat on WhatsApp</a>
+          </div>
+        </div>
+        <div class="visit__map">
+          <iframe
+            title="Map"
+            data-fact="mapSrc"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=An%20Bang%20Beach%2C%20H%E1%BB%99i%20An%20T%C3%A2y%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng%2C%20Vietnam&amp;output=embed"></iframe>
+        </div>
+      </div>
+    </section>
+    <!-- ===== BLOCK: VISIT | END ===== -->
+  </main>
+
+  <!-- ===== BLOCK: FOOTER | START ===== -->
+  <footer class="footer" data-admin-section="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="nav__logo-mark" data-fact="logo">🎣</span>
+        <strong data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</strong>
+        <p data-i18n="footer.tagline">Beachfront all-vegan dining on An Bang Beach, Hội An.</p>
+      </div>
+      <div class="footer__col">
+        <h4 data-i18n="footer.explore">Explore</h4>
+        <a href="#menu" data-i18n="nav.menu">Menu</a>
+        <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
+        <a href="#reserve" data-i18n="nav.reserve">Book a table</a>
+      </div>
+      <div class="footer__col">
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <span data-fact="address">An Bang Beach, Hội An Tây, Đà Nẵng, Vietnam</span>
+        <a data-fact="tel" href="tel:+84905660623">+84 905 660 623</a>
+        <a data-fact="email" href="mailto:thefisherman.veganrestaurant@gmail.com">thefisherman.veganrestaurant@gmail.com</a>
+      </div>
+    </div>
+    <div class="footer__bar">
+      <div class="container">
+        <span>© <span id="year"></span> <span data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>.</span>
+        <span data-i18n="footer.built">Built with care for travelers.</span>
+      </div>
+    </div>
+  </footer>
+  <!-- ===== BLOCK: FOOTER | END ===== -->
+
+  <!-- Cart drawer (required by app.js) -->
+  <div class="drawer-backdrop" id="cartBackdrop" hidden></div>
+  <aside class="cart" id="cart" aria-hidden="true" aria-label="Your order">
+    <header class="cart__head">
+      <h3 data-i18n="cart.title">Your order</h3>
+      <button class="cart__close" id="cartClose" type="button" aria-label="Close">✕</button>
+    </header>
+    <div class="cart__items" id="cartItems"></div>
+    <div class="cart__empty" id="cartEmpty">
+      <p>🍽️</p>
+      <p data-i18n="cart.empty">Your order is empty. Add some dishes from the menu!</p>
+    </div>
+    <footer class="cart__foot" id="cartFoot" hidden>
+      <div class="cart__total">
+        <span data-i18n="cart.total">Total</span>
+        <strong id="cartTotal">0</strong>
+      </div>
+      <div class="form__row">
+        <label class="form__field">
+          <span data-i18n="cart.orderType">Order type</span>
+          <select id="orderType">
+            <option value="dinein" data-i18n="cart.dinein" selected>Dine-in (table)</option>
+            <option value="pickup" data-i18n="cart.pickup">Pickup</option>
+          </select>
+        </label>
+        <label class="form__field">
+          <span data-i18n="form.guests">Guests</span>
+          <input type="number" id="orderGuests" min="1" max="40" value="2" />
+        </label>
+      </div>
+      <div class="form__row">
+        <label class="form__field">
+          <span data-i18n="cart.date">Date</span>
+          <input type="date" id="orderDate" />
+        </label>
+        <label class="form__field">
+          <span data-i18n="cart.time">Time</span>
+          <input type="time" id="orderTime" />
+        </label>
+      </div>
+      <input class="cart__note" id="orderName" type="text" placeholder="Your name" />
+      <div class="contact-head">
+        <div class="contact-toggle" id="orderMethod" role="group">
+          <button type="button" class="contact-toggle__btn is-active" data-method="phone" aria-label="Phone">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </button>
+          <button type="button" class="contact-toggle__btn" data-method="email" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <input class="cart__note" id="orderContact" type="tel" placeholder="Phone" />
+      <div class="chan" id="orderChan" hidden></div>
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="btn btn--primary btn--block" id="orderNow" type="button">
+        <span data-i18n="cart.orderNow">Order now</span>
+      </button>
+      <div class="confirm" id="orderConfirm" hidden>
+        <p class="confirm__status" id="orderConfirmStatus"></p>
+        <div class="confirm__fallback" id="orderConfirmFallback" hidden></div>
+      </div>
+      <p class="form__hint" data-i18n="privacy.note">We only use your details to confirm this order or booking.</p>
+      <button class="cart__clear" id="cartClear" type="button" data-i18n="cart.clear">Clear order</button>
+    </footer>
+  </aside>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Site scripts (same order as index.html) -->
+  <script src="../js/config.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/data.js"></script>
+  <!-- shared render module (app.js + seo.js depend on window.RenderCore) -->
+  <script src="../js/render-core.js"></script>
+  <script src="../js/app.js"></script>
+  <!-- seo.js defines window.SEO_CONFIG (read by the SEO settings editor) -->
+  <script src="../js/seo.js"></script>
+
+  <!-- Admin layer — loads after app.js has rendered the site -->
+  <script src="admin.js"></script>
+</body>
+</html>

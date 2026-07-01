@@ -1,0 +1,19 @@
+{
+  "name": "the-fisherman-garden-vegan-restaurant-cafe",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Reusable restaurant website template — Google Maps link to tailored bilingual site with SEO/AEO bake pipeline.",
+  "scripts": {
+    "prebake": "node scripts/prebake.mjs",
+    "verify": "node scripts/verify-crawlable.js",
+    "verify:scrub": "node scripts/verify-no-template-data.js",
+    "build": "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js",
+    "build:demo": "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js --allow-incomplete"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.3"
+  }
+}

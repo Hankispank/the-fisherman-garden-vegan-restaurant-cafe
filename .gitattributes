@@ -1,0 +1,6 @@
+# Keep line endings LF so CRLF can't break .env parsing or shell scripts.
+Researcher/.env  text eol=lf
+*.env            text eol=lf
+*.mjs            text eol=lf
+*.js             text eol=lf
+*.cjs            text eol=lf

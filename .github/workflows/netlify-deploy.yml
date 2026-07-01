@@ -1,0 +1,37 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: netlify-prod
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Deploy to Netlify (production)
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          # Site ID is an identifier, not a secret — set inline so the deploy
+          # always targets the right site (prevents stray-site creation).
+          NETLIFY_SITE_ID: f3c76d32-1ab5-4a96-8b34-fede3da3c9c9  # SET BY deploy setup
+        run: >
+          npx netlify-cli@26 deploy
+          --prod
+          --dir "."
+          --message "CI deploy ${{ github.sha }}"

@@ -1,0 +1,6 @@
+# robots.txt (generated)
+User-agent: *
+Allow: /
+Disallow: /admin
+
+Sitemap: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/sitemap.xml

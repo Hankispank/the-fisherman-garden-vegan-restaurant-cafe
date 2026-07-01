@@ -1,0 +1,60 @@
+[build]
+  # Prebake a static crawlable baseline (menu + JSON-LD baked into index.html,
+  # crawl files regenerated with the real domain), then fail the deploy if the
+  # baked page is missing the menu or JSON-LD. The edge function overlays
+  # admin-published content on top of this baseline at request time.
+  command = "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js"
+  functions = "functions"
+  edge_functions = "netlify/edge-functions"
+
+# Edge SSR: bake the home page (menu/reviews/JSON-LD) so non-JS AI crawlers
+# get the full content, and generate the crawl files from live data.
+[[edge_functions]]
+  path = "/"
+  function = "render"
+
+[[edge_functions]]
+  path = "/robots.txt"
+  function = "render"
+
+[[edge_functions]]
+  path = "/sitemap.xml"
+  function = "render"
+
+[[edge_functions]]
+  path = "/llms.txt"
+  function = "render"
+
+# Clean URL: /admin serves the admin shell
+[[redirects]]
+  from = "/admin"
+  to   = "/admin/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to   = "/admin/admin.html"
+  status = 200
+
+# Serve published content JSON as a static CDN asset with cache headers
+# (Functions write to /.netlify/blobs; for Netlify Blobs v2 public stores
+#  the CDN URL is automatically available. This header rule adds cache control
+#  to function responses for the public get-content route.)
+[[headers]]
+  for = "/.netlify/functions/get-content"
+  [headers.values]
+    Cache-Control = "public, s-maxage=60, stale-while-revalidate=300"
+
+# Tighten headers on the admin path
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "same-origin"
+
+# Same protections on all function endpoints
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
