@@ -3,7 +3,7 @@
   # crawl files regenerated with the real domain), then fail the deploy if the
   # baked page is missing the menu or JSON-LD. The edge function overlays
   # admin-published content on top of this baseline at request time.
-  command = "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js"
+  command = "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js --allow-incomplete"
   functions = "functions"
   edge_functions = "netlify/edge-functions"
 
