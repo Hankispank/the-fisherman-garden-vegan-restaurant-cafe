@@ -7,6 +7,7 @@
  */
 
 const session = require("./_lib/session");
+const { mergePartialContent } = require("./_lib/content-merge");
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
@@ -35,12 +36,14 @@ exports.handler = async function (event) {
   try {
     const { getStore } = require("./_lib/blobs");
     const store = getStore("content", event);
-    await store.setJSON("draft", content);
+    const existing = await store.get("draft", { type: "json" });
+    const merged = mergePartialContent(existing, content);
+    await store.setJSON("draft", merged);
 
     return {
       statusCode: 200,
       headers:    JSON_HEADERS,
-      body:       JSON.stringify({ ok: true, updatedAt: content.updatedAt }),
+      body:       JSON.stringify({ ok: true, updatedAt: merged.updatedAt }),
     };
   } catch (err) {
     return {

@@ -6,52 +6,13 @@
  */
 
 const session = require("./_lib/session");
-const vm   = require("vm");
-const path = require("path");
-const { readTextStrict } = require("../scripts/lib/safe-read.cjs");
+const { mergePartialContent } = require("./_lib/content-merge");
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
-/** Load seed menu/gallery/reviews from js/data.js when blobs are partial. */
-function loadSeedArrays() {
-  const root = path.join(__dirname, "..");
-  const ctx = { window: {} };
-  vm.runInNewContext(readTextStrict(path.join(root, "js", "data.js")), ctx);
-  return {
-    menuCategories: ctx.window.MENU_CATEGORIES || [],
-    menuItems:      ctx.window.MENU_ITEMS || [],
-    gallery:        ctx.window.GALLERY || [],
-    reviews:        ctx.window.REVIEWS || [],
-  };
-}
-
-function backfillMissingArrays(target) {
-  const seed = loadSeedArrays();
-  ["menuCategories", "menuItems", "gallery", "reviews"].forEach(function (key) {
-    if (!target[key] || !target[key].length) {
-      if (seed[key] && seed[key].length) target[key] = seed[key];
-    }
-  });
-  return target;
-}
-
 /** Overlay a partial draft onto the last published snapshot (never drop menu/gallery by accident). */
 function mergeDraftOntoPublished(existing, draft) {
-  if (!existing) return draft;
-  const out = JSON.parse(JSON.stringify(existing));
-  const arrayKeys = ["menuCategories", "menuItems", "gallery", "reviews"];
-  const objectKeys = ["config", "translations", "seo", "nav", "visit", "footer", "theme"];
-
-  arrayKeys.forEach(function (key) {
-    if (draft[key] && draft[key].length) out[key] = draft[key];
-  });
-  objectKeys.forEach(function (key) {
-    if (!draft[key] || typeof draft[key] !== "object") return;
-    out[key] = { ...(out[key] || {}), ...draft[key] };
-  });
-  if (draft.version != null) out.version = draft.version;
-  if (draft.updatedAt) out.updatedAt = draft.updatedAt;
-  return out;
+  return mergePartialContent(existing, draft);
 }
 
 /**
@@ -122,7 +83,6 @@ exports.handler = async function (event) {
 
     // Promote draft → published (merge onto existing so partial drafts stay safe)
     const toPublish = mergeDraftOntoPublished(existing, draft);
-    backfillMissingArrays(toPublish);
     toPublish.publishedAt = new Date().toISOString();
     toPublish.version     = (toPublish.version || 0) + 1;
     await store.setJSON("published", toPublish);
