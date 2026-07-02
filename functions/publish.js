@@ -6,8 +6,34 @@
  */
 
 const session = require("./_lib/session");
+const vm   = require("vm");
+const path = require("path");
+const { readTextStrict } = require("../scripts/lib/safe-read.cjs");
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
+
+/** Load seed menu/gallery/reviews from js/data.js when blobs are partial. */
+function loadSeedArrays() {
+  const root = path.join(__dirname, "..");
+  const ctx = { window: {} };
+  vm.runInNewContext(readTextStrict(path.join(root, "js", "data.js")), ctx);
+  return {
+    menuCategories: ctx.window.MENU_CATEGORIES || [],
+    menuItems:      ctx.window.MENU_ITEMS || [],
+    gallery:        ctx.window.GALLERY || [],
+    reviews:        ctx.window.REVIEWS || [],
+  };
+}
+
+function backfillMissingArrays(target) {
+  const seed = loadSeedArrays();
+  ["menuCategories", "menuItems", "gallery", "reviews"].forEach(function (key) {
+    if (!target[key] || !target[key].length) {
+      if (seed[key] && seed[key].length) target[key] = seed[key];
+    }
+  });
+  return target;
+}
 
 /** Overlay a partial draft onto the last published snapshot (never drop menu/gallery by accident). */
 function mergeDraftOntoPublished(existing, draft) {
@@ -49,7 +75,7 @@ async function seoWarnings(origin, expectedItemCount) {
         const graph = data["@graph"] || [];
         const menu = graph.find((n) => n["@type"] === "Menu");
         const count = menu ? (menu.hasMenuSection || []).reduce((a, s) => a + (s.hasMenuItem || []).length, 0) : 0;
-        if (expectedItemCount != null && count !== expectedItemCount) {
+        if (expectedItemCount > 0 && count !== expectedItemCount) {
           warnings.push(`Menu item count mismatch: live JSON-LD has ${count}, expected ${expectedItemCount}.`);
         }
       }
@@ -96,6 +122,7 @@ exports.handler = async function (event) {
 
     // Promote draft → published (merge onto existing so partial drafts stay safe)
     const toPublish = mergeDraftOntoPublished(existing, draft);
+    backfillMissingArrays(toPublish);
     toPublish.publishedAt = new Date().toISOString();
     toPublish.version     = (toPublish.version || 0) + 1;
     await store.setJSON("published", toPublish);
