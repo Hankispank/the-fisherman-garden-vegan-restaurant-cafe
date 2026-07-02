@@ -13,14 +13,20 @@ const path = require("path");
 // NETLIFY_DEV=true is injected by `netlify dev` for local development.
 // NETLIFY_BLOBS_CONTEXT is set to the string "undefined" by netlify dev (truthy but invalid),
 // so we cannot rely on it alone — use NETLIFY_DEV as the reliable local-dev signal.
-const isNetlify = process.env.NETLIFY_DEV !== "true"
-  && !!process.env.NETLIFY_BLOBS_CONTEXT
-  && process.env.NETLIFY_BLOBS_CONTEXT !== "undefined";
+// Production Functions run on Lambda (/var/task) where NETLIFY_BLOBS_CONTEXT may be absent;
+// detect that runtime and always delegate to @netlify/blobs there.
+function useNetlifyBlobs() {
+  if (process.env.NETLIFY_DEV === "true") return false;
+  if (process.env.AWS_LAMBDA_FUNCTION_NAME) return true;
+  return !!process.env.NETLIFY_BLOBS_CONTEXT
+    && process.env.NETLIFY_BLOBS_CONTEXT !== "undefined";
+}
 
 /* ── Netlify production path ─────────────────────────────────────── */
-function netlifyStore(nameOrOpts) {
-  const { getStore } = require("@netlify/blobs");
-  return getStore(nameOrOpts);
+function netlifyStore(nameOrOpts, event) {
+  const blobs = require("@netlify/blobs");
+  if (event && blobs.connectLambda) blobs.connectLambda(event);
+  return blobs.getStore(nameOrOpts);
 }
 
 /* ── Local filesystem path ───────────────────────────────────────── */
@@ -68,12 +74,12 @@ function localStore(storeName) {
 }
 
 /**
- * getStore(nameOrOpts)
+ * getStore(nameOrOpts, event)
  * Drop-in replacement for @netlify/blobs getStore().
- * Accepts a string name or an object { name, consistency, ... }.
+ * Pass the Lambda `event` in production so connectLambda can configure Blobs.
  */
-function getStore(nameOrOpts) {
-  if (isNetlify) return netlifyStore(nameOrOpts);
+function getStore(nameOrOpts, event) {
+  if (useNetlifyBlobs()) return netlifyStore(nameOrOpts, event);
   const name = typeof nameOrOpts === "string" ? nameOrOpts : nameOrOpts.name;
   return localStore(name);
 }

@@ -26,7 +26,7 @@ exports.handler = async function (event) {
 
   try {
     const { getStore } = require("./_lib/blobs");
-    const store = getStore({ name: "media", consistency: "strong" });
+    const store = getStore({ name: "media", consistency: "strong" }, event);
     const blob  = await store.get(key, { type: "arrayBuffer" });
 
     if (!blob) {

@@ -22,6 +22,28 @@
 
   var FN = "/.netlify/functions";
 
+  // Admin is served from /admin/*; seed asset paths like "assets/..." must be root-relative.
+  function rootAssetUrl(url) {
+    if (!url || typeof url !== "string") return url;
+    if (/^(https?:|\/|data:|#|blob:)/.test(url)) return url;
+    return "/" + url.replace(/^\.\//, "");
+  }
+
+  function fixRenderedAssetUrls() {
+    document.querySelectorAll("img[src]").forEach(function (img) {
+      var src = img.getAttribute("src");
+      if (src && !/^(https?:|\/|data:|blob:)/.test(src)) img.src = rootAssetUrl(src);
+      var ss = img.getAttribute("srcset");
+      if (ss) {
+        img.setAttribute("srcset", ss.split(",").map(function (part) {
+          var bits = part.trim().split(/\s+/);
+          if (bits[0] && !/^(https?:|\/|data:|blob:)/.test(bits[0])) bits[0] = rootAssetUrl(bits[0]);
+          return bits.join(" ");
+        }).join(", "));
+      }
+    });
+  }
+
   /* ═══════════════════════════════════════════════════════════════
      BOOTSTRAP
   ═══════════════════════════════════════════════════════════════ */
@@ -93,6 +115,7 @@
         if (content) {
           draft = content;
           mergeDraftIntoGlobals(draft);
+          ensureDraftComplete();
         } else {
           // No draft yet — seed one from current globals
           draft = buildDraftFromGlobals();
@@ -130,6 +153,7 @@
       menuItems:    JSON.parse(JSON.stringify(window.MENU_ITEMS)),
       gallery:      JSON.parse(JSON.stringify(window.GALLERY)),
       reviews:      JSON.parse(JSON.stringify(window.REVIEWS)),
+      seo:          window.SEO_CONFIG ? JSON.parse(JSON.stringify(window.SEO_CONFIG)) : {},
       nav: {
         logoEmoji: document.querySelector(".nav__logo-mark")
           ? document.querySelector(".nav__logo-mark").textContent.trim()
@@ -152,6 +176,32 @@
     };
   }
 
+  /** Keep blob drafts complete when only a subsection (e.g. amenities) changed. */
+  function ensureDraftComplete() {
+    if (!draft) return;
+    if (!draft.menuItems || !draft.menuItems.length) {
+      draft.menuItems = JSON.parse(JSON.stringify(window.MENU_ITEMS || []));
+    }
+    if (!draft.menuCategories || !draft.menuCategories.length) {
+      draft.menuCategories = JSON.parse(JSON.stringify(window.MENU_CATEGORIES || []));
+    }
+    if (!draft.gallery || !draft.gallery.length) {
+      draft.gallery = JSON.parse(JSON.stringify(window.GALLERY || []));
+    }
+    if (!draft.reviews || !draft.reviews.length) {
+      draft.reviews = JSON.parse(JSON.stringify(window.REVIEWS || []));
+    }
+    if (!draft.config) {
+      draft.config = JSON.parse(JSON.stringify(window.SITE_CONFIG || {}));
+    }
+    if (!draft.translations) {
+      draft.translations = JSON.parse(JSON.stringify(window.TRANSLATIONS || {}));
+    }
+    if (!draft.seo && window.SEO_CONFIG) {
+      draft.seo = JSON.parse(JSON.stringify(window.SEO_CONFIG));
+    }
+  }
+
   function readThemeFromPage() {
     var heroMedia = getComputedStyle(document.documentElement).getPropertyValue("--hero-media").trim();
     if (!heroMedia || heroMedia === 'url("")') return {};
@@ -172,7 +222,7 @@
     var url = draft.theme.heroUrl;
     document.documentElement.style.setProperty(
       "--hero-media",
-      url ? 'url("' + url + '")' : 'url("")'
+      url ? 'url("' + rootAssetUrl(url) + '")' : 'url("")'
     );
   }
 
@@ -226,6 +276,7 @@
     applyHeroFromDraft();
     applyContactFacts();
     if (window.renderAmenities) window.renderAmenities();
+    fixRenderedAssetUrls();
   }
 
   function applyStaticDOMFromDraft() {
@@ -266,7 +317,7 @@
       div.className = "gallery__item";
       div.setAttribute("data-admin-item", "gallery-" + i);
       if (tile.type === "image" && tile.url) {
-        div.innerHTML = '<img src="' + escHtml(tile.url) + '" alt="' + escHtml((tile.alt && tile.alt[LANG()]) || "") + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;">';
+        div.innerHTML = '<img src="' + escHtml(rootAssetUrl(tile.url)) + '" alt="' + escHtml((tile.alt && tile.alt[LANG()]) || "") + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;">';
       } else {
         div.style.background = "var(--c-surface-alt)";
       }
@@ -492,7 +543,7 @@
     imgWrap.className = "admin-image-field";
     imgWrap.innerHTML = '<label>Share image (Google / social / AI)</label>' +
       (curOg
-        ? '<div class="admin-image-preview"><img src="' + escHtml(curOg) + '" alt="share"></div>'
+        ? '<div class="admin-image-preview"><img src="' + escHtml(rootAssetUrl(curOg)) + '" alt="share"></div>'
         : '<div class="admin-image-preview" style="font-size:13px;color:#94a3b8">No share image yet</div>') +
       '<div class="admin-image-actions"><label class="admin-btn admin-btn--primary">' +
       (curOg ? "Replace image" : "Upload image") +
@@ -846,7 +897,7 @@
     heroWrap.className = "admin-image-field";
     heroWrap.innerHTML = "<label>Banner image</label>"
       + (curHero
-        ? '<div class="admin-image-preview"><img src="' + escHtml(curHero) + '" alt="hero"></div>'
+        ? '<div class="admin-image-preview"><img src="' + escHtml(rootAssetUrl(curHero)) + '" alt="hero"></div>'
         : '<div class="admin-image-preview" style="font-size:13px;color:#94a3b8">No hero photo — gradient only</div>')
       + '<div class="admin-image-actions"><label class="admin-btn admin-btn--primary">'
       + (curHero ? "Replace photo" : "Upload photo")
@@ -1112,7 +1163,7 @@
     // Photo
     html += '<div class="admin-section-divider">Photo</div>';
     if (dish.image) {
-      html += '<div class="admin-image-preview"><img src="' + escHtml(dish.image) + '" alt="dish"></div>';
+      html += '<div class="admin-image-preview"><img src="' + escHtml(rootAssetUrl(dish.image)) + '" alt="dish"></div>';
     } else {
       html += '<div class="admin-image-preview" style="font-size:13px;color:#94a3b8">No photo yet</div>';
     }
@@ -1262,7 +1313,7 @@
 
       var hasImg = tile.type === "image" && tile.url;
       var thumbHtml = hasImg
-        ? '<img src="' + escHtml(tile.url) + '" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0">'
+        ? '<img src="' + escHtml(rootAssetUrl(tile.url)) + '" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0">'
         : '<span style="width:40px;height:40px;flex-shrink:0;background:#f1f5f9;border-radius:4px;display:inline-block"></span>';
       var label = hasImg ? "Photo #" + (i + 1) : "Empty #" + (i + 1);
 
@@ -1307,7 +1358,7 @@
 
     // Preview
     if (hasImg) {
-      html += '<div class="admin-image-preview"><img src="' + escHtml(tile.url) + '" alt="tile"></div>';
+      html += '<div class="admin-image-preview"><img src="' + escHtml(rootAssetUrl(tile.url)) + '" alt="tile"></div>';
     } else {
       html += '<div class="admin-image-preview" style="font-size:13px;color:#94a3b8">No photo yet</div>';
     }
@@ -1668,8 +1719,10 @@
   }
 
   function saveDraft() {
-    if (!draft) return;
-    fetch(FN + "/save-content", {
+    if (!draft) return Promise.resolve(false);
+    ensureDraftComplete();
+    draft.updatedAt = new Date().toISOString();
+    return fetch(FN + "/save-content", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -1680,31 +1733,42 @@
         if (res.ok) {
           isDirty = false;
           setStatus("Draft saved ✓", "is-saved");
-        } else {
-          setStatus("Save error: " + (res.body.error || "?"), "is-error");
+          return true;
         }
+        setStatus("Save error: " + (res.body.error || "?"), "is-error");
+        return false;
       })
-      .catch(function () { setStatus("Save failed — check connection", "is-error"); });
+      .catch(function () {
+        setStatus("Save failed — check connection", "is-error");
+        return false;
+      });
   }
 
   function doPublish() {
-    if (isDirty) { saveDraft(); }
     setStatus("Publishing…", "is-saving");
-    fetch(FN + "/publish", { method: "POST", credentials: "include" })
-      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
-      .then(function (res) {
-        if (res.ok) {
-          var warns = res.body.warnings || [];
-          if (warns.length) {
-            setStatus("Published v" + res.body.version + " — ⚠ SEO: " + warns[0], "is-error");
+    var runPublish = function () {
+      fetch(FN + "/publish", { method: "POST", credentials: "include" })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+        .then(function (res) {
+          if (res.ok) {
+            var warns = res.body.warnings || [];
+            if (warns.length) {
+              setStatus("Published v" + res.body.version + " — ⚠ SEO: " + warns[0], "is-error");
+            } else {
+              setStatus("Published v" + res.body.version + " ✓", "is-saved");
+            }
           } else {
-            setStatus("Published v" + res.body.version + " ✓", "is-saved");
+            setStatus("Publish error: " + (res.body.error || "?"), "is-error");
           }
-        } else {
-          setStatus("Publish error: " + (res.body.error || "?"), "is-error");
-        }
-      })
-      .catch(function () { setStatus("Publish failed", "is-error"); });
+        })
+        .catch(function () { setStatus("Publish failed", "is-error"); });
+    };
+
+    if (isDirty) {
+      saveDraft().then(function (ok) { if (ok) runPublish(); });
+      return;
+    }
+    runPublish();
   }
 
   function doDiscard() {

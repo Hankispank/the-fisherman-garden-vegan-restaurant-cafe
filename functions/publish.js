@@ -9,6 +9,25 @@ const session = require("./_lib/session");
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
+/** Overlay a partial draft onto the last published snapshot (never drop menu/gallery by accident). */
+function mergeDraftOntoPublished(existing, draft) {
+  if (!existing) return draft;
+  const out = JSON.parse(JSON.stringify(existing));
+  const arrayKeys = ["menuCategories", "menuItems", "gallery", "reviews"];
+  const objectKeys = ["config", "translations", "seo", "nav", "visit", "footer", "theme"];
+
+  arrayKeys.forEach(function (key) {
+    if (draft[key] && draft[key].length) out[key] = draft[key];
+  });
+  objectKeys.forEach(function (key) {
+    if (!draft[key] || typeof draft[key] !== "object") return;
+    out[key] = { ...(out[key] || {}), ...draft[key] };
+  });
+  if (draft.version != null) out.version = draft.version;
+  if (draft.updatedAt) out.updatedAt = draft.updatedAt;
+  return out;
+}
+
 /**
  * After promoting, fetch the live "/" and run lightweight crawlability
  * assertions. Returns an array of human-readable warnings (never throws).
@@ -30,7 +49,9 @@ async function seoWarnings(origin, expectedItemCount) {
         const graph = data["@graph"] || [];
         const menu = graph.find((n) => n["@type"] === "Menu");
         const count = menu ? (menu.hasMenuSection || []).reduce((a, s) => a + (s.hasMenuItem || []).length, 0) : 0;
-        if (count !== expectedItemCount) warnings.push(`Menu item count mismatch: live JSON-LD has ${count}, expected ${expectedItemCount}.`);
+        if (expectedItemCount != null && count !== expectedItemCount) {
+          warnings.push(`Menu item count mismatch: live JSON-LD has ${count}, expected ${expectedItemCount}.`);
+        }
       }
     }
     const canonical = (html.match(/<link[^>]*rel="canonical"[^>]*href="([^"]+)"/i) || [])[1];
@@ -54,7 +75,7 @@ exports.handler = async function (event) {
 
   try {
     const { getStore } = require("./_lib/blobs");
-    const store = getStore("content");
+    const store = getStore("content", event);
 
     // Fetch current draft
     const draft = await store.get("draft", { type: "json" });
@@ -73,21 +94,23 @@ exports.handler = async function (event) {
       await store.setJSON(snapKey, existing);
     }
 
-    // Promote draft → published
-    draft.publishedAt = new Date().toISOString();
-    draft.version     = (draft.version || 0) + 1;
-    await store.setJSON("published", draft);
+    // Promote draft → published (merge onto existing so partial drafts stay safe)
+    const toPublish = mergeDraftOntoPublished(existing, draft);
+    toPublish.publishedAt = new Date().toISOString();
+    toPublish.version     = (toPublish.version || 0) + 1;
+    await store.setJSON("published", toPublish);
 
     // Post-publish SEO check (warn-only; surfaced in the admin UI).
     const proto  = event.headers["x-forwarded-proto"] || "https";
     const host   = event.headers.host || event.headers.Host;
     const origin = process.env.URL || (host ? `${proto}://${host}` : "");
-    const warnings = origin ? await seoWarnings(origin, (draft.menuItems || []).length) : [];
+    const menuCount = (toPublish.menuItems && toPublish.menuItems.length) || null;
+    const warnings = origin ? await seoWarnings(origin, menuCount) : [];
 
     return {
       statusCode: 200,
       headers:    JSON_HEADERS,
-      body:       JSON.stringify({ ok: true, version: draft.version, publishedAt: draft.publishedAt, warnings: warnings }),
+      body:       JSON.stringify({ ok: true, version: toPublish.version, publishedAt: toPublish.publishedAt, warnings: warnings }),
     };
   } catch (err) {
     return {

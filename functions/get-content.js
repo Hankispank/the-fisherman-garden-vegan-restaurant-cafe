@@ -31,7 +31,7 @@ exports.handler = async function (event) {
 
   try {
     const { getStore } = require("./_lib/blobs");
-    const store = getStore("content");
+    const store = getStore("content", event);
     const key   = isDraft ? "draft" : "published";
     const data  = await store.get(key, { type: "json" });
 

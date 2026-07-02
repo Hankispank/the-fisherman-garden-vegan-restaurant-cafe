@@ -72,7 +72,7 @@ exports.handler = async function (event) {
 
   try {
     const { getStore } = require("./_lib/blobs");
-    const store = getStore({ name: "media", consistency: "strong" });
+    const store = getStore({ name: "media", consistency: "strong" }, event);
     await store.set(key, buffer, {
       metadata: { type, originalName: name || key },
     });
