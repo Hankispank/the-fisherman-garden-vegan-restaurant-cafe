@@ -378,7 +378,15 @@
     var addr = p.address || seo.address;
     if (parts) restaurant.address = Object.assign({ "@type": "PostalAddress" }, parts);
     else if (addr) restaurant.address = { "@type": "PostalAddress", streetAddress: addr };
-    if (seo.alternateNames && seo.alternateNames.length) restaurant.alternateName = seo.alternateNames;
+    if (seo.alternateNames && seo.alternateNames.length) {
+      restaurant.alternateName = seo.alternateNames.slice();
+    }
+    if (p.config && p.config.shortName) {
+      restaurant.alternateName = restaurant.alternateName || [];
+      if (restaurant.alternateName.indexOf(p.config.shortName) === -1) {
+        restaurant.alternateName.unshift(p.config.shortName);
+      }
+    }
     var tel = p.telephone || seo.telephone;
     if (tel) restaurant.telephone = tel;
     if (p.emailVisible && p.config && (p.config.email_public || p.config.email)) {

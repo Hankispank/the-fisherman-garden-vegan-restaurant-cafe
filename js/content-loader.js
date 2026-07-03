@@ -90,6 +90,14 @@
       el.textContent = mail;
       if (el.tagName === "A") el.href = hrefMail;
     });
+    if (cfg.name) {
+      document.querySelectorAll('[data-fact="name"]').forEach(function (el) {
+        el.textContent = cfg.name;
+      });
+    }
+    document.querySelectorAll('[data-fact="shortName"]').forEach(function (el) {
+      el.textContent = cfg.shortName || cfg.name || "";
+    });
   }
 
   function applyContactVisibility(c) {
@@ -138,7 +146,7 @@
 
     // Nav logo text
     if (c.nav && c.nav.logoText) {
-      var logoText = document.querySelector(".nav__logo-text");
+      var logoText = document.querySelector(".nav__logo-text--full");
       if (logoText) logoText.textContent = c.nav.logoText;
     }
     if (c.nav && c.nav.logoEmoji) {

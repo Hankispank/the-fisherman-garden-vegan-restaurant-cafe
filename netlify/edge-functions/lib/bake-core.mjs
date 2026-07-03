@@ -124,6 +124,7 @@ export function applyFacts(html, cfg) {
   cfg = cfg || {};
   var text = {
     name: cfg.name,
+    shortName: cfg.shortName || cfg.name,
     address: cfg.address,
     logo: cfg.logo,
     tel: cfg.telephoneDisplay,

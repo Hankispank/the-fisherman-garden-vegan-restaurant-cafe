@@ -201,6 +201,14 @@ async function main() {
     }
   }
 
+  // 11. Mobile nav short name present in baked HTML.
+  const shortName = (seed.SITE_CONFIG || {}).shortName || (seed.SITE_CONFIG || {}).name || "";
+  if (!html.includes('nav__logo-text--short')) {
+    failures.push("baked HTML missing nav__logo-text--short span");
+  } else if (shortName && !html.includes(shortName)) {
+    failures.push(`baked HTML missing mobile nav short name: "${shortName}"`);
+  }
+
   // ---- report ----
   if (failures.length) {
     console.error(`\n❌ verify-crawlable FAILED (${failures.length}) for ${target}\n`);

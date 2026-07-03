@@ -210,8 +210,8 @@
         logoEmoji: document.querySelector(".nav__logo-mark")
           ? document.querySelector(".nav__logo-mark").textContent.trim()
           : ((window.SITE_CONFIG && window.SITE_CONFIG.logo) || "🏠"),
-        logoText:  document.querySelector(".nav__logo-text")
-          ? document.querySelector(".nav__logo-text").textContent.trim()
+        logoText:  document.querySelector(".nav__logo-text--full")
+          ? document.querySelector(".nav__logo-text--full").textContent.trim()
           : ((window.SITE_CONFIG && window.SITE_CONFIG.name) || "Restaurant"),
       },
       visit: {
@@ -295,6 +295,14 @@
       el.textContent = mail;
       if (el.tagName === "A") el.href = hrefMail;
     });
+    if (cfg.name) {
+      $$('[data-fact="name"]').forEach(function (el) {
+        el.textContent = cfg.name;
+      });
+    }
+    $$('[data-fact="shortName"]').forEach(function (el) {
+      el.textContent = cfg.shortName || cfg.name || "";
+    });
     if (window.SEO_CONFIG && tel) window.SEO_CONFIG.telephone = tel;
   }
 
@@ -361,7 +369,7 @@
     if (!draft) return;
     if (draft.nav) {
       var logoMark = document.querySelector(".nav__logo-mark");
-      var logoText = document.querySelector(".nav__logo-text");
+      var logoText = document.querySelector(".nav__logo-text--full");
       if (logoMark && draft.nav.logoEmoji) logoMark.textContent = draft.nav.logoEmoji;
       if (logoText && draft.nav.logoText)  logoText.textContent = draft.nav.logoText;
     }
@@ -575,9 +583,20 @@
     addTextField(body, "Restaurant name", cfg.name || window.SITE_CONFIG.name, function (v) {
       setDraftConfig("name", v);
       window.SITE_CONFIG.name = v;
+      $$('[data-fact="name"]').forEach(function (el) { el.textContent = v; });
       var fb = document.querySelector(".footer__brand strong");
       if (fb) fb.textContent = v;
+      $$('[data-fact="shortName"]').forEach(function (el) {
+        el.textContent = (window.SITE_CONFIG.shortName || v).trim();
+      });
     });
+    addTextField(body, "Short name (mobile nav)", cfg.shortName || window.SITE_CONFIG.shortName || "", function (v) {
+      setDraftConfig("shortName", v.trim());
+      window.SITE_CONFIG.shortName = v.trim();
+      $$('[data-fact="shortName"]').forEach(function (el) {
+        el.textContent = v.trim() || window.SITE_CONFIG.name;
+      });
+    }, "e.g. The Fisherman");
 
     addDivider(body, "Contact — site-wide");
     addTextField(body, "Phone number (shown on Visit + footer)", cfg.telephoneDisplay || window.SITE_CONFIG.telephoneDisplay || "", function (v) {
@@ -973,7 +992,7 @@
     addTextField(body, "Logo text", nav.logoText || (window.SITE_CONFIG && window.SITE_CONFIG.name) || "Restaurant", function (v) {
       if (!draft.nav) draft.nav = {};
       draft.nav.logoText = v;
-      var t = document.querySelector(".nav__logo-text");
+      var t = document.querySelector(".nav__logo-text--full");
       if (t) t.textContent = v;
       scheduleSave();
     });
