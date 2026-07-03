@@ -251,6 +251,48 @@
     return '<div class="gallery__item" style="background:var(--c-surface-alt)"></div>';
   }
 
+  /*
+   * Social platform catalog — order = display order. Icons are inline 24×24
+   * single-colour SVG glyphs (currentColor) for server-baked and in-browser use.
+   */
+  var SOCIAL_CATALOG = [
+    { key: "facebook", label: "Facebook", host: /(^|\.)facebook\.com$/i,
+      svg: '<path d="M13.4 21v-7h2.3l.4-2.8h-2.7V9.4c0-.8.3-1.4 1.4-1.4h1.4V5.5c-.6-.1-1.4-.2-2.2-.2-2.2 0-3.6 1.3-3.6 3.7v2.2H8.1V14h2.3v7h3z"/>' },
+    { key: "instagram", label: "Instagram", host: /(^|\.)instagram\.com$/i,
+      excludePath: /^\/(p|reel|reels|stories)\//i,
+      svg: '<rect x="4.2" y="4.2" width="15.6" height="15.6" rx="4.4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="16.6" cy="7.4" r="1.2"/>' },
+    { key: "tiktok", label: "TikTok", host: /(^|\.)tiktok\.com$/i,
+      svg: '<path d="M14.7 3c.4 2 1.6 3.4 3.8 3.6v2.8c-1.4 0-2.7-.4-3.8-1.2v5.5c0 3.1-2.1 5.3-5 5.3-2.7 0-4.7-2-4.7-4.6 0-2.8 2.3-4.9 5.3-4.7v2.8c-1.5-.3-2.6.6-2.6 2 0 1.2.9 2 2 2 1.4 0 2.3-1 2.3-2.6V3h2.7z"/>' },
+    { key: "tripadvisor", label: "Tripadvisor", host: /(^|\.)tripadvisor\.[a-z.]+$/i,
+      svg: '<path d="M12.006 4.295c-2.67 0-5.338.784-7.645 2.353H0l1.963 5.858a5.209 5.209 0 0 0 4.033 2.454 5.155 5.155 0 0 0 4.786-3.266 5.48 5.48 0 0 0 8.458 0 5.155 5.155 0 0 0 4.786 3.266 5.209 5.209 0 0 0 4.033-2.454L24 6.648h-4.361A11.924 11.924 0 0 0 12.006 4.295zm-2.824 9.374a3.3 3.3 0 1 1-3.3-3.324 3.303 3.303 0 0 1 3.3 3.324Zm8.272 0a3.3 3.3 0 1 1-3.301-3.324 3.303 3.303 0 0 1 3.301 3.324Z"/>' },
+  ];
+
+  function socialRows(sameAs) {
+    var out = [], seen = {};
+    SOCIAL_CATALOG.forEach(function (p) {
+      (sameAs || []).some(function (u) {
+        var m = String(u || "").match(/^https?:\/\/([^\/]+)(\/[^?#]*)?/i);
+        if (!m || !p.host.test(m[1]) || seen[p.key]) return false;
+        if (p.excludePath && p.excludePath.test(m[2] || "/")) return false;
+        seen[p.key] = true;
+        out.push({ key: p.key, label: p.label, url: u, svg: p.svg });
+        return true;
+      });
+    });
+    return out;
+  }
+
+  function socialLinksHTML(sameAs) {
+    var rows = socialRows(sameAs);
+    if (!rows.length) return "";
+    return rows.map(function (p) {
+      return '<a class="social-link social-link--' + p.key + '" href="' + attr(p.url) + '"' +
+        ' target="_blank" rel="noopener noreferrer"' +
+        ' aria-label="' + attr(p.label + " (opens in a new tab)") + '">' +
+        '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' + p.svg + "</svg></a>";
+    }).join("");
+  }
+
   /* ---------- collect FAQ Q&A from a translation function ---------- */
   function collectFaq(t) {
     var out = [];
@@ -339,7 +381,9 @@
     if (seo.alternateNames && seo.alternateNames.length) restaurant.alternateName = seo.alternateNames;
     var tel = p.telephone || seo.telephone;
     if (tel) restaurant.telephone = tel;
-    if (p.config && p.config.email) restaurant.email = p.config.email;
+    if (p.emailVisible && p.config && (p.config.email_public || p.config.email)) {
+      restaurant.email = p.config.email_public || p.config.email;
+    }
     if (seo.geo && seo.geo.lat) {
       restaurant.geo = { "@type": "GeoCoordinates", latitude: seo.geo.lat, longitude: seo.geo.lng };
     }
@@ -389,6 +433,9 @@
     TAG_LABELS: TAG_LABELS,
     AMENITIES_CATALOG: AMENITIES_CATALOG,
     AMENITY_GROUPS: AMENITY_GROUPS,
+    SOCIAL_CATALOG: SOCIAL_CATALOG,
+    socialRows: socialRows,
+    socialLinksHTML: socialLinksHTML,
     amenityChips: amenityChips,
     amenityRows: amenityRows,
     amenitySectionHTML: amenitySectionHTML,

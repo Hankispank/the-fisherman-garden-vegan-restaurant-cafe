@@ -322,7 +322,7 @@
 
   function getSelectedApp(pickerEl) {
     const active = pickerEl?.querySelector(".chan__btn.is-active");
-    return active?.dataset.app || "whatsapp";
+    return active?.dataset.app || "zalo";
   }
 
   function resolveChannel(method, pickerEl) {

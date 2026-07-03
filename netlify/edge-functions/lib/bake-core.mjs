@@ -139,11 +139,38 @@ export function applyFacts(html, cfg) {
   html = html.replace(/(<a[^>]*\sdata-fact="tel"[^>]*\shref=")[^"]*(")/g, function (m, a, b) { return a + "tel:+" + escAttr(digits) + b; });
   html = html.replace(/(<a[^>]*\sdata-fact="email"[^>]*\shref=")[^"]*(")/g, function (m, a, b) { return a + "mailto:" + escAttr(cfg.email_public) + b; });
   html = html.replace(/(<a[^>]*\sdata-fact="whatsapp"[^>]*\shref=")[^"]*(")/g, function (m, a, b) { return a + "https://wa.me/" + escAttr(digits) + b; });
+  html = html.replace(/(<a[^>]*\sdata-fact="zalo"[^>]*\shref=")[^"]*(")/g, function (m, a, b) { return a + "https://zalo.me/" + escAttr(cfg.zalo || digits) + b; });
   html = html.replace(/(<a[^>]*\sdata-fact="directions"[^>]*\shref=")[^"]*(")/g, function (m, a, b) { return a + escAttr(cfg.directionsHref) + b; });
   html = html.replace(/(<iframe[^>]*\sdata-fact="mapSrc"[^>]*\ssrc=")[^"]*(")/g, function (m, a, b) { return a + escAttr(cfg.mapEmbedSrc) + b; });
   // Favicon emoji (the inline SVG data-URI in <link rel="icon">).
   if (cfg.logo) {
     html = html.replace(/(<text y='\.9em' font-size='90'>)[^<]*(<\/text>)/, function (m, a, b) { return a + cfg.logo + b; });
+  }
+  return html;
+}
+
+function emailVisibleFromPublished(pub) {
+  if (!pub) return false;
+  var v = pub.visit || {}, f = pub.footer || {};
+  return v.showEmail === true || f.showEmail === true;
+}
+
+export function applyContactVisibility(html, pub) {
+  const v = (pub && pub.visit) || {}, f = (pub && pub.footer) || {};
+  const hide = [];
+  if (v.showEmail !== true) hide.push(["visit", "email"]);
+  if (f.showEmail !== true) hide.push(["footer", "email"]);
+  if (v.showPhone === false) hide.push(["visit", "phone"]);
+  if (f.showPhone === false) hide.push(["footer", "phone"]);
+  for (const [area, kind] of hide) {
+    html = html.replace(new RegExp(
+      '<(li|a)([^>]*data-area="' + area + '"[^>]*data-contact="' + kind + '"[^>]*)>[\\s\\S]*?<\\/\\1>', "g"), "");
+  }
+  if (v.showZalo === false) {
+    html = html.replace(/<a[^>]*data-area="visit"[^>]*data-chat="zalo"[^>]*>[\s\S]*?<\/a>/g, "");
+  }
+  if (v.showWhatsapp === false) {
+    html = html.replace(/<a[^>]*data-area="visit"[^>]*data-chat="whatsapp"[^>]*>[\s\S]*?<\/a>/g, "");
   }
   return html;
 }
@@ -171,6 +198,7 @@ export function bakeHtml(indexHtml, shim, opts) {
   const amenitiesHTML = RC.amenitySectionHTML
     ? RC.amenitySectionHTML(seo.amenities, lang, seo.customAmenities)
     : "";
+  const socialHTML = RC.socialLinksHTML ? RC.socialLinksHTML(seo.sameAs) : "";
   const base = effectiveBase(shim, origin);
   const ogImg = absolutize(ogImageFor(shim), base);
   const seoForLd = ogImg ? Object.assign({}, seo, { ogImage: ogImg }) : seo;
@@ -189,6 +217,7 @@ export function bakeHtml(indexHtml, shim, opts) {
     address: seo.address || (pub && pub.visit && pub.visit.address),
     telephone: seo.telephone,
     lang: lang,
+    emailVisible: emailVisibleFromPublished(pub),
   });
 
   // Title + description drive the page title AND all social tags, sourced from
@@ -224,6 +253,7 @@ export function bakeHtml(indexHtml, shim, opts) {
   out = region(out, "GALLERY_START", "GALLERY_END", galleryHTML);
   out = region(out, "REVIEWS_START", "REVIEWS_END", reviewsHTML);
   out = region(out, "AMENITIES_START", "AMENITIES_END", amenitiesHTML);
+  out = region(out, "SOCIAL_START", "SOCIAL_END", socialHTML);
   out = region(out, "SEO_HEAD_START", "SEO_HEAD_END", head);
   // Bake <title> and <meta description> from the i18n meta keys too, so the
   // no-JS title/description match the language and the restaurant.
@@ -234,6 +264,7 @@ export function bakeHtml(indexHtml, shim, opts) {
   // files, so the crawlable page reflects i18n.js / config.js for every node.
   out = applyI18n(out, shim.TRANSLATIONS, lang);
   out = applyFacts(out, cfg);
+  out = applyContactVisibility(out, pub);
   return out;
 }
 
@@ -289,7 +320,9 @@ export function buildLlms(shim, base, opts) {
   if (seo.priceRange) lines.push("- Price range: " + seo.priceRange);
   if (seo.telephone) lines.push("- Phone: " + seo.telephone);
   lines.push("- Reservations: " + (cfg.whatsapp || cfg.email ? "Yes" : "Contact venue"));
-  if (cfg.email_public || cfg.email) lines.push("- Email: " + (cfg.email_public || cfg.email));
+  if (emailVisibleFromPublished(shim._published) && (cfg.email_public || cfg.email)) {
+    lines.push("- Email: " + (cfg.email_public || cfg.email));
+  }
   if (cfg.whatsapp) lines.push("- WhatsApp: +" + cfg.whatsapp);
   lines.push("- Order/booking: WhatsApp, Zalo, email, or on-page form");
   if (base) lines.push("- Website: " + base + "/");

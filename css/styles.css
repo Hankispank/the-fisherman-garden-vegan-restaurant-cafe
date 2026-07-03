@@ -35,7 +35,7 @@
   --container: 1140px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --font-head: "Caveat", "Segoe Print", cursive;
+  --font-head: "Dancing Script", "Segoe Script", cursive;
   --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --about-media: image-set(url("../assets/research/about-960.webp") 1x, url("../assets/research/about-1440.webp") 2x);
@@ -95,6 +95,8 @@ a { color: inherit; text-decoration: none; }
 .btn--ghost { --bg: rgba(200,71,42,0.08); --fg: var(--c-primary); }
 .btn--whatsapp { --bg: var(--c-whatsapp); }
 .btn--whatsapp:hover { background: var(--c-whatsapp-dark); }
+.btn--zalo { --bg: #0068FF; color: #fff; }
+.btn--zalo:hover { background: #0052cc; }
 .btn--sm { padding: 0.5rem 1rem; font-size: 0.9rem; }
 .btn--block { width: 100%; }
 
@@ -364,6 +366,16 @@ a { color: inherit; text-decoration: none; }
 .footer__col h4 { color: #fff; margin-bottom: 0.8rem; font-size: 1rem; }
 .footer__col a, .footer__col span { display: block; color: #b8afa0; padding: 0.2rem 0; transition: color 0.2s; }
 .footer__col a:hover { color: var(--c-gold); }
+/* footer social icons */
+.footer__social { display: flex; gap: 0.6rem; margin-top: 0.9rem; }
+.social-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: #d9d2c6; transition: color .2s, border-color .2s, transform .2s;
+}
+.social-link:hover { color: var(--c-gold); border-color: var(--c-gold); transform: translateY(-2px); }
+.social-link svg { width: 19px; height: 19px; }
 .footer__bar { border-top: 1px solid rgba(255,255,255,0.1); padding: 1.1rem 0; font-size: 0.85rem; }
 .footer__bar .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; color: #8c8475; }
 

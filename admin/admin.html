@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap"
     rel="stylesheet" />
 
   <!-- Public site CSS first, then admin chrome layered on top -->
@@ -272,20 +272,19 @@
               <strong data-i18n="visit.hoursLabel">Hours</strong>
               <span data-i18n="visit.hours">Mon–Sun · 08:00 – 21:00</span>
             </li>
-            <li>
+            <li data-area="visit" data-contact="phone">
               <strong data-i18n="visit.phoneLabel">Phone</strong>
               <a data-fact="tel" href="tel:+84905660623">+84 905 660 623</a>
             </li>
-            <li>
-              <strong data-i18n="visit.emailLabel">Email</strong>
-              <a data-fact="email" href="mailto:thefisherman.veganrestaurant@gmail.com">thefisherman.veganrestaurant@gmail.com</a>
-            </li>
+            
           </ul>
           <div class="visit__actions">
             <a class="btn btn--primary" target="_blank" rel="noopener" data-fact="directions"
               href="https://www.google.com/maps/search/?api=1&amp;query=An%20Bang%20Beach%2C%20H%E1%BB%99i%20An%20T%C3%A2y%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng%2C%20Vietnam"
               data-i18n="visit.directions">Get directions</a>
-            <a class="btn btn--whatsapp" target="_blank" rel="noopener" data-fact="whatsapp"
+            <a class="btn btn--zalo" target="_blank" rel="noopener" data-fact="zalo" data-chat="zalo" data-area="visit"
+              href="https://zalo.me/84905660623" data-i18n="visit.zalo">Chat on Zalo</a>
+            <a class="btn btn--whatsapp" target="_blank" rel="noopener" data-fact="whatsapp" data-chat="whatsapp" data-area="visit"
               href="https://wa.me/84905660623" data-i18n="visit.whatsapp">Chat on WhatsApp</a>
           </div>
         </div>
@@ -309,6 +308,9 @@
         <span class="nav__logo-mark" data-fact="logo">🎣</span>
         <strong data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</strong>
         <p data-i18n="footer.tagline">Beachfront all-vegan dining on An Bang Beach, Hội An.</p>
+        <div class="footer__social" id="footerSocial" aria-label="Follow us">
+          <!--SOCIAL_START--><!--SOCIAL_END-->
+        </div>
       </div>
       <div class="footer__col">
         <h4 data-i18n="footer.explore">Explore</h4>
@@ -319,8 +321,8 @@
       <div class="footer__col">
         <h4 data-i18n="footer.contact">Contact</h4>
         <span data-fact="address">An Bang Beach, Hội An Tây, Đà Nẵng, Vietnam</span>
-        <a data-fact="tel" href="tel:+84905660623">+84 905 660 623</a>
-        <a data-fact="email" href="mailto:thefisherman.veganrestaurant@gmail.com">thefisherman.veganrestaurant@gmail.com</a>
+        <a data-area="footer" data-contact="phone" data-fact="tel" href="tel:+84905660623">+84 905 660 623</a>
+        
       </div>
     </div>
     <div class="footer__bar">

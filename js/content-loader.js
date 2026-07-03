@@ -62,6 +62,7 @@
     }
     applyTheme(c);
     renderAmenitiesSection();
+    if (window.renderSocial) window.renderSocial();
   }
 
   function applyTheme(c) {
@@ -91,9 +92,31 @@
     });
   }
 
+  function applyContactVisibility(c) {
+    if (!c) c = {};
+    var v = c.visit || {}, f = c.footer || {};
+    document.querySelectorAll("[data-area][data-contact]").forEach(function (el) {
+      var area = el.getAttribute("data-area");
+      var kind = el.getAttribute("data-contact");
+      var show = true;
+      if (kind === "email") show = (area === "visit" ? v.showEmail : f.showEmail) === true;
+      if (kind === "phone") show = (area === "visit" ? v.showPhone : f.showPhone) !== false;
+      el.style.display = show ? "" : "none";
+    });
+    var zaloBtn = document.querySelector('[data-area="visit"][data-chat="zalo"]');
+    var waBtn = document.querySelector('[data-area="visit"][data-chat="whatsapp"]');
+    if (zaloBtn) {
+      zaloBtn.style.display = v.showZalo === false ? "none" : "";
+      if (v.zaloHref) zaloBtn.href = v.zaloHref;
+      else if (c.config && c.config.zalo) zaloBtn.href = "https://zalo.me/" + c.config.zalo;
+    }
+    if (waBtn) waBtn.style.display = v.showWhatsapp === false ? "none" : "";
+  }
+
   function applyStaticDOM(c) {
     if (!c) return;
     applyContactFacts(c);
+    applyContactVisibility(c);
 
     // Visit section — address / map are hardcoded in HTML, update them
     if (c.visit) {
@@ -108,6 +131,9 @@
 
       var waBtn = document.querySelector(".visit__actions .btn--whatsapp");
       if (waBtn && c.visit.whatsappHref) waBtn.href = c.visit.whatsappHref;
+
+      var zaloBtn = document.querySelector(".visit__actions .btn--zalo");
+      if (zaloBtn && c.visit.zaloHref) zaloBtn.href = c.visit.zaloHref;
     }
 
     // Nav logo text
@@ -169,6 +195,12 @@
         } else {
           applyStaticDOM(content);
         }
+      } else if (document.readyState === "loading") {
+        _originalAddEventListener("DOMContentLoaded", function () {
+          applyContactVisibility({});
+        });
+      } else {
+        applyContactVisibility({});
       }
     })
     .catch(function () { /* silently fall back to seed values */ })

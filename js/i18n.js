@@ -122,6 +122,7 @@ window.TRANSLATIONS = {
     "visit.phoneLabel": "Phone",
     "visit.emailLabel": "Email",
     "visit.directions": "Get directions",
+    "visit.zalo": "Chat on Zalo",
     "visit.whatsapp": "Chat on WhatsApp",
 
     "footer.tagline": "Beachfront all-vegan dining on An Bang Beach, Hội An.",
@@ -278,6 +279,7 @@ window.TRANSLATIONS = {
     "visit.phoneLabel": "Điện thoại",
     "visit.emailLabel": "Email",
     "visit.directions": "Chỉ đường",
+    "visit.zalo": "Nhắn Zalo",
     "visit.whatsapp": "Nhắn tin WhatsApp",
 
     "footer.tagline": "Nhà hàng chay ven biển An Bàng, Hội An.",

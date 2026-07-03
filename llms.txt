@@ -10,7 +10,6 @@
 - Price range: $
 - Phone: +84 905 660 623
 - Reservations: Yes
-- Email: thefisherman.veganrestaurant@gmail.com
 - WhatsApp: +84905660623
 - Order/booking: WhatsApp, Zalo, email, or on-page form
 - Website: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/
@@ -192,4 +191,4 @@
 - Large water — 30,000 ₫ — Large bottled water.
 - Sparkling water — 25,000 ₫ — Sparkling mineral water.
 
-_Generated: 2026-07-03T01:58:27.349Z_
+_Generated: 2026-07-03T04:19:32.620Z_

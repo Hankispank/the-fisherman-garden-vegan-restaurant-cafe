@@ -23,14 +23,21 @@
   var FN = "/.netlify/functions";
 
   // Profile platforms — separate Settings fields, stored as flat seo.sameAs[].
-  var PROFILE_FIELDS = [
-    { key: "google",      label: "Google Business / Maps", host: /(^|\.)(google\.[a-z.]+|goo\.gl|g\.page)$/i,  placeholder: "https://www.google.com/maps/place/..." },
-    { key: "tripadvisor", label: "Tripadvisor",            host: /(^|\.)tripadvisor\.[a-z.]+$/i,               placeholder: "https://www.tripadvisor.com/Restaurant_Review-..." },
-    { key: "yelp",        label: "Yelp",                   host: /(^|\.)yelp\.[a-z.]+$/i,                      placeholder: "https://www.yelp.com/biz/..." },
-    { key: "facebook",    label: "Facebook",               host: /(^|\.)(facebook\.com|fb\.com|fb\.me)$/i,     placeholder: "https://www.facebook.com/yourpage" },
-    { key: "instagram",   label: "Instagram",              host: /(^|\.)instagram\.com$/i,                     placeholder: "https://www.instagram.com/yourhandle/" },
-    { key: "tiktok",      label: "TikTok",                 host: /(^|\.)tiktok\.com$/i,                        placeholder: "https://www.tiktok.com/@yourhandle" },
-  ];
+  function getProfileFields() {
+    var cat = (window.RenderCore && window.RenderCore.SOCIAL_CATALOG) || [];
+    function socialHost(key, fallback) {
+      var row = cat.find(function (c) { return c.key === key; });
+      return row ? row.host : fallback;
+    }
+    return [
+      { key: "google",      label: "Google Business / Maps", host: /(^|\.)(google\.[a-z.]+|goo\.gl|g\.page)$/i,  placeholder: "https://www.google.com/maps/place/..." },
+      { key: "tripadvisor", label: "Tripadvisor",            host: socialHost("tripadvisor", /(^|\.)tripadvisor\.[a-z.]+$/i),               placeholder: "https://www.tripadvisor.com/Restaurant_Review-..." },
+      { key: "yelp",        label: "Yelp",                   host: /(^|\.)yelp\.[a-z.]+$/i,                      placeholder: "https://www.yelp.com/biz/..." },
+      { key: "facebook",    label: "Facebook",               host: socialHost("facebook", /(^|\.)(facebook\.com|fb\.com|fb\.me)$/i),     placeholder: "https://www.facebook.com/yourpage" },
+      { key: "instagram",   label: "Instagram",              host: socialHost("instagram", /(^|\.)instagram\.com$/i),                     placeholder: "https://www.instagram.com/yourhandle/" },
+      { key: "tiktok",      label: "TikTok",                 host: socialHost("tiktok", /(^|\.)tiktok\.com$/i),                        placeholder: "https://www.tiktok.com/@yourhandle" },
+    ];
+  }
 
   function profileHostOf(url) {
     var m = String(url || "").match(/^https?:\/\/([^\/?#]+)/i);
@@ -39,9 +46,10 @@
 
   function decomposeProfiles(sameAs) {
     var out = { other: [] }, used = {};
+    var fields = getProfileFields();
     (sameAs || []).forEach(function (u, i) {
       var host = profileHostOf(u);
-      var hit = PROFILE_FIELDS.find(function (p) { return !out[p.key] && p.host.test(host); });
+      var hit = fields.find(function (p) { return !out[p.key] && p.host.test(host); });
       if (hit) { out[hit.key] = u; used[i] = true; }
     });
     (sameAs || []).forEach(function (u, i) {
@@ -51,7 +59,8 @@
   }
 
   function composeProfiles(vals) {
-    var arr = PROFILE_FIELDS.map(function (p) { return (vals[p.key] || "").trim(); }).filter(Boolean);
+    var fields = getProfileFields();
+    var arr = fields.map(function (p) { return (vals[p.key] || "").trim(); }).filter(Boolean);
     return arr.concat((vals.other || []).map(function (s) { return String(s).trim(); }).filter(Boolean));
   }
 
@@ -181,6 +190,8 @@
     if (c.gallery)        window.GALLERY          = c.gallery;
     if (c.reviews)        window.REVIEWS          = c.reviews;
     if (c.seo && window.SEO_CONFIG) deepMerge(window.SEO_CONFIG, c.seo);
+    if (c.visit) window._CONTENT_VISIT = c.visit;
+    if (c.footer) window._CONTENT_FOOTER = c.footer;
   }
 
   /* Build an initial draft snapshot from the current live globals */
@@ -208,6 +219,7 @@
         mapEmbedSrc:   (document.querySelector(".visit__map iframe") || {}).src || "",
         directionsHref:(document.querySelector(".visit__actions .btn--primary") || {}).href || "",
         whatsappHref:  (document.querySelector(".visit__actions .btn--whatsapp") || {}).href || "",
+        zaloHref:      (document.querySelector(".visit__actions .btn--zalo") || {}).href || "",
       },
       footer: {
         brandName: (document.querySelector(".footer__brand strong") || {}).textContent || "",
@@ -286,6 +298,29 @@
     if (window.SEO_CONFIG && tel) window.SEO_CONFIG.telephone = tel;
   }
 
+  function applyContactVisibility() {
+    if (!draft) return;
+    var v = draft.visit || {}, f = draft.footer || {};
+    $$("[data-area][data-contact]").forEach(function (el) {
+      var area = el.getAttribute("data-area");
+      var kind = el.getAttribute("data-contact");
+      var show = true;
+      if (kind === "email") show = (area === "visit" ? v.showEmail : f.showEmail) === true;
+      if (kind === "phone") show = (area === "visit" ? v.showPhone : f.showPhone) !== false;
+      el.style.display = show ? "" : "none";
+    });
+    var zaloBtn = document.querySelector('[data-area="visit"][data-chat="zalo"]');
+    var waBtn = document.querySelector('[data-area="visit"][data-chat="whatsapp"]');
+    if (zaloBtn) {
+      zaloBtn.style.display = v.showZalo === false ? "none" : "";
+      if (v.zaloHref) zaloBtn.href = v.zaloHref;
+      else if (window.SITE_CONFIG && window.SITE_CONFIG.zalo) zaloBtn.href = "https://zalo.me/" + window.SITE_CONFIG.zalo;
+    }
+    if (waBtn) waBtn.style.display = v.showWhatsapp === false ? "none" : "";
+    window._CONTENT_VISIT = draft.visit || {};
+    window._CONTENT_FOOTER = draft.footer || {};
+  }
+
   function setContactPhone(display) {
     var digits = display.replace(/\D/g, "");
     setDraftConfig("telephoneDisplay", display);
@@ -316,7 +351,9 @@
     applyStaticDOMFromDraft();
     applyHeroFromDraft();
     applyContactFacts();
+    applyContactVisibility();
     if (window.renderAmenities) window.renderAmenities();
+    if (window.renderSocial) window.renderSocial();
     fixRenderedAssetUrls();
   }
 
@@ -337,6 +374,8 @@
       if (dirBtn && draft.visit.directionsHref) dirBtn.href = draft.visit.directionsHref;
       var waBtn  = document.querySelector(".visit__actions .btn--whatsapp");
       if (waBtn && draft.visit.whatsappHref) waBtn.href = draft.visit.whatsappHref;
+      var zaloBtn = document.querySelector(".visit__actions .btn--zalo");
+      if (zaloBtn && draft.visit.zaloHref) zaloBtn.href = draft.visit.zaloHref;
     }
     if (draft.footer) {
       var fb = document.querySelector(".footer__brand strong");
@@ -549,7 +588,7 @@
     });
     var contactNote = document.createElement("div");
     contactNote.className = "admin-note admin-note--info";
-    contactNote.textContent = "Phone and email update everywhere at once — Visit section, footer, and order/reservation notifications (Web3Forms).";
+    contactNote.textContent = "Phone and email update everywhere at once — Visit section, footer, and order/reservation notifications (Web3Forms). Use the Visit and Footer editors to choose which contact details are shown on the page.";
     body.appendChild(contactNote);
 
     addTextField(body, "WhatsApp (digits only)", cfg.whatsapp || window.SITE_CONFIG.whatsapp, function (v) {
@@ -626,7 +665,7 @@
       if (window.renderSocial) window.renderSocial();
     }
 
-    PROFILE_FIELDS.forEach(function (p) {
+    getProfileFields().forEach(function (p) {
       var input = addTextField(body, p.label, profVals[p.key] || "", function (v) {
         profVals[p.key] = v;
         markProfileValidity(input, p, v);
@@ -1664,6 +1703,19 @@
       scheduleSave();
     });
     i18nField("Hours text", "visit.hours", body);
+    addCheckboxField(body, "Show phone number", v.showPhone !== false, function (checked) {
+      if (!draft.visit) draft.visit = {};
+      draft.visit.showPhone = checked;
+      applyContactVisibility();
+      scheduleSave();
+    });
+    addCheckboxField(body, "Show email address", v.showEmail === true, function (checked) {
+      if (!draft.visit) draft.visit = {};
+      draft.visit.showEmail = checked;
+      applyContactVisibility();
+      document.dispatchEvent(new CustomEvent("languagechange", { detail: LANG() }));
+      scheduleSave();
+    });
 
     addDivider(body, "Map & Links");
     addTextField(body, "Google Maps embed src (iframe src)", v.mapEmbedSrc || (document.querySelector(".visit__map iframe") || {}).src || "", function (v2) {
@@ -1687,7 +1739,33 @@
       if (btn) btn.href = v2;
       scheduleSave();
     });
+    addTextField(body, "Zalo link (zalo.me/...)", v.zaloHref || "", function (v2) {
+      if (!draft.visit) draft.visit = {};
+      draft.visit.zaloHref = v2;
+      var btn = document.querySelector(".visit__actions .btn--zalo");
+      if (btn) btn.href = v2;
+      scheduleSave();
+    });
+    addCheckboxField(body, "Show Zalo button", v.showZalo !== false, function (checked) {
+      if (!draft.visit) draft.visit = {};
+      draft.visit.showZalo = checked;
+      applyContactVisibility();
+      scheduleSave();
+    });
+    addCheckboxField(body, "Show WhatsApp button", v.showWhatsapp !== false, function (checked) {
+      if (!draft.visit) draft.visit = {};
+      draft.visit.showWhatsapp = checked;
+      applyContactVisibility();
+      scheduleSave();
+    });
+    if (v.showZalo === false && v.showWhatsapp === false) {
+      var chatNote = document.createElement("div");
+      chatNote.className = "admin-note admin-note--info";
+      chatNote.textContent = "At least one chat button is recommended.";
+      body.appendChild(chatNote);
+    }
     i18nField("Directions button label", "visit.directions", body);
+    i18nField("Zalo button label", "visit.zalo", body);
     i18nField("WhatsApp button label", "visit.whatsapp", body);
   }
 
@@ -1712,6 +1790,19 @@
       draft.footer.address = v;
       var fa = document.querySelector(".footer__col span");
       if (fa) fa.textContent = v;
+      scheduleSave();
+    });
+    addCheckboxField(body, "Show phone number", ft.showPhone !== false, function (checked) {
+      if (!draft.footer) draft.footer = {};
+      draft.footer.showPhone = checked;
+      applyContactVisibility();
+      scheduleSave();
+    });
+    addCheckboxField(body, "Show email address", ft.showEmail === true, function (checked) {
+      if (!draft.footer) draft.footer = {};
+      draft.footer.showEmail = checked;
+      applyContactVisibility();
+      document.dispatchEvent(new CustomEvent("languagechange", { detail: LANG() }));
       scheduleSave();
     });
     i18nField("Footer bottom line", "footer.built", body);
@@ -1875,6 +1966,22 @@
     input.addEventListener("input", function () { onChange(input.value); });
     wrap.appendChild(lbl);
     wrap.appendChild(input);
+    parent.appendChild(wrap);
+    return input;
+  }
+
+  function addCheckboxField(parent, label, checked, onChange) {
+    var wrap = document.createElement("div");
+    wrap.className = "admin-field admin-field--checkbox";
+    var lbl = document.createElement("label");
+    lbl.className = "admin-checkbox";
+    var input = document.createElement("input");
+    input.type = "checkbox";
+    input.checked = !!checked;
+    input.addEventListener("change", function () { onChange(input.checked); });
+    lbl.appendChild(input);
+    lbl.appendChild(document.createTextNode(" " + label));
+    wrap.appendChild(lbl);
     parent.appendChild(wrap);
     return input;
   }

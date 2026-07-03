@@ -69,6 +69,7 @@ async function main() {
 
   const failures = [];
   let restaurant = null; // captured from JSON-LD for the amenity checks below
+  const publicEmail = (seed.SITE_CONFIG || {}).email_public || (seed.SITE_CONFIG || {}).email || "";
 
   // 1. Every dish: name + price + description present in raw HTML.
   for (const it of items) {
@@ -151,6 +152,9 @@ async function main() {
         failures.push("llms.txt: missing valid daily hours line");
       }
       if (!/## FAQ/.test(llms)) failures.push("llms.txt: missing FAQ section");
+      if (publicEmail && llms.includes("- Email: " + publicEmail)) {
+        failures.push("llms.txt should not list email when not visible (default hidden)");
+      }
     }
   }
 
@@ -178,6 +182,25 @@ async function main() {
     }
   }
 
+  // 9. Contact visibility defaults — email hidden on-page and in JSON-LD unless published.
+  if (publicEmail && html.includes("mailto:" + publicEmail)) {
+    failures.push("baked HTML still contains mailto: email link (email should be hidden by default)");
+  }
+  if (restaurant && restaurant.email) {
+    failures.push("JSON-LD should not include email when not visible (default hidden)");
+  }
+
+  // 10. Footer social icons match seo.sameAs platforms.
+  const socialRows = RC.socialRows ? RC.socialRows((seed.SEO_CONFIG || {}).sameAs) : [];
+  for (const row of socialRows) {
+    if (!html.includes('social-link--' + row.key)) {
+      failures.push(`footer social icon missing for platform: ${row.key}`);
+    }
+    if (!html.includes(row.url)) {
+      failures.push(`footer social href missing for platform: ${row.key}`);
+    }
+  }
+
   // ---- report ----
   if (failures.length) {
     console.error(`\n❌ verify-crawlable FAILED (${failures.length}) for ${target}\n`);
@@ -189,7 +212,8 @@ async function main() {
   console.log(`   ${items.length} dishes (name + price + description) in raw HTML`);
   console.log(`   1 valid JSON-LD graph with full Menu + aggregateRating`);
   console.log(`   canonical + og:url absolute`);
-  console.log(`   ${enabledRows.length} amenities (labels + group titles in HTML, amenityFeature in JSON-LD)\n`);
+  console.log(`   ${enabledRows.length} amenities (labels + group titles in HTML, amenityFeature in JSON-LD)`);
+  console.log(`   ${socialRows.length} footer social icons matching seo.sameAs\n`);
 }
 
 main().catch((e) => {

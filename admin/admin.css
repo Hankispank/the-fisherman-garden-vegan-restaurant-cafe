@@ -304,6 +304,8 @@ body { padding-top: 52px; }
   gap: 8px;
 }
 .admin-field--bilingual .admin-field { margin-bottom: 0; }
+.admin-field--checkbox { margin-bottom: 0.75rem; }
+.admin-checkbox { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.92rem; }
 
 .admin-amenities { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
 .admin-amenities .admin-amenity {

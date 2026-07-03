@@ -22,7 +22,7 @@ import { fileURLToPath } from "url";
 import { createRequire } from "module";
 import {
   makeShim, evalSeed, assertSeedComplete, effectiveBase, bakeHtml,
-  buildRobots, buildSitemap, buildLlms, applyI18n, applyFacts,
+  buildRobots, buildSitemap, buildLlms, applyI18n, applyFacts, applyContactVisibility,
 } from "../netlify/edge-functions/lib/bake-core.mjs";
 
 const require = createRequire(import.meta.url);
@@ -87,6 +87,7 @@ function main() {
     let adminHtml = readTextStrict(adminSrc);
     adminHtml = applyI18n(adminHtml, shim.TRANSLATIONS, "en");
     adminHtml = applyFacts(adminHtml, shim.SITE_CONFIG);
+    adminHtml = applyContactVisibility(adminHtml, null);
     const adminOut = path.join(outDir, "admin", "admin.html");
     fs.mkdirSync(path.dirname(adminOut), { recursive: true });
     fs.writeFileSync(adminOut, adminHtml);

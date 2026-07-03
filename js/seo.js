@@ -144,6 +144,8 @@ window.SEO_CONFIG = {
   function buildGraph() {
     var cfg = window.SITE_CONFIG || {};
     var t = window.I18N ? window.I18N.t : function (k) { return k; };
+    var visit = window._CONTENT_VISIT || {};
+    var footer = window._CONTENT_FOOTER || {};
     var address = seo.address || text(".visit__list li:first-child span");
     var telephone = seo.telephone ||
       ((document.querySelector('.visit__list a[href^="tel:"]') || {}).textContent || "").trim();
@@ -160,6 +162,7 @@ window.SEO_CONFIG = {
       address: address,
       telephone: telephone,
       lang: lang(),
+      emailVisible: visit.showEmail === true || footer.showEmail === true,
     });
   }
 
@@ -184,10 +187,19 @@ window.SEO_CONFIG = {
   // Exposed so the admin live preview can refresh the section on toggle.
   window.renderAmenities = renderAmenities;
 
+  function renderSocial() {
+    var host = document.getElementById("footerSocial");
+    if (!host || !window.RenderCore || !window.RenderCore.socialLinksHTML) return;
+    host.innerHTML = window.RenderCore.socialLinksHTML((window.SEO_CONFIG || {}).sameAs || []);
+    host.style.display = host.firstChild ? "" : "none";
+  }
+  window.renderSocial = renderSocial;
+
   function run() {
     try { applyMeta(); } catch (e) { /* non-fatal */ }
     try { injectJsonLd(); } catch (e) { /* non-fatal */ }
     try { renderAmenities(); } catch (e) { /* non-fatal */ }
+    try { renderSocial(); } catch (e) { /* non-fatal */ }
   }
 
   // Build after content-loader has merged published content and app.js
