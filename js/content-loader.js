@@ -16,7 +16,7 @@
     Object.keys(source).forEach(function (key) {
       const sv = source[key];
       if (Array.isArray(sv)) {
-        target[key] = sv; // arrays replaced wholesale
+        if (sv.length) target[key] = sv; // never replace with empty arrays
       } else if (sv && typeof sv === "object" && !Array.isArray(target[key])) {
         target[key] = target[key] || {};
         deepMerge(target[key], sv);
@@ -27,14 +27,28 @@
     return target;
   }
 
+  function renderAmenitiesSection() {
+    var body = document.getElementById("amenitiesBody");
+    var section = document.getElementById("amenities");
+    if (!body || !window.RenderCore || !window.SEO_CONFIG) return;
+    var lang = window.I18N && window.I18N.lang ? window.I18N.lang : "en";
+    var html = window.RenderCore.amenitySectionHTML(
+      window.SEO_CONFIG.amenities || [],
+      lang,
+      window.SEO_CONFIG.customAmenities
+    );
+    body.innerHTML = html;
+    if (section) section.style.display = html ? "" : "none";
+  }
+
   function applyContent(c) {
     if (!c) return;
     if (c.config)          deepMerge(window.SITE_CONFIG, c.config);
     if (c.translations)    deepMerge(window.TRANSLATIONS, c.translations);
-    if (c.menuCategories)  window.MENU_CATEGORIES = c.menuCategories;
-    if (c.menuItems)       window.MENU_ITEMS       = c.menuItems;
-    if (c.gallery)         window.GALLERY          = c.gallery;
-    if (c.reviews)         window.REVIEWS          = c.reviews;
+    if (c.menuCategories && c.menuCategories.length) window.MENU_CATEGORIES = c.menuCategories;
+    if (c.menuItems && c.menuItems.length)           window.MENU_ITEMS = c.menuItems;
+    if (c.gallery && c.gallery.length)               window.GALLERY = c.gallery;
+    if (c.reviews && c.reviews.length)               window.REVIEWS = c.reviews;
     // visit / nav static HTML overrides are applied via data attributes read by app.js
     // or directly via content-loader after DOMContentLoaded (see below)
     if (c.visit)           window._CONTENT_VISIT   = c.visit;
@@ -47,6 +61,7 @@
       window.SEO_CONFIG.telephone = c.config.telephoneDisplay;
     }
     applyTheme(c);
+    renderAmenitiesSection();
   }
 
   function applyTheme(c) {

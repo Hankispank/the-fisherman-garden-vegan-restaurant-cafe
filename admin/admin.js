@@ -22,6 +22,45 @@
 
   var FN = "/.netlify/functions";
 
+  // Profile platforms — separate Settings fields, stored as flat seo.sameAs[].
+  var PROFILE_FIELDS = [
+    { key: "google",      label: "Google Business / Maps", host: /(^|\.)(google\.[a-z.]+|goo\.gl|g\.page)$/i,  placeholder: "https://www.google.com/maps/place/..." },
+    { key: "tripadvisor", label: "Tripadvisor",            host: /(^|\.)tripadvisor\.[a-z.]+$/i,               placeholder: "https://www.tripadvisor.com/Restaurant_Review-..." },
+    { key: "yelp",        label: "Yelp",                   host: /(^|\.)yelp\.[a-z.]+$/i,                      placeholder: "https://www.yelp.com/biz/..." },
+    { key: "facebook",    label: "Facebook",               host: /(^|\.)(facebook\.com|fb\.com|fb\.me)$/i,     placeholder: "https://www.facebook.com/yourpage" },
+    { key: "instagram",   label: "Instagram",              host: /(^|\.)instagram\.com$/i,                     placeholder: "https://www.instagram.com/yourhandle/" },
+    { key: "tiktok",      label: "TikTok",                 host: /(^|\.)tiktok\.com$/i,                        placeholder: "https://www.tiktok.com/@yourhandle" },
+  ];
+
+  function profileHostOf(url) {
+    var m = String(url || "").match(/^https?:\/\/([^\/?#]+)/i);
+    return m ? m[1] : "";
+  }
+
+  function decomposeProfiles(sameAs) {
+    var out = { other: [] }, used = {};
+    (sameAs || []).forEach(function (u, i) {
+      var host = profileHostOf(u);
+      var hit = PROFILE_FIELDS.find(function (p) { return !out[p.key] && p.host.test(host); });
+      if (hit) { out[hit.key] = u; used[i] = true; }
+    });
+    (sameAs || []).forEach(function (u, i) {
+      if (!used[i] && String(u).trim()) out.other.push(u);
+    });
+    return out;
+  }
+
+  function composeProfiles(vals) {
+    var arr = PROFILE_FIELDS.map(function (p) { return (vals[p.key] || "").trim(); }).filter(Boolean);
+    return arr.concat((vals.other || []).map(function (s) { return String(s).trim(); }).filter(Boolean));
+  }
+
+  function markProfileValidity(input, p, v) {
+    var bad = v.trim() && !(/^https?:\/\//i.test(v.trim()) && p.host.test(profileHostOf(v.trim())));
+    input.classList.toggle("admin-input--warn", !!bad);
+    input.title = bad ? "This doesn't look like a " + p.label + " URL (expected " + p.placeholder + ")" : "";
+  }
+
   // Admin is served from /admin/*; seed asset paths like "assets/..." must be root-relative.
   function rootAssetUrl(url) {
     if (!url || typeof url !== "string") return url;
@@ -115,7 +154,9 @@
         if (content) {
           draft = content;
           mergeDraftIntoGlobals(draft);
+          var incomplete = !content.menuItems || !content.menuItems.length;
           ensureDraftComplete();
+          if (incomplete) scheduleSave();
         } else {
           // No draft yet — seed one from current globals
           draft = buildDraftFromGlobals();
@@ -308,6 +349,20 @@
   /* ═══════════════════════════════════════════════════════════════
      GALLERY RE-RENDER (app.js renderGallery is not accessible)
   ═══════════════════════════════════════════════════════════════ */
+  function renderAmenitiesAdmin() {
+    var body = document.getElementById("amenitiesBody");
+    var section = document.getElementById("amenities");
+    if (!body || !window.RenderCore || !window.SEO_CONFIG) return;
+    var html = window.RenderCore.amenitySectionHTML(
+      window.SEO_CONFIG.amenities || [],
+      LANG(),
+      window.SEO_CONFIG.customAmenities
+    );
+    body.innerHTML = html;
+    if (section) section.style.display = html ? "" : "none";
+  }
+  window.renderAmenities = renderAmenitiesAdmin;
+
   function renderGalleryAdmin() {
     var grid = document.getElementById("galleryGrid");
     if (!grid) return;
@@ -560,17 +615,34 @@
       });
     });
 
-    // Profiles (sameAs) — one URL per line
-    var profWrap = document.createElement("div");
-    profWrap.className = "admin-field";
-    var sameAs = (seoCur.sameAs && seoCur.sameAs.length ? seoCur.sameAs : (liveSeo.sameAs || [])).join("\n");
-    profWrap.innerHTML = '<label>Profiles — one URL per line (Google Business, TripAdvisor, Yelp, Facebook, Instagram)</label>' +
-      '<textarea id="seoSameAs" rows="4" placeholder="https://www.google.com/maps/place/...">' + escHtml(sameAs) + "</textarea>";
-    body.appendChild(profWrap);
-    document.getElementById("seoSameAs").addEventListener("input", function () {
-      var arr = this.value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
+    // Profiles (sameAs) — one field per platform
+    addDivider(body, "Profiles & social links");
+    var profVals = decomposeProfiles(seoCur.sameAs && seoCur.sameAs.length ? seoCur.sameAs : (liveSeo.sameAs || []));
+
+    function commitProfiles() {
+      var arr = composeProfiles(profVals);
       setDraftSeo("sameAs", arr);
       if (window.SEO_CONFIG) window.SEO_CONFIG.sameAs = arr;
+      if (window.renderSocial) window.renderSocial();
+    }
+
+    PROFILE_FIELDS.forEach(function (p) {
+      var input = addTextField(body, p.label, profVals[p.key] || "", function (v) {
+        profVals[p.key] = v;
+        markProfileValidity(input, p, v);
+        commitProfiles();
+      }, p.placeholder);
+      markProfileValidity(input, p, profVals[p.key] || "");
+    });
+
+    var otherWrap = document.createElement("div");
+    otherWrap.className = "admin-field";
+    otherWrap.innerHTML = '<label>Other profile URLs — one per line</label>' +
+      '<textarea id="seoSameAsOther" rows="2">' + escHtml((profVals.other || []).join("\n")) + "</textarea>";
+    body.appendChild(otherWrap);
+    document.getElementById("seoSameAsOther").addEventListener("input", function () {
+      profVals.other = this.value.split("\n");
+      commitProfiles();
     });
 
     addTextField(body, "Price range (e.g. $, $$, $$$)", seoCur.priceRange || liveSeo.priceRange || "", function (v) {
@@ -580,7 +652,7 @@
 
     var seoNote = document.createElement("div");
     seoNote.className = "admin-note admin-note--info";
-    seoNote.textContent = "These power your Google/AI listing. Amenities are edited under ✎ Edit AMENITIES on the page.";
+    seoNote.textContent = "Each link powers your Google/AI listing (sameAs) and the footer social icons. Leave a field empty to hide that platform.";
     body.appendChild(seoNote);
   }
 
@@ -1746,7 +1818,9 @@
 
   function doPublish() {
     setStatus("Publishing…", "is-saving");
-    var runPublish = function () {
+    ensureDraftComplete();
+    saveDraft().then(function (ok) {
+      if (!ok) return;
       fetch(FN + "/publish", { method: "POST", credentials: "include" })
         .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
         .then(function (res) {
@@ -1762,13 +1836,7 @@
           }
         })
         .catch(function () { setStatus("Publish failed", "is-error"); });
-    };
-
-    if (isDirty) {
-      saveDraft().then(function (ok) { if (ok) runPublish(); });
-      return;
-    }
-    runPublish();
+    });
   }
 
   function doDiscard() {
@@ -1795,7 +1863,7 @@
   /* ═══════════════════════════════════════════════════════════════
      HELPER FIELD BUILDERS
   ═══════════════════════════════════════════════════════════════ */
-  function addTextField(parent, label, currentValue, onChange) {
+  function addTextField(parent, label, currentValue, onChange, placeholder) {
     var wrap = document.createElement("div");
     wrap.className = "admin-field";
     var lbl = document.createElement("label");
@@ -1803,6 +1871,7 @@
     var input = document.createElement("input");
     input.type = "text";
     input.value = currentValue || "";
+    if (placeholder) input.placeholder = placeholder;
     input.addEventListener("input", function () { onChange(input.value); });
     wrap.appendChild(lbl);
     wrap.appendChild(input);

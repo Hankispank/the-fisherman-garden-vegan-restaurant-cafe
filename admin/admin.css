@@ -294,6 +294,10 @@ body { padding-top: 52px; }
   border-color: #c8472a;
   background: #fff;
 }
+.admin-input--warn {
+  border-color: #f59e0b !important;
+  background: #fffbeb !important;
+}
 .admin-field--bilingual {
   display: grid;
   grid-template-columns: 1fr 1fr;

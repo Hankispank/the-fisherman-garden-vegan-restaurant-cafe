@@ -6,18 +6,21 @@
 
 - Cuisine: Vegan, Asian fusion, Cafe
 - Location: An Bang Beach, Hội An Tây, Đà Nẵng, Vietnam
-- Hours: Daily undefined–undefined
+- Hours: Daily 08:00–21:00
 - Price range: $
 - Phone: +84 905 660 623
 - Reservations: Yes
+- Email: thefisherman.veganrestaurant@gmail.com
+- WhatsApp: +84905660623
+- Order/booking: WhatsApp, Zalo, email, or on-page form
 - Website: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/
 
 ## Profiles
 
 - https://www.tripadvisor.com.vn/Restaurant_Review-g298082-d13861647-Reviews-The_Fisherman_Vegan_Restaurant-Hoi_An_Quang_Nam_Province.html
+- https://www.google.com/maps/place/The+Fisherman+Vegan+Restaurant/@15.9122433,108.3416928,17z/data=!4m6!3m5!1s0x316f5df313f07615:0x9b489c6dad4a16aa!8m2!3d15.9122433!4d108.3416928
 - https://www.instagram.com/thefisherman_vegan/
 - https://www.facebook.com/theFishermanAnBang/?locale=vi_VN
-- https://www.instagram.com/p/Blr02xBHfzu/
 
 ## Good to know
 
@@ -25,6 +28,17 @@
 - Free Wi-Fi
 - Spacious garden
 - Dogs welcome
+
+## FAQ
+
+- **Is everything on the menu vegan?** — Yes — The Fisherman is 100% plant-based. We serve breakfast, bowls, curries, pizza, cocktails and fresh juices in our garden by An Bang Beach.
+- **Do you take reservations?** — Yes — use the reservation form on this page or message us on WhatsApp or Zalo.
+- **What are your opening hours?** — We are open daily from 08:00 to 21:00.
+- **What is the price range?** — Most dishes are 60,000–140,000 VND. Drinks and cocktails are listed separately on the menu.
+- **Do you offer takeaway or pickup?** — Yes — order online via WhatsApp, Zalo or email, or dine in our garden.
+- **Where are you located?** — You'll find us at An Bang Beach, Hội An Tây, Đà Nẵng, Vietnam — a garden setting steps from the sand.
+- **Is the restaurant family-friendly?** — Yes — we are family-friendly with a spacious garden setting. Dogs are welcome.
+- **Do you have parking and Wi-Fi?** — Free Wi-Fi is available (ask staff for the password). Street parking and scooter parking nearby.
 
 ## Full menu
 
@@ -177,3 +191,5 @@
 - Small water — 15,000 ₫ — Bottled water.
 - Large water — 30,000 ₫ — Large bottled water.
 - Sparkling water — 25,000 ₫ — Sparkling mineral water.
+
+_Generated: 2026-07-03T01:58:27.349Z_

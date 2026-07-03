@@ -2711,15 +2711,6 @@ window.GALLERY = [
 window.REVIEWS = [
   {
     "stars": 5,
-    "name": "Robert Davis",
-    "text": {
-      "en": "NOTE: we went here for food as the reviews are great but it was closed and a neigh our said they had closed the business. Unclear if this was permanently or just until high season begins again."
-    },
-    "url": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2xseVRGRmZlbVk0Y1hGVlgyaHJMV1JGWmpadFVXYxAB!2m1!1s0x0:0x9b489c6dad4a16aa!3m1!1s2@1:CAIQACodChtycF9oOllyTFFfemY4cXFVX2hrLWRFZjZtUWc%7C%7C?hl=en",
-    "source": "Google"
-  },
-  {
-    "stars": 5,
     "name": "Michael Page",
     "text": {
       "en": "Lovely quiet location just back from the beach. Delicious vegan food. I loved the eggplant and mushroom claypot and the chick pea curry with coconut. Honestly one of the nicest vegan meals in central Vietnam so far."

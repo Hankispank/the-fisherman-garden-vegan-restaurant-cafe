@@ -50,9 +50,24 @@ window.SEO_CONFIG = {
     return { days: (h.days || []).map(function (d) { return _DAY[d] || d; }), opens: h.opens, closes: h.closes };
   }),
 
+  // Alternate names for entity reconciliation across platforms.
+  alternateNames: [
+    "The Fisherman",
+    "The Fisherman Vegan Restaurant",
+    "The Fisherman Vegan Restaurant & Cafe",
+  ],
+
+  // Keywords for answer-engine entity matching.
+  keywords: "vegan restaurant, plant-based, An Bang Beach, Hoi An",
+
   // Authoritative external profiles (Google Business, Facebook,
   // Instagram, TripAdvisor, Yelp…). Strongly improves entity trust.
-  sameAs: ["https://www.tripadvisor.com.vn/Restaurant_Review-g298082-d13861647-Reviews-The_Fisherman_Vegan_Restaurant-Hoi_An_Quang_Nam_Province.html","https://www.instagram.com/thefisherman_vegan/","https://www.facebook.com/theFishermanAnBang/?locale=vi_VN","https://www.instagram.com/p/Blr02xBHfzu/"],
+  sameAs: [
+    "https://www.tripadvisor.com.vn/Restaurant_Review-g298082-d13861647-Reviews-The_Fisherman_Vegan_Restaurant-Hoi_An_Quang_Nam_Province.html",
+    "https://www.google.com/maps/place/The+Fisherman+Vegan+Restaurant/@15.9122433,108.3416928,17z/data=!4m6!3m5!1s0x316f5df313f07615:0x9b489c6dad4a16aa!8m2!3d15.9122433!4d108.3416928",
+    "https://www.instagram.com/thefisherman_vegan/",
+    "https://www.facebook.com/theFishermanAnBang/?locale=vi_VN",
+  ],
 
   // Amenities the assistant can match on ("family-friendly", "Wi-Fi café",
   // "dog-friendly"…). Keys come from AMENITIES_CATALOG (js/render-core.js);

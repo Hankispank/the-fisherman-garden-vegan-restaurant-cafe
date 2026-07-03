@@ -10,7 +10,7 @@ const session = require("./_lib/session");
 
 const JSON_HEADERS = {
   "Content-Type":           "application/json",
-  "Cache-Control":          "public, s-maxage=60, stale-while-revalidate=300",
+  "Cache-Control":          "public, max-age=0, s-maxage=30, must-revalidate",
 };
 
 exports.handler = async function (event) {

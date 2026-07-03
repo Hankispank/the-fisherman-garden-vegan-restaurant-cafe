@@ -111,7 +111,50 @@ async function main() {
   if (!canonical || !/^https?:\/\//.test(canonical)) failures.push(`canonical not absolute: ${canonical || "(missing)"}`);
   if (!ogUrl || !/^https?:\/\//.test(ogUrl)) failures.push(`og:url not absolute: ${ogUrl || "(missing)"}`);
 
-  // 4. Amenities: each enabled label + its group title in raw HTML, and the
+  // 4. No literal "undefined" in baked HTML (hours/llms regression tripwire).
+  if (html.includes("undefined")) failures.push('HTML contains literal string "undefined"');
+
+  // 5. Opening hours shape in JSON-LD.
+  if (restaurant && restaurant.openingHoursSpecification) {
+    for (const spec of restaurant.openingHoursSpecification) {
+      if (!spec.dayOfWeek || !spec.dayOfWeek.length) {
+        failures.push("JSON-LD: openingHoursSpecification has empty dayOfWeek");
+      }
+      if (!/^\d{2}:\d{2}$/.test(spec.opens || "")) {
+        failures.push(`JSON-LD: openingHoursSpecification opens invalid: ${spec.opens || "(missing)"}`);
+      }
+      if (!/^\d{2}:\d{2}$/.test(spec.closes || "")) {
+        failures.push(`JSON-LD: openingHoursSpecification closes invalid: ${spec.closes || "(missing)"}`);
+      }
+    }
+  } else if (restaurant) {
+    failures.push("JSON-LD: Restaurant missing openingHoursSpecification");
+  }
+
+  // 6. Self-sabotaging review text tripwire.
+  if (restaurant && restaurant.review) {
+    for (const rev of restaurant.review) {
+      const body = rev.reviewBody || "";
+      if (/closed (the )?(business|down|permanently)/i.test(body)) {
+        failures.push(`JSON-LD: reviewBody contains closed-business language: "${body.slice(0, 80)}…"`);
+      }
+    }
+  }
+
+  // 7. llms.txt checks when verifying a local baked file.
+  if (FILE_ARG) {
+    const llmsPath = path.resolve(path.dirname(path.resolve(process.cwd(), FILE_ARG)), "llms.txt");
+    if (fs.existsSync(llmsPath)) {
+      const llms = fs.readFileSync(llmsPath, "utf8");
+      if (llms.includes("undefined")) failures.push('llms.txt contains literal string "undefined"');
+      if (!/- Hours: Daily \d{2}:\d{2}–\d{2}:\d{2}/.test(llms)) {
+        failures.push("llms.txt: missing valid daily hours line");
+      }
+      if (!/## FAQ/.test(llms)) failures.push("llms.txt: missing FAQ section");
+    }
+  }
+
+  // 8. Amenities: each enabled label + its group title in raw HTML, and the
   // JSON-LD amenityFeature count + petsAllowed match the enabled list.
   const RC = seed.RenderCore || {};
   const enabledKeys = (seed.SEO_CONFIG && seed.SEO_CONFIG.amenities) || [];

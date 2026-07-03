@@ -40,10 +40,10 @@ async function loadContent(origin) {
   if (published) {
     if (published.config) deepMerge(shim.SITE_CONFIG, published.config);
     if (published.translations) deepMerge(shim.TRANSLATIONS, published.translations);
-    if (published.menuCategories) shim.MENU_CATEGORIES = published.menuCategories;
-    if (published.menuItems) shim.MENU_ITEMS = published.menuItems;
-    if (published.gallery) shim.GALLERY = published.gallery;
-    if (published.reviews) shim.REVIEWS = published.reviews;
+    if (published.menuCategories && published.menuCategories.length) shim.MENU_CATEGORIES = published.menuCategories;
+    if (published.menuItems && published.menuItems.length) shim.MENU_ITEMS = published.menuItems;
+    if (published.gallery && published.gallery.length) shim.GALLERY = published.gallery;
+    if (published.reviews && published.reviews.length) shim.REVIEWS = published.reviews;
     // P1: apply admin-edited SEO/social fields + auto-fill schema address.
     if (published.seo) deepMerge(shim.SEO_CONFIG, published.seo);
     if (published.visit && published.visit.address && !shim.SEO_CONFIG.address) {
@@ -74,9 +74,11 @@ export default async function handler(request) {
     try {
       const shim = await loadContent(origin);
       const base = effectiveBase(shim, origin);
+      const lastmod = (shim._published && shim._published.publishedAt) || null;
+      const generatedAt = lastmod || new Date().toISOString();
       if (path === "/robots.txt") return textResponse(buildRobots(base), "text/plain");
-      if (path === "/sitemap.xml") return textResponse(buildSitemap(base), "application/xml");
-      return textResponse(buildLlms(shim, base), "text/plain");
+      if (path === "/sitemap.xml") return textResponse(buildSitemap(base, lastmod), "application/xml");
+      return textResponse(buildLlms(shim, base, { generatedAt: generatedAt }), "text/plain");
     } catch (_) {
       if (path === "/sitemap.xml") return textResponse(buildSitemap(origin), "application/xml");
       if (path === "/robots.txt") return textResponse(buildRobots(origin), "text/plain");
@@ -93,7 +95,7 @@ export default async function handler(request) {
     return new Response(html, {
       headers: {
         "content-type": "text/html; charset=utf-8",
-        "cache-control": "public, s-maxage=600, stale-while-revalidate=86400",
+        "cache-control": "public, s-maxage=60, stale-while-revalidate=300",
       },
     });
   } catch (_) {

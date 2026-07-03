@@ -75,9 +75,10 @@ function main() {
   }
 
   const base = effectiveBase(shim, origin);
+  const builtAt = new Date().toISOString();
   fs.writeFileSync(path.join(outDir, "robots.txt"), buildRobots(base));
-  fs.writeFileSync(path.join(outDir, "sitemap.xml"), buildSitemap(base));
-  fs.writeFileSync(path.join(outDir, "llms.txt"), buildLlms(shim, base));
+  fs.writeFileSync(path.join(outDir, "sitemap.xml"), buildSitemap(base, builtAt));
+  fs.writeFileSync(path.join(outDir, "llms.txt"), buildLlms(shim, base, { generatedAt: builtAt }));
 
   // admin/admin.html duplicates the Visit/footer/nav — fill its i18n text + facts
   // too (it has no menu markers, so no grid bake), so it carries no template data.

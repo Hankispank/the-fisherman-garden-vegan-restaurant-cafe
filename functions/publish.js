@@ -7,6 +7,11 @@
 
 const session = require("./_lib/session");
 const { mergePartialContent } = require("./_lib/content-merge");
+const {
+  fetchSeedArrays,
+  fetchSeedTranslations,
+  backfillMissingArrays,
+} = require("./_lib/seed-fetch");
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
@@ -74,6 +79,24 @@ exports.handler = async function (event) {
       };
     }
 
+    const proto  = event.headers["x-forwarded-proto"] || "https";
+    const host   = event.headers.host || event.headers.Host;
+    const origin = process.env.URL || (host ? `${proto}://${host}` : "");
+
+    // Repair partial drafts (e.g. amenities-only saves) before promoting.
+    let draftToPublish = JSON.parse(JSON.stringify(draft));
+    if (origin) {
+      try {
+        const seed = await fetchSeedArrays(origin);
+        backfillMissingArrays(draftToPublish, seed);
+        if (!draftToPublish.translations || !Object.keys(draftToPublish.translations).length) {
+          const translations = await fetchSeedTranslations(origin);
+          if (translations) draftToPublish.translations = translations;
+        }
+        await store.setJSON("draft", draftToPublish);
+      } catch (_) { /* seed backfill is best-effort */ }
+    }
+
     // Snapshot the existing published version before overwriting
     const existing = await store.get("published", { type: "json" });
     if (existing) {
@@ -82,15 +105,21 @@ exports.handler = async function (event) {
     }
 
     // Promote draft → published (merge onto existing so partial drafts stay safe)
-    const toPublish = mergeDraftOntoPublished(existing, draft);
+    const toPublish = mergeDraftOntoPublished(existing, draftToPublish);
+    // Draft arrays always win on publish (allows deletions / shrink).
+    ["menuCategories", "menuItems", "gallery", "reviews"].forEach(function (key) {
+      if (Array.isArray(draftToPublish[key])) toPublish[key] = draftToPublish[key];
+    });
+    if (origin) {
+      try {
+        backfillMissingArrays(toPublish, await fetchSeedArrays(origin));
+      } catch (_) { /* seed backfill is best-effort */ }
+    }
     toPublish.publishedAt = new Date().toISOString();
     toPublish.version     = (toPublish.version || 0) + 1;
     await store.setJSON("published", toPublish);
 
     // Post-publish SEO check (warn-only; surfaced in the admin UI).
-    const proto  = event.headers["x-forwarded-proto"] || "https";
-    const host   = event.headers.host || event.headers.Host;
-    const origin = process.env.URL || (host ? `${proto}://${host}` : "");
     const menuCount = (toPublish.menuItems && toPublish.menuItems.length) || null;
     const warnings = origin ? await seoWarnings(origin, menuCount) : [];
 

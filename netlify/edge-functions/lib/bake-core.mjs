@@ -245,21 +245,25 @@ export function buildRobots(base) {
     "Allow: /",
     "Disallow: /admin",
     "",
+    "# AI agents: structured summary at /llms.txt",
+    "",
     "Sitemap: " + base + "/sitemap.xml",
     "",
   ].join("\n");
 }
 
-export function buildSitemap(base) {
+export function buildSitemap(base, lastmod) {
+  const lastmodLine = lastmod ? "\n    <lastmod>" + String(lastmod).slice(0, 10) + "</lastmod>" : "";
   return (
     '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    "  <url>\n    <loc>" + base + "/</loc>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n" +
+    "  <url>\n    <loc>" + base + "/</loc>" + lastmodLine + "\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n" +
     "</urlset>\n"
   );
 }
 
-export function buildLlms(shim, base) {
+export function buildLlms(shim, base, opts) {
+  opts = opts || {};
   const cfg = shim.SITE_CONFIG || {};
   const seo = shim.SEO_CONFIG || {};
   const t = makeT(shim, "en");
@@ -274,27 +278,44 @@ export function buildLlms(shim, base) {
   lines.push("");
   if (seo.servesCuisine && seo.servesCuisine.length) lines.push("- Cuisine: " + seo.servesCuisine.join(", "));
   if (seo.address) lines.push("- Location: " + seo.address);
-  if (seo.openingHours && seo.openingHours[0]) lines.push("- Hours: Daily " + seo.openingHours[0].opens + "–" + seo.openingHours[0].closes);
+  const oh = (seo.openingHours || []).filter(function (h) { return h.opens && h.closes; });
+  if (oh.length === 1 && (oh[0].days || []).length === 7) {
+    lines.push("- Hours: Daily " + oh[0].opens + "–" + oh[0].closes);
+  } else {
+    oh.forEach(function (h) {
+      lines.push("- Hours: " + (h.days || []).join(", ") + " " + h.opens + "–" + h.closes);
+    });
+  }
   if (seo.priceRange) lines.push("- Price range: " + seo.priceRange);
   if (seo.telephone) lines.push("- Phone: " + seo.telephone);
-  lines.push("- Reservations: Yes");
+  lines.push("- Reservations: " + (cfg.whatsapp || cfg.email ? "Yes" : "Contact venue"));
+  if (cfg.email_public || cfg.email) lines.push("- Email: " + (cfg.email_public || cfg.email));
+  if (cfg.whatsapp) lines.push("- WhatsApp: +" + cfg.whatsapp);
+  lines.push("- Order/booking: WhatsApp, Zalo, email, or on-page form");
   if (base) lines.push("- Website: " + base + "/");
   if (seo.sameAs && seo.sameAs.length) {
     lines.push("");
     lines.push("## Profiles");
     lines.push("");
-    seo.sameAs.forEach((u) => lines.push("- " + u));
+    seo.sameAs.forEach(function (u) { lines.push("- " + u); });
   }
   if (RC && seo.amenities && seo.amenities.length) {
     const rows = RC.amenityRows
       ? RC.amenityRows(seo.amenities, seo.customAmenities)
-      : (RC.AMENITIES_CATALOG || []).filter((a) => seo.amenities.indexOf(a.key) !== -1);
+      : (RC.AMENITIES_CATALOG || []).filter(function (a) { return seo.amenities.indexOf(a.key) !== -1; });
     if (rows.length) {
       lines.push("");
       lines.push("## Good to know");
       lines.push("");
-      rows.forEach((a) => lines.push("- " + a.en));
+      rows.forEach(function (a) { lines.push("- " + a.en); });
     }
+  }
+  const faq = RC && RC.collectFaq ? RC.collectFaq(t) : [];
+  if (faq.length) {
+    lines.push("");
+    lines.push("## FAQ");
+    lines.push("");
+    faq.forEach(function (qa) { lines.push("- **" + qa.q + "** — " + qa.a); });
   }
   lines.push("");
   lines.push("## Full menu");
@@ -305,6 +326,8 @@ export function buildLlms(shim, base) {
     const desc = (m.desc && (m.desc.en || m.desc.vi)) || "";
     lines.push("- " + name + " — " + price + (desc ? " — " + desc : ""));
   }
+  lines.push("");
+  if (opts.generatedAt) lines.push("_Generated: " + opts.generatedAt + "_");
   lines.push("");
   return lines.join("\n");
 }

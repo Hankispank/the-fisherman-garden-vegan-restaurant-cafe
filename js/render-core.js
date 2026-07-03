@@ -307,10 +307,11 @@
             name: pick(m.name, lang),
             description: pick(m.desc, lang),
             offers: { "@type": "Offer", price: String(m.price), priceCurrency: cur.code || "USD" },
+            suitableForDiet: [
+              "https://schema.org/VeganDiet",
+              "https://schema.org/VegetarianDiet",
+            ],
           };
-          if (m.tags && m.tags.indexOf("veg") !== -1) {
-            item.suitableForDiet = "https://schema.org/VegetarianDiet";
-          }
           return item;
         });
       return { "@type": "MenuSection", name: pick(c.name, lang), hasMenuItem: items };
@@ -330,8 +331,12 @@
       hasMenu: restaurantUrl + "#menu",
     };
     if (seo.priceRange) restaurant.priceRange = seo.priceRange;
+    if (seo.keywords) restaurant.keywords = seo.keywords;
+    var parts = (p.config && p.config.addressParts) || seo.addressParts;
     var addr = p.address || seo.address;
-    if (addr) restaurant.address = { "@type": "PostalAddress", streetAddress: addr };
+    if (parts) restaurant.address = Object.assign({ "@type": "PostalAddress" }, parts);
+    else if (addr) restaurant.address = { "@type": "PostalAddress", streetAddress: addr };
+    if (seo.alternateNames && seo.alternateNames.length) restaurant.alternateName = seo.alternateNames;
     var tel = p.telephone || seo.telephone;
     if (tel) restaurant.telephone = tel;
     if (p.config && p.config.email) restaurant.email = p.config.email;
@@ -357,7 +362,14 @@
     var graph = [
       restaurant,
       menu,
-      { "@type": "WebSite", "@id": base + "/#website", url: restaurantUrl, name: (p.config && p.config.name) || "Restaurant" },
+      {
+        "@type": "WebSite",
+        "@id": base + "/#website",
+        url: restaurantUrl,
+        name: (p.config && p.config.name) || "Restaurant",
+        inLanguage: ["en", "vi"],
+        publisher: { "@id": base + "/#restaurant" },
+      },
     ];
 
     if (p.faq && p.faq.length) {

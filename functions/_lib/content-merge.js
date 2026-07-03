@@ -8,7 +8,7 @@ function mergePartialContent(existing, incoming) {
   const objectKeys = ["config", "translations", "seo", "nav", "visit", "footer", "theme"];
 
   arrayKeys.forEach(function (key) {
-    if (incoming[key] && incoming[key].length) out[key] = incoming[key];
+    if (Array.isArray(incoming[key])) out[key] = incoming[key];
   });
   objectKeys.forEach(function (key) {
     if (!incoming[key] || typeof incoming[key] !== "object") return;
