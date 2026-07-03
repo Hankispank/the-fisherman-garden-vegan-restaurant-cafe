@@ -348,10 +348,6 @@
       <p data-i18n="cart.empty">Your order is empty. Add some dishes from the menu!</p>
     </div>
     <footer class="cart__foot" id="cartFoot" hidden>
-      <div class="cart__total">
-        <span data-i18n="cart.total">Total</span>
-        <strong id="cartTotal">0</strong>
-      </div>
       <div class="form__row">
         <label class="form__field">
           <span data-i18n="cart.orderType">Order type</span>
@@ -389,15 +385,22 @@
       <input class="cart__note" id="orderContact" type="tel" placeholder="Phone" />
       <div class="chan" id="orderChan" hidden></div>
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-      <button class="btn btn--primary btn--block" id="orderNow" type="button">
-        <span data-i18n="cart.orderNow">Order now</span>
-      </button>
       <div class="confirm" id="orderConfirm" hidden>
         <p class="confirm__status" id="orderConfirmStatus"></p>
         <div class="confirm__fallback" id="orderConfirmFallback" hidden></div>
       </div>
       <p class="form__hint" data-i18n="privacy.note">We only use your details to confirm this order or booking.</p>
       <button class="cart__clear" id="cartClear" type="button" data-i18n="cart.clear">Clear order</button>
+
+      <div class="cart__cta">
+        <div class="cart__total">
+          <span data-i18n="cart.total">Total</span>
+          <strong id="cartTotal">0</strong>
+        </div>
+        <button class="btn btn--primary cart__cta-btn" id="orderNow" type="button">
+          <span data-i18n="cart.orderNow">Order now</span>
+        </button>
+      </div>
     </footer>
   </aside>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

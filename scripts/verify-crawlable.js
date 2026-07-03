@@ -115,6 +115,11 @@ async function main() {
   // 4. No literal "undefined" in baked HTML (hours/llms regression tripwire).
   if (html.includes("undefined")) failures.push('HTML contains literal string "undefined"');
 
+  // 4b. Cart checkout controls present in static HTML.
+  if (!html.includes('id="orderNow"')) failures.push('baked HTML missing id="orderNow"');
+  if (!html.includes('id="cartClear"')) failures.push('baked HTML missing id="cartClear"');
+  if (!html.includes('id="orderConfirm"')) failures.push('baked HTML missing id="orderConfirm"');
+
   // 5. Opening hours shape in JSON-LD.
   if (restaurant && restaurant.openingHoursSpecification) {
     for (const spec of restaurant.openingHoursSpecification) {

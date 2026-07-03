@@ -418,11 +418,6 @@ Gerne wieder
     </div>
 
     <footer class="cart__foot" id="cartFoot" hidden>
-      <div class="cart__total">
-        <span data-i18n="cart.total">Total</span>
-        <strong id="cartTotal">0</strong>
-      </div>
-
       <div class="form__row">
         <label class="form__field">
           <span data-i18n="cart.orderType">Order type</span>
@@ -470,16 +465,23 @@ Gerne wieder
         </button>
       </div>
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-      <button class="btn btn--primary btn--block" id="orderNow" type="button">
-        <span data-i18n="cart.orderNow">Order now</span>
-        <svg class="btn__icon-email" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-      </button>
       <div class="confirm" id="orderConfirm" hidden>
         <p class="confirm__status" id="orderConfirmStatus"></p>
         <div class="confirm__fallback" id="orderConfirmFallback" hidden></div>
       </div>
       <p class="form__hint" data-i18n="privacy.note">We only use your details to confirm this order or booking.</p>
       <button class="cart__clear" id="cartClear" type="button" data-i18n="cart.clear">Clear order</button>
+
+      <div class="cart__cta">
+        <div class="cart__total">
+          <span data-i18n="cart.total">Total</span>
+          <strong id="cartTotal">0</strong>
+        </div>
+        <button class="btn btn--primary cart__cta-btn" id="orderNow" type="button">
+          <span data-i18n="cart.orderNow">Order now</span>
+          <svg class="btn__icon-email" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        </button>
+      </div>
     </footer>
   </aside>
 
