@@ -441,10 +441,12 @@
   function bindAdminBar() {
     el("adminPublishBtn").addEventListener("click", doPublish);
     el("adminDiscardBtn").addEventListener("click", doDiscard);
+    el("adminOrdersBtn").addEventListener("click", openOrdersPanel);
     el("adminPreviewBtn").addEventListener("click", function () { window.open("/", "_blank"); });
     el("adminLogoutBtn").addEventListener("click", doLogout);
     el("adminPanelClose").addEventListener("click", closePanel);
     el("adminPanelOverlay").addEventListener("click", closePanel);
+    refreshOrdersBadge();
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -567,6 +569,96 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════
+     ORDERS
+  ═══════════════════════════════════════════════════════════════ */
+  function fmtWhen(iso) {
+    var d = new Date(iso);
+    return d.toLocaleDateString() + " " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function refreshOrdersBadge() {
+    fetch(FN + "/get-orders", { credentials: "include" })
+      .then(function (r) { return r.ok ? r.json() : { orders: [] }; })
+      .then(function (j) {
+        var n = (j.orders || []).filter(function (o) { return o.status === "new"; }).length;
+        var btn = el("adminOrdersBtn");
+        if (btn) btn.textContent = n ? "📋 Orders (" + n + ")" : "📋 Orders";
+      })
+      .catch(function () {});
+  }
+
+  function openOrdersPanel() {
+    openPanel("ORDERS — received orders & bookings", '<div class="admin-note">Loading…</div>', "");
+    fetch(FN + "/get-orders", { credentials: "include" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { renderOrdersList(j.orders || []); })
+      .catch(function () {
+        el("adminPanelBody").innerHTML = '<div class="admin-note admin-note--error">Could not load orders.</div>';
+      });
+  }
+
+  function renderOrdersList(orders) {
+    var body = el("adminPanelBody");
+    if (!orders.length) {
+      body.innerHTML = '<div class="admin-note admin-note--info">No orders yet — new orders appear here and in your WhatsApp/Zalo chat.</div>';
+      return;
+    }
+    body.innerHTML = orders.map(function (o) {
+      return '<div class="admin-order' + (o.status === "new" ? " admin-order--new" : "") + '" data-id="' + escHtml(o.id) + '">' +
+        '<div class="admin-order__row">' +
+          '<span class="admin-order__type">' + (o.type === "reservation" ? "📅 Booking" : "🍽️ Order") + "</span>" +
+          '<span class="admin-order__when">' + escHtml(fmtWhen(o.at)) + "</span>" +
+        "</div>" +
+        '<div class="admin-order__row">' +
+          "<strong>" + escHtml(o.name || "—") + "</strong>" +
+          "<span>" + escHtml(o.total || "") + "</span>" +
+        "</div>" +
+        '<div class="admin-order__detail" hidden></div>' +
+        "</div>";
+    }).join("");
+
+    body.querySelectorAll(".admin-order").forEach(function (row) {
+      row.addEventListener("click", function () { toggleOrderDetail(row); });
+    });
+  }
+
+  function toggleOrderDetail(row) {
+    var box = row.querySelector(".admin-order__detail");
+    if (!box.hidden) { box.hidden = true; return; }
+    fetch(FN + "/get-orders?id=" + encodeURIComponent(row.dataset.id), { credentials: "include" })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        var o = j.order || {};
+        var contact = escHtml(o.customer_contact || "");
+        var link = o.contact_method === "email"
+          ? '<a href="mailto:' + contact + '">' + contact + "</a>"
+          : '<a href="tel:' + contact.replace(/[^\d+]/g, "") + '">' + contact + "</a>";
+        box.innerHTML =
+          "<pre class='admin-order__items'>" + escHtml(o.items || o.message || "") + "</pre>" +
+          "<p>Contact: " + link + (o.guests ? " · Guests: " + escHtml(o.guests) : "") +
+          (o.date ? " · " + escHtml(o.date) + " " + escHtml(o.time || "") : "") + "</p>" +
+          '<div class="admin-order__actions">' +
+            '<button class="admin-btn" data-act="handled">✓ Mark handled</button>' +
+            '<button class="admin-btn admin-btn--danger" data-act="delete">🗑 Delete</button>' +
+          "</div>";
+        box.hidden = false;
+        box.querySelectorAll("[data-act]").forEach(function (b) {
+          b.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var payload = b.dataset.act === "delete"
+              ? { id: row.dataset.id, delete: true }
+              : { id: row.dataset.id, status: "handled" };
+            fetch(FN + "/update-order", {
+              method: "POST", credentials: "include",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            }).then(function () { openOrdersPanel(); refreshOrdersBadge(); });
+          });
+        });
+      });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
      SECTION EDITORS
   ═══════════════════════════════════════════════════════════════ */
 
@@ -607,7 +699,7 @@
     });
     var contactNote = document.createElement("div");
     contactNote.className = "admin-note admin-note--info";
-    contactNote.textContent = "Phone and email update everywhere at once — Visit section, footer, and order/reservation notifications (Web3Forms). Use the Visit and Footer editors to choose which contact details are shown on the page.";
+    contactNote.textContent = "Phone and email update everywhere at once — Visit section, footer. Order/booking notifications arrive in your WhatsApp/Zalo chat and under 📋 Orders in this admin bar.";
     body.appendChild(contactNote);
 
     addTextField(body, "WhatsApp (digits only)", cfg.whatsapp || window.SITE_CONFIG.whatsapp, function (v) {

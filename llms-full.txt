@@ -2,6 +2,14 @@
 
 > An Bang Beach's first all-vegan restaurant, in a tranquil garden by the sea in Hội An. Buddha bowls, vegan burgers, phở, pizza, smoothies, juices & cocktails — family-run, plant-based, plastic-free.
 
+## About
+
+Our family has a long history of fishing these waters. Our ancestors fished to feed their families; later our father made his living as a full-time fisherman. Together we opened a seafood restaurant in An Bang when it was still a sleepy seaside village.
+
+Times have changed. Over-fishing and plastic pollution mean seafood is no longer healthy or sustainable. Together we decided to create An Bang's very first vegan restaurant by the sea.
+
+Almost a decade on, we serve fresh, nutritious local produce in the beauty and tranquility of our garden — reflecting our respect and love for animals and the natural environment.
+
 ## Key facts
 
 - Cuisine: Vegan, Asian fusion, Cafe
@@ -18,32 +26,43 @@
 - Programmatic booking: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/api (OpenAPI: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/openapi.json)
 - Menu last updated: 2026-07-03
 
-## Profiles
+## Frequently asked questions
 
-- https://www.tripadvisor.com.vn/Restaurant_Review-g298082-d13861647-Reviews-The_Fisherman_Vegan_Restaurant-Hoi_An_Quang_Nam_Province.html
-- https://www.google.com/maps/place/The+Fisherman+Vegan+Restaurant/@15.9122433,108.3416928,17z/data=!4m6!3m5!1s0x316f5df313f07615:0x9b489c6dad4a16aa!8m2!3d15.9122433!4d108.3416928
-- https://www.instagram.com/thefisherman_vegan/
-- https://www.facebook.com/theFishermanAnBang/?locale=vi_VN
+### Is everything on the menu vegan?
 
-## Good to know
+Yes — The Fisherman is 100% plant-based. We serve breakfast, bowls, curries, pizza, cocktails and fresh juices in our garden by An Bang Beach.
 
-- Family friendly
-- Free Wi-Fi
-- Spacious garden
-- Dogs welcome
+### Do you take reservations?
 
-## FAQ
+Yes — use the reservation form on this page or message us on WhatsApp or Zalo.
 
-- **Is everything on the menu vegan?** — Yes — The Fisherman is 100% plant-based. We serve breakfast, bowls, curries, pizza, cocktails and fresh juices in our garden by An Bang Beach.
-- **Do you take reservations?** — Yes — use the reservation form on this page or message us on WhatsApp or Zalo.
-- **What are your opening hours?** — We are open daily from 08:00 to 21:00.
-- **What is the price range?** — Most dishes are 60,000–140,000 VND. Drinks and cocktails are listed separately on the menu.
-- **Do you offer takeaway or pickup?** — Yes — order online via WhatsApp, Zalo or email, or dine in our garden.
-- **Where are you located?** — You'll find us at An Bang Beach, Hội An Tây, Đà Nẵng, Vietnam — a garden setting steps from the sand.
-- **Is the restaurant family-friendly?** — Yes — we are family-friendly with a spacious garden setting. Dogs are welcome.
-- **Do you have parking and Wi-Fi?** — Free Wi-Fi is available (ask staff for the password). Street parking and scooter parking nearby.
+### What are your opening hours?
 
-## Full menu
+We are open daily from 08:00 to 21:00.
+
+### What is the price range?
+
+Most dishes are 60,000–140,000 VND. Drinks and cocktails are listed separately on the menu.
+
+### Do you offer takeaway or pickup?
+
+Yes — order online via WhatsApp, Zalo or email, or dine in our garden.
+
+### Where are you located?
+
+You'll find us at An Bang Beach, Hội An Tây, Đà Nẵng, Vietnam — a garden setting steps from the sand.
+
+### Is the restaurant family-friendly?
+
+Yes — we are family-friendly with a spacious garden setting. Dogs are welcome.
+
+### Do you have parking and Wi-Fi?
+
+Free Wi-Fi is available (ask staff for the password). Street parking and scooter parking nearby.
+
+## Full menu (prices in VND, tax included)
+
+### Popular
 
 - Vegan Pho — 70,000 ₫ — Vietnamese noodle soup with vegetables, herbs and soy sauce.
 - Chickpea curry — 90,000 ₫ — Curried chickpea in coconut tomato base with brown rice and salad.
@@ -51,6 +70,9 @@
 - Special Vegan Pizza — 120,000 ₫ — Housemade vegan cheese, tomato, capsicum, vegan ham, corn and olives.
 - Special of the Fisherman starter — 140,000 ₫ — Falafel, spring rolls, salad, bread, potatoes with hummus, guacamole and chutney.
 - Vegan pancakes — 70,000 ₫ — Banana oatmeal pancakes with fruit, coconut and house coconut yogurt.
+
+### Breakfast
+
 - Peanut butter toasts — 60,000 ₫ — Peanut butter, strawberry, banana and chia seeds on toasted brown bread.
 - Beetroot hummus toasts — 60,000 ₫ — Housemade beetroot hummus and grilled mushroom on toasted brown bread.
 - Avo toasts — 60,000 ₫ — Avocado smashed with lime on toasted brown bread.
@@ -63,6 +85,9 @@
 - Crispy potatoes (breakfast) — 80,000 ₫ — Crispy potatoes and chickpeas with paprika, spinach, tomatoes and kidney beans.
 - Tofu scrambled with veggies — 80,000 ₫ — Tofu scramble with turmeric, capsicum, onion, tomato and mushroom with brown bread.
 - Vegan quesadilla — 90,000 ₫ — Black bean, corn, tomato, capsicum, avocado and housemade vegan cheese in tortillas.
+
+### Starters & extras
+
 - Brown rice (extra) — 10,000 ₫ — Side of brown rice.
 - Sautéed morning glory (extra) — 20,000 ₫ — Side of morning glory.
 - Crispy potatoes (extra) — 20,000 ₫ — Side of crispy potatoes.
@@ -86,6 +111,9 @@
 - Avocado salad — 80,000 ₫ — Mashed avocado, corn, tomato, cucumber, shallot, lime and toast.
 - Mushroom & broccoli soup — 60,000 ₫ — Broccoli, mushroom and onion with soy milk; served with toast.
 - Pumpkin soup — 60,000 ₫ — Pumpkin, onion and carrot with coconut cream; served with toast.
+
+### Mains
+
 - Zoodles with avo pesto — 80,000 ₫ — Zucchini noodles with avocado, basil, cashew sauce and cherry tomatoes.
 - Zoodles with tomato sauce — 80,000 ₫ — Zucchini noodles with onion, capsicum and house tomato sauce.
 - Pumpkin gnocchi — 85,000 ₫ — Housemade pumpkin gnocchi with spinach, mushroom, cherry tomatoes and basil pesto.
@@ -116,6 +144,9 @@
 - Braised eggplant in clay pot — 80,000 ₫ — Eggplant, onion and celery in soy sauce with brown rice.
 - Braised tofu and mushroom in clay pot — 90,000 ₫ — Tofu, mushroom, carrot, ginger and chilli with brown rice.
 - Five-spice tofu — 90,000 ₫ — Sautéed tofu with capsicum, cucumber, tomato and shallot; fries and salad.
+
+### Pizza & pasta
+
 - Spinach mushroom & garlic pizza — 110,000 ₫ — Housemade vegan cheese, tomato, spinach, mushroom and garlic.
 - Ham & cheese pizza — 100,000 ₫ — Housemade vegan cheese, tomato, vegan ham and olives.
 - Tomato pizza — 90,000 ₫ — Housemade vegan cheese, tomato sauce and basil.
@@ -125,11 +156,17 @@
 - Vegan pasta with tomato sauce — 90,000 ₫ — Brown pasta with tomato sauce, parsley and vegan cheese.
 - Vegan pasta with tofu bolognese — 110,000 ₫ — Brown pasta with tofu bolognese.
 - Vegan spaghetti carbonara — 110,000 ₫ — Spaghetti with vegan ham, onion and soy cream.
+
+### Desserts
+
 - Ice cream — 50,000 ₫ — Mango, strawberry, coconut, avocado or chocolate.
 - Banana fritters with chocolate mousse — 50,000 ₫ — Banana fritters with vegan chocolate mousse.
 - Vegan yogurt with fresh fruit — 50,000 ₫ — House coconut yogurt with seasonal fruit.
 - Vegan chocolate mousse — 50,000 ₫ — Rich vegan chocolate mousse.
 - Fresh fruits — 60,000 ₫ — Seasonal fresh fruit plate.
+
+### Smoothies & juice blends
+
 - Choco coco smoothie — 60,000 ₫ — Coconut milk, banana, cacao, avocado and mint.
 - Happy belly smoothie — 60,000 ₫ — Banana, pineapple, coconut water and ginger.
 - Sweet but passionate smoothie — 60,000 ₫ — Coconut milk, banana, peanut butter, lime and passion fruit.
@@ -144,6 +181,9 @@
 - Vitamin C juice blend — 65,000 ₫ — Guava, cucumber, apple, lime and mint.
 - Magic hangover cure juice blend — 65,000 ₫ — Coconut water with pineapple.
 - Spice it up juice blend — 65,000 ₫ — Carrot, ginger, pineapple and chilli.
+
+### Cocktails & mocktails
+
 - Fisherman Colour — 97,000 ₫ — Rum, midori, passion fruit, sugar syrup and lime.
 - Pimm's Cup — 97,000 ₫ — Dark rum, passion fruit, peach liqueur and sugar.
 - Jack smash — 97,000 ₫ — Whiskey, mint, lime, sugar syrup and angostura.
@@ -167,6 +207,9 @@
 - An Bang beach mocktail — 69,000 ₫ — Passion fruit, pineapple, mint and vanilla syrup.
 - Shirley Temple mocktail — 69,000 ₫ — Sprite, lime juice and grenadine.
 - Spirit & mixed — 70,000 ₫ — Whisky, gin, vodka, tequila or liquor — mixed drink.
+
+### Drinks
+
 - Vietnamese coffee — 35,000 ₫ — Classic Vietnamese coffee.
 - Coconut coffee — 45,000 ₫ — Coffee with coconut.
 - Hot chocolate — 40,000 ₫ — Hot chocolate.
@@ -195,4 +238,16 @@
 - Large water — 30,000 ₫ — Large bottled water.
 - Sparkling water — 25,000 ₫ — Sparkling mineral water.
 
-_Generated: 2026-07-03T07:28:47.636Z_
+## Guest reviews
+
+- ★★★★★ Lovely quiet location just back from the beach. Delicious vegan food. I loved the eggplant and mushroom claypot and the chick pea curry with coconut. Honestly one of the nicest vegan meals in central Vietnam so far. — Michael Page
+- ★★★★★ super good food! good prices! nice staff! :) — millie hampson
+- ★★★★★ Amazing option for vegetarians and vegan people 🎉🍀 great and tasty food — Francisca Saldivia Quintana
+- ★★★★★ Sehr tolles Ambiente im Garten direkt in erster Reihe nach den Strand.
+Super leckeres Essen und freundliche Bedienung
+Gerne wieder
+
+19.05.26 — Christian Otto
+- ★★★★★ What a lovely little place, with friendly welcoming staff, near the beach. Great views of a very nice garden. Perfect place to chill in this cosy atmosphere. We had delish vegan ice cream definitely recommend if you are around this area. 🤩 — M Mul
+
+_Last updated: 2026-07-03T07:28:47.636Z_

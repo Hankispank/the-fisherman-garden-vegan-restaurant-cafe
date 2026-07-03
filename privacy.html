@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy policy — The Fisherman</title>
+  <meta name="description" content="What we collect when you order or book, how we use it, and how to request deletion." />
+  <link rel="canonical" href="https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/privacy">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎣</text></svg>" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-mark" data-fact="logo">🎣</span>
+        <span class="nav__logo-text nav__logo-text--full" data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>
+      </a>
+      <a href="/" class="btn btn--ghost btn--sm" data-i18n="page.home">← Home</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="max-width:720px">
+      <h1 class="section__title" style="margin-bottom:1rem" data-i18n="page.privacy.title">Privacy policy</h1>
+      <p data-i18n="page.privacy.p1">When you order or book a table we ask for your name, contact details, and order or reservation information.</p>
+      <p data-i18n="page.privacy.p2">Your submission is saved in our secure order log and you also send the details to us via WhatsApp or Zalo so we can confirm quickly.</p>
+      <p data-i18n="page.privacy.p3">We use this information only to prepare, confirm, and fulfil your order or booking. We do not sell your data.</p>
+      <p data-i18n="page.privacy.p4">Order records are kept for up to 200 recent submissions in our admin system, then rotated. To request deletion of your data, contact us by phone or message.</p>
+      <p style="margin-top:1.5rem"><a href="/contact" class="btn btn--outline" data-i18n="footer.contactLink">Contact</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__bar">
+      <div class="container">
+        <span>© <span id="year"></span> <span data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>.</span>
+        <span><a href="/about" data-i18n="footer.about">About</a> · <a href="/contact" data-i18n="footer.contactLink">Contact</a> · <a href="/privacy" data-i18n="footer.privacy">Privacy</a> · <a href="/terms" data-i18n="footer.terms">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

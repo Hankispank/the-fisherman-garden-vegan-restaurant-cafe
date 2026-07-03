@@ -10,7 +10,7 @@ AI assistant working in this repo. Read [`TEMPLATE.md`](TEMPLATE.md) before maki
 
 ## You MAY edit
 
-- `js/config.js` — business values (name, whatsapp, zalo, email, web3formsKey, currency).
+- `js/config.js` — business values (name, whatsapp, zalo, email, currency).
 - `js/data.js` — menu, gallery, reviews content (keep the field names/shape).
 - `js/i18n.js` — translation **values** only (the right-hand strings). This includes the
   `meta.title` / `meta.description` (these drive the page title + all social tags), the

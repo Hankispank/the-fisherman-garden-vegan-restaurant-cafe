@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About The Fisherman — Vegan restaurant, An Bang Beach, Hội An</title>
+  <meta name="description" content="Our family story — from fishing these waters to An Bang's first beachfront vegan restaurant in a tranquil garden." />
+  <link rel="canonical" href="https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/about">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎣</text></svg>" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-mark" data-fact="logo">🎣</span>
+        <span class="nav__logo-text nav__logo-text--full" data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>
+      </a>
+      <a href="/" class="btn btn--ghost btn--sm" data-i18n="page.home">← Home</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="max-width:720px">
+      <div class="section__head" style="text-align:left;margin-bottom:1.5rem">
+        <p class="section__eyebrow" data-i18n="about.eyebrow">Our story</p>
+        <h1 class="section__title" data-i18n="about.title">About The Fisherman</h1>
+      </div>
+      <p data-i18n="about.p1">Our family has a long history of fishing these waters. Our ancestors fished to feed their families; later our father made his living as a full-time fisherman. Together we opened a seafood restaurant in An Bang when it was still a sleepy seaside village.</p>
+      <p data-i18n="about.p2">Times have changed. Over-fishing and plastic pollution mean seafood is no longer healthy or sustainable. Together we decided to create An Bang's very first vegan restaurant by the sea.</p>
+      <p data-i18n="about.p3">Almost a decade on, we serve fresh, nutritious local produce in the beauty and tranquility of our garden — reflecting our respect and love for animals and the natural environment.</p>
+      <p data-i18n="about.p4">In honour of our forefathers we kept the name The Fisherman — the good fisherman who cares for the wellbeing of all living things. Enjoy your meal, prepared and served with love.</p>
+      <p style="margin-top:1.5rem" data-i18n="page.about.amenities">Our garden setting is family-friendly, dog-friendly, and offers free Wi-Fi — see the homepage for full amenities and photos.</p>
+      <p style="margin-top:1.5rem"><a href="/#reserve" class="btn btn--primary" data-i18n="about.cta">Reserve a table</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__bar">
+      <div class="container">
+        <span>© <span id="year"></span> <span data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>.</span>
+        <span><a href="/about" data-i18n="footer.about">About</a> · <a href="/contact" data-i18n="footer.contactLink">Contact</a> · <a href="/privacy" data-i18n="footer.privacy">Privacy</a> · <a href="/terms" data-i18n="footer.terms">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

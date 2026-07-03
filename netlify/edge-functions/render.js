@@ -11,7 +11,7 @@
  */
 import {
   makeShim, evalSeed, assertSeedComplete, deepMerge, effectiveBase,
-  bakeHtml, buildRobots, buildSitemap, buildLlms,
+  bakeHtml, buildRobots, buildSitemap, buildLlms, buildLlmsFull,
 } from "./lib/bake-core.mjs";
 
 async function loadSeed(origin) {
@@ -70,15 +70,24 @@ export default async function handler(request) {
   const path = url.pathname.replace(/\/+$/, "") || "/";
 
   // Generated crawl files (reflect admin-published SEO, e.g. baseUrl + profiles).
-  if (path === "/robots.txt" || path === "/sitemap.xml" || path === "/llms.txt") {
+  if (path === "/robots.txt" || path === "/sitemap.xml" || path === "/llms.txt"
+      || path === "/llms-full.txt" || path === "/.well-known/llms.txt") {
     try {
       const shim = await loadContent(origin);
       const base = effectiveBase(shim, origin);
       const lastmod = (shim._published && shim._published.publishedAt) || null;
       const generatedAt = lastmod || new Date().toISOString();
       if (path === "/robots.txt") return textResponse(buildRobots(base), "text/plain");
-      if (path === "/sitemap.xml") return textResponse(buildSitemap(base, lastmod), "application/xml");
-      return textResponse(buildLlms(shim, base, { generatedAt: generatedAt }), "text/plain");
+      if (path === "/sitemap.xml") {
+        return textResponse(buildSitemap(base, { homeLastmod: lastmod, pageLastmod: generatedAt }), "application/xml");
+      }
+      if (path === "/llms-full.txt") {
+        return textResponse(buildLlmsFull(shim, base, lastmod, { generatedAt: generatedAt }), "text/plain");
+      }
+      if (path === "/.well-known/llms.txt") {
+        return textResponse(buildLlms(shim, base, { generatedAt: generatedAt, menuUpdated: lastmod }), "text/plain");
+      }
+      return textResponse(buildLlms(shim, base, { generatedAt: generatedAt, menuUpdated: lastmod }), "text/plain");
     } catch (_) {
       if (path === "/sitemap.xml") return textResponse(buildSitemap(origin), "application/xml");
       if (path === "/robots.txt") return textResponse(buildRobots(origin), "text/plain");

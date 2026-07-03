@@ -298,7 +298,7 @@
   }
 
   async function submitToEndpoint(payload) {
-    const url = cfg.endpoint || "https://api.web3forms.com/submit";
+    const url = cfg.endpoint || "/.netlify/functions/submit-order";
     try {
       if (typeof fetch === "function") {
         const res = await fetch(url, {
@@ -308,7 +308,11 @@
           keepalive: true,
         });
         const json = await res.json().catch(() => ({}));
-        return res.ok && json.success === true;
+        if (!(res.ok && json.success === true)) {
+          console.warn("order-log rejected:", res.status, json.error || "");
+          return false;
+        }
+        return true;
       }
     } catch (e) {
       /* fall through to sendBeacon */
@@ -413,7 +417,6 @@
       .join("\n");
 
     return {
-      access_key: cfg.web3formsKey,
       subject: `New order ${orderId} — ${name}`,
       from_name: name,
       type: "order",
@@ -451,7 +454,6 @@
   function buildReservationPayload(form, orderId, message, method, channel) {
     const g = (n) => (form.elements[n] ? form.elements[n].value.trim() : "");
     return {
-      access_key: cfg.web3formsKey,
       subject: `New reservation ${orderId} — ${g("name")}`,
       from_name: g("name"),
       type: "reservation",

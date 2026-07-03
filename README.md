@@ -15,7 +15,7 @@ This repo is the **canonical template seed** (Acme Bistro placeholder). Each rea
 ## Features
 
 - Two languages (EN / VI) with remembered toggle.
-- Menu, cart, POST-first ordering (Web3Forms) + WhatsApp / Zalo fallbacks.
+- Menu, cart, POST-first ordering (site order log) + WhatsApp / Zalo fallbacks.
 - Table reservations with the same capture flow.
 - SEO/AEO bake pipeline — crawlable menu + JSON-LD without JavaScript.
 - Password-protected admin panel for content and SEO settings.

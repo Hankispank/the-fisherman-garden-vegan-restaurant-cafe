@@ -3,7 +3,7 @@
  * verify-no-template-data.js — scrub gate (Point 1) + fail-closed (Part B5).
  *
  * Fails the build if any template-seed data survives in a derived site's shipped
- * output, or if a REQUIRED field (order inbox / Web3Forms key / SEO baseUrl)
+ * output, or if a REQUIRED field (order inbox / SEO baseUrl)
  * is still blank. Reads strictly (readTextStrict) and treats an unreadable /
  * incomplete file as a FAILURE, never a skip — a truncated read can never
  * cause a false pass. Code/markup comments are stripped before matching so a
@@ -42,7 +42,6 @@ const FORBIDDEN = [
   "Acme", "Acme Bistro", "acmebistro",
   "123 Placeholder Street", "Sample City",
   "Restaurant Website Template",            // seed meta.title tail
-  "00000000-0000-4000-8000-000000000002",   // seed web3formsKey sentinel
 ];
 const extra = (process.env.TEMPLATE_FORBIDDEN_TOKENS || "")
   .split(",").map((s) => s.trim()).filter(Boolean);
@@ -54,9 +53,6 @@ const ROOTS = ["index.html", "admin", "js", "css", "llms.txt", "sitemap.xml", "r
 const REQUIRED_NONBLANK = {
   "js/config.js": [
     /email:\s*""/,
-    /web3formsKey:\s*""/,
-    /web3formsKey:\s*"0{8}-(?:0{4}-){3}0{12}"/,
-    /web3formsKey:\s*"your-access-key-here"/i,
     /whatsapp:\s*"00000*/,
   ],
   "js/seo.js": [/baseUrl:\s*""/],

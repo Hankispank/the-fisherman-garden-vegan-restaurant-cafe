@@ -1,0 +1,116 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "The Fisherman — Order & Reservation API",
+    "version": "1.0.0",
+    "description": "Public endpoint for programmatic food orders and table reservations. WhatsApp/Zalo remain the primary confirmation channel for guests."
+  },
+  "servers": [
+    { "url": "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app" }
+  ],
+  "paths": {
+    "/.netlify/functions/submit-order": {
+      "post": {
+        "operationId": "submitOrder",
+        "summary": "Submit an order or reservation",
+        "description": "Stores the submission in the restaurant order log and returns a reference id. Rate limit: 30 requests per IP per 15 minutes. Body limit: 10 KB.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Submission" },
+              "examples": {
+                "order": {
+                  "summary": "Food order",
+                  "value": {
+                    "type": "order",
+                    "order_id": "FG-EXAMPLE",
+                    "customer_name": "Anna",
+                    "customer_contact": "+84901234567",
+                    "contact_method": "phone",
+                    "channel": "zalo",
+                    "order_type": "Dine-in (table)",
+                    "guests": "2",
+                    "date": "2026-07-10",
+                    "time": "19:00",
+                    "items": "2× Vegan Pho — 140,000 ₫",
+                    "total": "140,000 ₫",
+                    "message": "Order summary text",
+                    "botcheck": ""
+                  }
+                },
+                "reservation": {
+                  "summary": "Table reservation",
+                  "value": {
+                    "type": "reservation",
+                    "order_id": "FG-BOOK01",
+                    "customer_name": "Anna",
+                    "customer_contact": "+84901234567",
+                    "contact_method": "phone",
+                    "channel": "zalo",
+                    "date": "2026-07-10",
+                    "time": "19:00",
+                    "guests": "2",
+                    "notes": "Window seat if possible",
+                    "message": "Reservation summary",
+                    "botcheck": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Accepted (including honeypot no-op)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "id": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid payload" },
+          "413": { "description": "Payload too large" },
+          "429": { "description": "Rate limit exceeded" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Submission": {
+        "type": "object",
+        "required": ["type", "customer_contact"],
+        "properties": {
+          "type": { "type": "string", "enum": ["order", "reservation"] },
+          "order_id": { "type": "string", "maxLength": 64 },
+          "customer_name": { "type": "string", "maxLength": 120 },
+          "customer_contact": { "type": "string", "maxLength": 160 },
+          "contact_method": { "type": "string", "enum": ["phone", "email"] },
+          "channel": { "type": "string", "enum": ["zalo", "whatsapp", "email"] },
+          "order_type": { "type": "string" },
+          "guests": { "type": "string" },
+          "date": { "type": "string" },
+          "time": { "type": "string" },
+          "items": { "type": "string" },
+          "total": { "type": "string" },
+          "notes": { "type": "string" },
+          "message": { "type": "string" },
+          "subject": { "type": "string" },
+          "from_name": { "type": "string" },
+          "botcheck": {
+            "type": "string",
+            "description": "Honeypot — must be empty. Populated values are silently accepted without storage.",
+            "maxLength": 0
+          }
+        }
+      }
+    }
+  }
+}

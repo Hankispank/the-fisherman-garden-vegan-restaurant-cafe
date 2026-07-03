@@ -288,6 +288,7 @@
     return rows.map(function (p) {
       return '<a class="social-link social-link--' + p.key + '" href="' + attr(p.url) + '"' +
         ' target="_blank" rel="noopener noreferrer"' +
+        ' title="' + attr(p.label) + '"' +
         ' aria-label="' + attr(p.label + " (opens in a new tab)") + '">' +
         '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' + p.svg + "</svg></a>";
     }).join("");

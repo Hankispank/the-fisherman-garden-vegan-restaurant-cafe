@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking API — The Fisherman</title>
+  <meta name="description" content="OpenAPI specification and curl example for programmatic orders and reservations." />
+  <link rel="canonical" href="https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/api">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎣</text></svg>" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-mark" data-fact="logo">🎣</span>
+        <span class="nav__logo-text nav__logo-text--full" data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>
+      </a>
+      <a href="/" class="btn btn--ghost btn--sm" data-i18n="page.home">← Home</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="max-width:720px">
+      <h1 class="section__title" style="margin-bottom:1rem" data-i18n="page.api.title">Book or order programmatically</h1>
+      <p data-i18n="page.api.lead">Agents and integrations can submit orders and table reservations to our public endpoint. Responses include a reference id on success.</p>
+      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Endpoint</h2>
+      <p><code>POST /.netlify/functions/submit-order</code></p>
+      <p><a href="/openapi.json">OpenAPI 3.1 specification</a> · <a href="/llms-full.txt">Full site summary (llms-full.txt)</a></p>
+      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Example</h2>
+      <pre style="background:var(--c-surface);padding:1rem;border-radius:var(--radius-sm);overflow:auto;font-size:.85rem">curl -X POST "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/.netlify/functions/submit-order" \
+  -H "Content-Type: application/json" \
+  -d '{"type":"reservation","customer_name":"Anna","customer_contact":"+84901234567","date":"2026-07-10","time":"19:00","guests":"2","contact_method":"phone","channel":"zalo","botcheck":""}'</pre>
+      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Limits</h2>
+      <p data-i18n="page.api.limits">Maximum 30 submissions per IP address per 15 minutes. Request body limit 10 KB. Include an empty botcheck field; do not populate honeypot fields.</p>
+      <p style="margin-top:1.5rem"><a href="/contact" class="btn btn--outline" data-i18n="footer.contactLink">Contact</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__bar">
+      <div class="container">
+        <span>© <span id="year"></span> <span data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>.</span>
+        <span><a href="/about" data-i18n="footer.about">About</a> · <a href="/contact" data-i18n="footer.contactLink">Contact</a> · <a href="/privacy" data-i18n="footer.privacy">Privacy</a> · <a href="/terms" data-i18n="footer.terms">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

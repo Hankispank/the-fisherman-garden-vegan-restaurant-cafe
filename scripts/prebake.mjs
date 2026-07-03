@@ -21,8 +21,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { createRequire } from "module";
 import {
-  makeShim, evalSeed, assertSeedComplete, effectiveBase, bakeHtml,
-  buildRobots, buildSitemap, buildLlms, applyI18n, applyFacts, applyContactVisibility,
+  makeShim, evalSeed, assertSeedComplete, effectiveBase, bakeHtml, bakeStaticPage,
+  buildRobots, buildSitemap, buildLlms, buildLlmsFull, applyI18n, applyFacts, applyContactVisibility,
 } from "../netlify/edge-functions/lib/bake-core.mjs";
 
 const require = createRequire(import.meta.url);
@@ -77,8 +77,38 @@ function main() {
   const base = effectiveBase(shim, origin);
   const builtAt = new Date().toISOString();
   fs.writeFileSync(path.join(outDir, "robots.txt"), buildRobots(base));
-  fs.writeFileSync(path.join(outDir, "sitemap.xml"), buildSitemap(base, builtAt));
-  fs.writeFileSync(path.join(outDir, "llms.txt"), buildLlms(shim, base, { generatedAt: builtAt }));
+  fs.writeFileSync(path.join(outDir, "sitemap.xml"), buildSitemap(base, { homeLastmod: builtAt, pageLastmod: builtAt }));
+  fs.writeFileSync(path.join(outDir, "llms.txt"), buildLlms(shim, base, { generatedAt: builtAt, menuUpdated: builtAt }));
+  fs.writeFileSync(path.join(outDir, "llms-full.txt"), buildLlmsFull(shim, base, builtAt, { generatedAt: builtAt }));
+  const wellKnownDir = path.join(outDir, ".well-known");
+  fs.mkdirSync(wellKnownDir, { recursive: true });
+  fs.writeFileSync(path.join(wellKnownDir, "llms.txt"), buildLlms(shim, base, { generatedAt: builtAt, menuUpdated: builtAt }));
+
+  const STATIC_PAGES = [
+    { file: "about.html", slug: "about", titleKey: "meta.about.title", descKey: "meta.about.description" },
+    { file: "contact.html", slug: "contact", titleKey: "meta.contact.title", descKey: "meta.contact.description" },
+    { file: "privacy.html", slug: "privacy", titleKey: "meta.privacy.title", descKey: "meta.privacy.description" },
+    { file: "terms.html", slug: "terms", titleKey: "meta.terms.title", descKey: "meta.terms.description" },
+    { file: "api.html", slug: "api", titleKey: "meta.api.title", descKey: "meta.api.description" },
+  ];
+  for (const page of STATIC_PAGES) {
+    const src = path.join(root, page.file);
+    if (!fs.existsSync(src)) continue;
+    const bakedPage = bakeStaticPage(readTextStrict(src), shim, {
+      origin: origin,
+      lang: "en",
+      slug: page.slug,
+      titleKey: page.titleKey,
+      descKey: page.descKey,
+    });
+    fs.writeFileSync(path.join(outDir, page.file), bakedPage);
+  }
+
+  const openapiSrc = path.join(root, "openapi.json");
+  if (fs.existsSync(openapiSrc)) {
+    const openapi = readTextStrict(openapiSrc).replace(/__BASE_URL__/g, base || origin || "");
+    fs.writeFileSync(path.join(outDir, "openapi.json"), openapi);
+  }
 
   // admin/admin.html duplicates the Visit/footer/nav — fill its i18n text + facts
   // too (it has no menu markers, so no grid bake), so it carries no template data.

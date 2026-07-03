@@ -21,8 +21,7 @@ window.SITE_CONFIG = {
 
   email: "thefisherman.veganrestaurant@gmail.com",
 
-  web3formsKey: "",
-  endpoint: "https://api.web3forms.com/submit",
+  endpoint: "/.netlify/functions/submit-order",
 
   currency: {"code":"VND","symbol":"₫","position":"after","decimals":0},
 

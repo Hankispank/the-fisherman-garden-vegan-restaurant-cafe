@@ -258,8 +258,8 @@ export function bakeHtml(indexHtml, shim, opts) {
   out = region(out, "SEO_HEAD_START", "SEO_HEAD_END", head);
   // Bake <title> and <meta description> from the i18n meta keys too, so the
   // no-JS title/description match the language and the restaurant.
-  out = out.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i, () => '<title data-i18n="meta.title">' + escAttr(title) + "</title>");
-  out = out.replace(/<meta\s+name="description"[^>]*>/i, () => '<meta name="description" data-i18n="meta.description" content="' + escAttr(desc) + '" />');
+  out = out.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i, () => "<title>" + escAttr(title) + "</title>");
+  out = out.replace(/<meta\s+name="description"[^>]*>/i, () => '<meta name="description" content="' + escAttr(desc) + '" data-i18n="meta.description" />');
 
   // Fill all data-i18n text + data-fact contact facts/links/logo from the data
   // files, so the crawlable page reflects i18n.js / config.js for every node.
@@ -270,44 +270,12 @@ export function bakeHtml(indexHtml, shim, opts) {
 }
 
 /* ---------- generated crawl files ---------- */
-export function buildRobots(base) {
-  return [
-    "# robots.txt (generated)",
-    "User-agent: *",
-    "Allow: /",
-    "Disallow: /admin",
-    "",
-    "# AI agents: structured summary at /llms.txt",
-    "",
-    "Sitemap: " + base + "/sitemap.xml",
-    "",
-  ].join("\n");
-}
-
-export function buildSitemap(base, lastmod) {
-  const lastmodLine = lastmod ? "\n    <lastmod>" + String(lastmod).slice(0, 10) + "</lastmod>" : "";
-  return (
-    '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    "  <url>\n    <loc>" + base + "/</loc>" + lastmodLine + "\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>\n" +
-    "</urlset>\n"
-  );
-}
-
-export function buildLlms(shim, base, opts) {
+export function llmsKeyFacts(shim, base, opts) {
   opts = opts || {};
   const cfg = shim.SITE_CONFIG || {};
   const seo = shim.SEO_CONFIG || {};
-  const t = makeT(shim, "en");
-  const RC = shim.RenderCore;
   const cur = cfg.currency || {};
   const lines = [];
-  lines.push("# " + (cfg.name || "Restaurant"));
-  lines.push("");
-  lines.push("> " + t("meta.description"));
-  lines.push("");
-  lines.push("## Key facts");
-  lines.push("");
   if (seo.servesCuisine && seo.servesCuisine.length) lines.push("- Cuisine: " + seo.servesCuisine.join(", "));
   if (seo.address) lines.push("- Location: " + seo.address);
   const oh = (seo.openingHours || []).filter(function (h) { return h.opens && h.closes; });
@@ -319,6 +287,7 @@ export function buildLlms(shim, base, opts) {
     });
   }
   if (seo.priceRange) lines.push("- Price range: " + seo.priceRange);
+  lines.push("- Pricing: all menu prices in " + (cur.code || "VND") + ", tax included; most mains 60,000–140,000 " + (cur.symbol || "₫"));
   if (seo.telephone) lines.push("- Phone: " + seo.telephone);
   lines.push("- Reservations: " + (cfg.whatsapp || cfg.email ? "Yes" : "Contact venue"));
   if (emailVisibleFromPublished(shim._published) && (cfg.email_public || cfg.email)) {
@@ -326,7 +295,68 @@ export function buildLlms(shim, base, opts) {
   }
   if (cfg.whatsapp) lines.push("- WhatsApp: +" + cfg.whatsapp);
   lines.push("- Order/booking: WhatsApp, Zalo, email, or on-page form");
-  if (base) lines.push("- Website: " + base + "/");
+  if (base) {
+    lines.push("- Website: " + base + "/");
+    lines.push("- Pages: " + base + "/about · " + base + "/contact · " + base + "/privacy · " + base + "/terms");
+    lines.push("- Programmatic booking: " + base + "/api (OpenAPI: " + base + "/openapi.json)");
+  }
+  const updated = opts.menuUpdated || (shim._published && shim._published.publishedAt);
+  if (updated) lines.push("- Menu last updated: " + String(updated).slice(0, 10));
+  return lines;
+}
+
+export function buildRobots(base) {
+  return [
+    "# robots.txt (generated)",
+    "User-agent: *",
+    "Allow: /",
+    "Disallow: /admin",
+    "",
+    "# AI agents: structured summary at /llms.txt",
+    "# llms: " + base + "/llms.txt · llms-full: " + base + "/llms-full.txt",
+    "",
+    "Sitemap: " + base + "/sitemap.xml",
+    "",
+  ].join("\n");
+}
+
+export function buildSitemap(base, opts) {
+  opts = opts || {};
+  const homeLastmod = (opts.homeLastmod || opts.lastmod || "").slice(0, 10);
+  const pageLastmod = (opts.pageLastmod || opts.lastmod || "").slice(0, 10);
+  const paths = [
+    { loc: base + "/", changefreq: "weekly", priority: "1.0", lastmod: homeLastmod },
+    { loc: base + "/about", changefreq: "monthly", priority: "0.8", lastmod: pageLastmod },
+    { loc: base + "/contact", changefreq: "monthly", priority: "0.8", lastmod: pageLastmod },
+    { loc: base + "/privacy", changefreq: "yearly", priority: "0.5", lastmod: pageLastmod },
+    { loc: base + "/terms", changefreq: "yearly", priority: "0.5", lastmod: pageLastmod },
+    { loc: base + "/api", changefreq: "monthly", priority: "0.6", lastmod: pageLastmod },
+  ];
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  for (const p of paths) {
+    xml += "  <url>\n    <loc>" + p.loc + "</loc>\n";
+    if (p.lastmod) xml += "    <lastmod>" + p.lastmod + "</lastmod>\n";
+    xml += "    <changefreq>" + p.changefreq + "</changefreq>\n    <priority>" + p.priority + "</priority>\n  </url>\n";
+  }
+  return xml + "</urlset>\n";
+}
+
+export function buildLlms(shim, base, opts) {
+  opts = opts || {};
+  const cfg = shim.SITE_CONFIG || {};
+  const seo = shim.SEO_CONFIG || {};
+  const t = makeT(shim, "en");
+  const RC = shim.RenderCore;
+  const cur = cfg.currency || {};
+  const menuUpdated = opts.menuUpdated || opts.generatedAt || (shim._published && shim._published.publishedAt);
+  const lines = [];
+  lines.push("# " + (cfg.name || "Restaurant"));
+  lines.push("");
+  lines.push("> " + t("meta.description"));
+  lines.push("");
+  lines.push("## Key facts");
+  lines.push("");
+  lines.push(...llmsKeyFacts(shim, base, { menuUpdated: menuUpdated }));
   if (seo.sameAs && seo.sameAs.length) {
     lines.push("");
     lines.push("## Profiles");
@@ -364,4 +394,68 @@ export function buildLlms(shim, base, opts) {
   if (opts.generatedAt) lines.push("_Generated: " + opts.generatedAt + "_");
   lines.push("");
   return lines.join("\n");
+}
+
+export function buildLlmsFull(shim, base, publishedAt, opts) {
+  opts = opts || {};
+  const t = makeT(shim, "en");
+  const cfg = shim.SITE_CONFIG || {};
+  const RC = shim.RenderCore;
+  const cur = cfg.currency || {};
+  const L = [];
+  L.push("# " + cfg.name, "", "> " + t("meta.description"), "");
+  L.push("## About", "", t("about.p1"), "", t("about.p2"), "", t("about.p3"), "");
+  L.push("## Key facts", "");
+  L.push(...llmsKeyFacts(shim, base, { menuUpdated: publishedAt }));
+  L.push("", "## Frequently asked questions", "");
+  for (const qa of RC.collectFaq(t)) L.push("### " + qa.q, "", qa.a, "");
+  L.push("## Full menu (prices in " + (cur.code || "VND") + ", tax included)", "");
+  for (const c of shim.MENU_CATEGORIES || []) {
+    L.push("### " + ((c.name && c.name.en) || ""), "");
+    for (const m of (shim.MENU_ITEMS || []).filter((x) => x.cat === c.id)) {
+      L.push("- " + ((m.name && m.name.en) || "") + " — " + RC.money(m.price, cur, "en") +
+             (m.desc && m.desc.en ? " — " + m.desc.en : ""));
+    }
+    L.push("");
+  }
+  L.push("## Guest reviews", "");
+  for (const r of shim.REVIEWS || []) {
+    L.push("- " + "★".repeat(r.stars || 5) + " " + ((r.text && r.text.en) || "") + " — " + (r.name || ""));
+  }
+  L.push("", "_Last updated: " + (publishedAt || new Date().toISOString().slice(0, 10)) + "_", "");
+  return L.join("\n");
+}
+
+/** Bake a static subpage (about/contact/legal/api) at deploy time. */
+export function bakeStaticPage(pageHtml, shim, opts) {
+  opts = opts || {};
+  const lang = opts.lang || "en";
+  const t = makeT(shim, lang);
+  const base = effectiveBase(shim, opts.origin || "");
+  const slug = opts.slug || "";
+  const title = t(opts.titleKey || "meta.title");
+  const desc = t(opts.descKey || "meta.description");
+  const canonical = base + (slug ? "/" + slug : "/");
+
+  let out = pageHtml;
+  out = out.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i, () => "<title>" + escAttr(title) + "</title>");
+  out = out.replace(/<meta\s+name="description"[^>]*>/i, () => '<meta name="description" content="' + escAttr(desc) + '" />');
+  out = out.replace(/<!--CANONICAL-->/, '<link rel="canonical" href="' + canonical + '">');
+
+  const RC = shim.RenderCore;
+  if (RC && RC.socialRows && /<!--SOCIAL_TEXT_START-->/.test(out)) {
+    const socialText = (RC.socialRows((shim.SEO_CONFIG || {}).sameAs) || [])
+      .map(function (p) {
+        return '<a href="' + escAttr(p.url) + '" title="' + escAttr(p.label) + '" target="_blank" rel="noopener">' + escHtml(p.label) + "</a>";
+      })
+      .join(" · ");
+    out = out.replace(/<!--SOCIAL_TEXT_START-->[\s\S]*?<!--SOCIAL_TEXT_END-->/,
+      "<!--SOCIAL_TEXT_START-->" + socialText + "<!--SOCIAL_TEXT_END-->");
+  }
+
+  out = applyI18n(out, shim.TRANSLATIONS, lang);
+  out = applyFacts(out, shim.SITE_CONFIG || {});
+  out = applyContactVisibility(out, shim._published);
+  if (base) out = out.replace(/__BASE_URL__/g, base);
+  return out;
 }

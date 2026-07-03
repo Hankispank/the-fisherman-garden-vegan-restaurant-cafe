@@ -127,6 +127,7 @@ window.SEO_CONFIG = {
   function applyMeta() {
     var url = origin() + window.location.pathname;
     var t = window.I18N ? window.I18N.t : function (k) { return k; };
+    document.title = t("meta.title");
     setLink("canonical", url);
     setMeta("property", "og:url", url);
     // og/twitter title + description follow the i18n meta keys (and language).

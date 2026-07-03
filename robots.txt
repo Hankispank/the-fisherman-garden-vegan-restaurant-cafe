@@ -4,5 +4,6 @@ Allow: /
 Disallow: /admin
 
 # AI agents: structured summary at /llms.txt
+# llms: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/llms.txt · llms-full: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/llms-full.txt
 
 Sitemap: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/sitemap.xml

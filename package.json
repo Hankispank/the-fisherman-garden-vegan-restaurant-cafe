@@ -8,7 +8,7 @@
     "verify": "node scripts/verify-crawlable.js",
     "verify:scrub": "node scripts/verify-no-template-data.js",
     "build": "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js",
-    "build:demo": "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js --allow-incomplete"
+    "build:demo": "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js"
   },
   "dependencies": {
     "@netlify/blobs": "^8.1.0"

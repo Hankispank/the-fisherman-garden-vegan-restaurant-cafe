@@ -8,7 +8,7 @@ you change **only three things**:
 2. **Images** — photos and visual assets.
 3. **Style** — the theme tokens (colors, fonts, radii).
 
-**Functionality must never change.** The cart, online ordering (POST-first to Web3Forms),
+**Functionality must never change.** The cart, online ordering (POST to the site's own order log),
 reservations, language switching, rendering logic, element IDs, and `data-i18n` hooks are
 identical across every site. This guarantees every restaurant site behaves the same, stays
 maintainable, and can receive shared fixes.
@@ -179,8 +179,10 @@ To restyle a site: edit these values (and the matching Google Fonts `<link>` in
 ## Content guide
 
 ### `js/config.js` — business details
-Set `name`, `whatsapp`, `zalo`, `email`, `web3formsKey`, and `currency`. See
-[`docs/NEW_SITE_CHECKLIST.md`](docs/NEW_SITE_CHECKLIST.md) for the ordering/email setup.
+Set `name`, `whatsapp`, `zalo`, `email`, and `currency`. Orders and bookings POST to
+`/.netlify/functions/submit-order` (stored in Netlify Blobs; browse in admin → 📋 Orders).
+WhatsApp/Zalo remain the instant customer channel. See
+[`docs/NEW_SITE_CHECKLIST.md`](docs/NEW_SITE_CHECKLIST.md) for the setup workflow.
 
 ### `js/data.js` — menu, gallery, reviews
 Copy an existing entry and change its values. Keep the field names (`id`, `cat`, `price`,
@@ -224,7 +226,7 @@ map links, logo, currency). Nothing else re-declares them:
 - Admin runtime fallbacks (logo emoji/text) derive from `SITE_CONFIG.logo`/`name`, not literals,
   so a tailored site carries no template branding in the functionality files.
 - **Scrub gate:** `scripts/verify-no-template-data.js` (`npm run verify:scrub`) fails the build if
-  any template token survives the **baked** output, or if `email`/`web3formsKey`/`SEO_CONFIG.baseUrl`
+  any template token survives the **baked** output, or if `email`/`SEO_CONFIG.baseUrl`
   are still blank. It runs in the Netlify build (after prebake), so an un-tailored copy cannot
   deploy. The gate is **fail-closed**: every read uses `scripts/lib/safe-read.cjs` (throws on a
   truncated/NUL-padded read), the seed is integrity-checked after eval, and each output is

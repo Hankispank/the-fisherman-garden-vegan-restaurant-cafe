@@ -70,6 +70,11 @@ function localStore(storeName) {
       const file = keyPath(key);
       fs.writeFileSync(file, JSON.stringify(data, null, 2), "utf8");
     },
+
+    async delete(key) {
+      const file = keyPath(key);
+      if (fs.existsSync(file)) fs.unlinkSync(file);
+    },
   };
 }
 

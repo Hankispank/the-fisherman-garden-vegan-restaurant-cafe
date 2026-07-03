@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact The Fisherman — An Bang Beach, Hội An</title>
+  <meta name="description" content="Address, phone, opening hours, directions, and chat links for The Fisherman vegan restaurant." />
+  <link rel="canonical" href="https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/contact">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎣</text></svg>" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-mark" data-fact="logo">🎣</span>
+        <span class="nav__logo-text nav__logo-text--full" data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>
+      </a>
+      <a href="/" class="btn btn--ghost btn--sm" data-i18n="page.home">← Home</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="max-width:720px">
+      <div class="section__head" style="text-align:left;margin-bottom:1.5rem">
+        <p class="section__eyebrow" data-i18n="visit.eyebrow">Find us</p>
+        <h1 class="section__title" data-i18n="page.contact.title">Contact &amp; visit</h1>
+      </div>
+      <ul style="list-style:none;padding:0;display:grid;gap:1rem">
+        <li><strong data-i18n="visit.addressLabel">Address</strong><br><span data-fact="address">An Bang Beach, Hội An Tây, Đà Nẵng, Vietnam</span></li>
+        <li><strong data-i18n="visit.hoursLabel">Hours</strong><br><span data-i18n="visit.hours">Mon–Sun · 08:00 – 21:00</span></li>
+        <li><strong data-i18n="visit.phoneLabel">Phone</strong><br><a data-fact="tel" href="tel:+84905660623">+84 905 660 623</a></li>
+      </ul>
+      <p style="margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:.75rem">
+        <a class="btn btn--primary" data-fact="directions" href="https://www.google.com/maps/search/?api=1&amp;query=An%20Bang%20Beach%2C%20H%E1%BB%99i%20An%20T%C3%A2y%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng%2C%20Vietnam" data-i18n="visit.directions">Get directions</a>
+        <a class="btn btn--zalo" data-fact="zalo" href="https://zalo.me/84905660623" data-i18n="visit.zalo">Chat on Zalo</a>
+        <a class="btn btn--whatsapp" data-fact="whatsapp" href="https://wa.me/84905660623" data-i18n="visit.whatsapp">Chat on WhatsApp</a>
+      </p>
+      <h2 style="font-family:var(--font-head);font-size:1.5rem;margin:2rem 0 .75rem" data-i18n="page.contact.socials">Follow us</h2>
+      <p><!--SOCIAL_TEXT_START--><a href="https://www.facebook.com/theFishermanAnBang/?locale=vi_VN" title="Facebook" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.instagram.com/thefisherman_vegan/" title="Instagram" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.tripadvisor.com.vn/Restaurant_Review-g298082-d13861647-Reviews-The_Fisherman_Vegan_Restaurant-Hoi_An_Quang_Nam_Province.html" title="Tripadvisor" target="_blank" rel="noopener">Tripadvisor</a><!--SOCIAL_TEXT_END--></p>
+      <p style="margin-top:1.5rem"><a href="/#reserve" class="btn btn--outline" data-i18n="nav.reserve">Book a table</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__bar">
+      <div class="container">
+        <span>© <span id="year"></span> <span data-fact="name">The Fisherman Garden Vegan Restaurant &amp; Cafe</span>.</span>
+        <span><a href="/about" data-i18n="footer.about">About</a> · <a href="/contact" data-i18n="footer.contactLink">Contact</a> · <a href="/privacy" data-i18n="footer.privacy">Privacy</a> · <a href="/terms" data-i18n="footer.terms">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -149,7 +149,8 @@ async function main() {
 
   // 7. llms.txt checks when verifying a local baked file.
   if (FILE_ARG) {
-    const llmsPath = path.resolve(path.dirname(path.resolve(process.cwd(), FILE_ARG)), "llms.txt");
+    const dir = path.dirname(path.resolve(process.cwd(), FILE_ARG));
+    const llmsPath = path.join(dir, "llms.txt");
     if (fs.existsSync(llmsPath)) {
       const llms = fs.readFileSync(llmsPath, "utf8");
       if (llms.includes("undefined")) failures.push('llms.txt contains literal string "undefined"');
@@ -157,9 +158,23 @@ async function main() {
         failures.push("llms.txt: missing valid daily hours line");
       }
       if (!/## FAQ/.test(llms)) failures.push("llms.txt: missing FAQ section");
+      if (!/- Pricing: all menu prices/.test(llms)) failures.push("llms.txt: missing pricing line");
+      if (!/- Menu last updated:/.test(llms)) failures.push("llms.txt: missing menu last updated line");
       if (publicEmail && llms.includes("- Email: " + publicEmail)) {
         failures.push("llms.txt should not list email when not visible (default hidden)");
       }
+    }
+    const llmsFullPath = path.join(dir, "llms-full.txt");
+    if (fs.existsSync(llmsFullPath)) {
+      const llmsFull = fs.readFileSync(llmsFullPath, "utf8");
+      if (llmsFull.includes("undefined")) failures.push('llms-full.txt contains literal string "undefined"');
+      if (!/## Full menu/.test(llmsFull)) failures.push("llms-full.txt: missing ## Full menu section");
+    }
+    const sitemapPath = path.join(dir, "sitemap.xml");
+    if (fs.existsSync(sitemapPath)) {
+      const sitemap = fs.readFileSync(sitemapPath, "utf8");
+      const urlCount = (sitemap.match(/<loc>/g) || []).length;
+      if (urlCount < 5) failures.push(`sitemap.xml lists only ${urlCount} URLs (expected ≥5)`);
     }
   }
 

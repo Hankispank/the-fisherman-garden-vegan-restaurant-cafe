@@ -3,7 +3,7 @@
   # crawl files regenerated with the real domain), then fail the deploy if the
   # baked page is missing the menu or JSON-LD. The edge function overlays
   # admin-published content on top of this baseline at request time.
-  command = "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js --allow-incomplete"
+  command = "node scripts/prebake.mjs && node scripts/verify-crawlable.js --file index.html && node scripts/verify-no-template-data.js"
   functions = "functions"
   edge_functions = "netlify/edge-functions"
 
@@ -25,10 +25,43 @@
   path = "/llms.txt"
   function = "render"
 
+[[edge_functions]]
+  path = "/llms-full.txt"
+  function = "render"
+
+[[edge_functions]]
+  path = "/.well-known/llms.txt"
+  function = "render"
+
 # Clean URL: /admin serves the admin shell
 [[redirects]]
   from = "/admin"
   to   = "/admin/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to   = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to   = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to   = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to   = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from = "/api"
+  to   = "/api.html"
   status = 200
 
 [[redirects]]
