@@ -70,6 +70,11 @@
   status = 200
 
 [[redirects]]
+  from = "/confirm"
+  to   = "/.netlify/functions/booking-action"
+  status = 200
+
+[[redirects]]
   from = "/api/book"
   to   = "/.netlify/functions/submit-order"
   status = 200

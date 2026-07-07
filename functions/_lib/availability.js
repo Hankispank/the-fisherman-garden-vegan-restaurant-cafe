@@ -41,4 +41,11 @@ async function reserveSlot(store, { date, time, guests }) {
   await store.setJSON(key, used); // benign race, same pattern as the order index
 }
 
-module.exports = { check, reserveSlot, slotKey };
+async function releaseSlot(store, { date, time, guests }) {
+  const key = slotKey(date, time);
+  const used = (await store.get(key, { type: "json" })) || { count: 0 };
+  used.count = Math.max(0, used.count - Math.max(parseInt(guests || "1", 10) || 1, 1));
+  await store.setJSON(key, used);
+}
+
+module.exports = { check, reserveSlot, releaseSlot, slotKey };

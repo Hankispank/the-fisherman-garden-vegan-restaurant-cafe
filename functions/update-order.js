@@ -26,21 +26,15 @@ exports.handler = async function (event) {
     if (body.delete === true) {
       try { await store.delete("o/" + body.id); } catch (_) {}
       index = index.filter((r) => r.id !== body.id);
+      await store.setJSON("index", index);
     } else if (ALLOWED.includes(body.status)) {
-      index = index.map((r) => (r.id === body.id ? { ...r, status: body.status } : r));
-      const order = await store.get("o/" + body.id, { type: "json" });
-      if (order) {
-        order.status = body.status;
-        await store.setJSON("o/" + body.id, order);
-        if (body.status === "confirmed") {
-          try { await require("./_lib/notify").sendConfirmation(order); } catch (_) {}
-        }
-      }
+      const { setStatus, afterStatusChange } = require("./_lib/orders");
+      const { order, changed } = await setStatus(store, body.id, body.status);
+      if (order) await afterStatusChange(store, order, body.status, changed);
     } else {
       return { statusCode: 400, headers: JSON_HEADERS, body: JSON.stringify({ error: "Nothing to do." }) };
     }
 
-    await store.setJSON("index", index);
     return { statusCode: 200, headers: JSON_HEADERS, body: JSON.stringify({ ok: true }) };
   } catch (err) {
     return { statusCode: 500, headers: JSON_HEADERS, body: JSON.stringify({ error: "Storage error: " + err.message }) };

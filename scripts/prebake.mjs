@@ -119,6 +119,7 @@ function main() {
     slotMinutes: bk.slotMinutes || 90,
     capacityPerSlot: bk.capacityPerSlot || 8,
     maxPartySize: bk.maxPartySize || 20,
+    baseUrl: base || origin || "",
     menuUrl: bk.menuUrl || ((base || origin || "") + "/#menu"),
   };
   fs.writeFileSync(

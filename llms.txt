@@ -205,4 +205,4 @@ You can book a table or place an order programmatically — no human UI needed.
 - Large water — 30,000 ₫ — Large bottled water.
 - Sparkling water — 25,000 ₫ — Sparkling mineral water.
 
-_Generated: 2026-07-07T05:55:23.930Z_
+_Generated: 2026-07-07T06:15:28.297Z_

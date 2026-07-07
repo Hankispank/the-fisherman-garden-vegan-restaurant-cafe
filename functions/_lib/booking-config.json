@@ -5,5 +5,6 @@
   "slotMinutes": 90,
   "capacityPerSlot": 8,
   "maxPartySize": 20,
+  "baseUrl": "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app",
   "menuUrl": "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/#menu"
 }
