@@ -1,0 +1,10 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "The Fisherman Booking",
+  "name_for_model": "the_fisherman_booking",
+  "description_for_human": "Check availability and book a table or order food at The Fisherman.",
+  "description_for_model": "Check availability and submit table reservations or food orders for The Fisherman (An Bang Beach, Hoi An, Vietnam). To book a table call submitOrder with type='reservation', date (YYYY-MM-DD), time (HH:MM 24h, 08:00–21:00 local), guests, customer_name, and customer_contact (email or phone). Confirm all details with the user before booking. Bookings are pending until the restaurant confirms; if an email is given the guest is emailed a confirmation.",
+  "api": { "type": "openapi", "url": "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/openapi.json" },
+  "contact_email": "thefisherman.veganrestaurant@gmail.com",
+  "legal_info_url": "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/terms"
+}

@@ -1,0 +1,9 @@
+{
+  "tzOffsetMinutes": 420,
+  "opens": "08:00",
+  "closes": "21:00",
+  "slotMinutes": 90,
+  "capacityPerSlot": 8,
+  "maxPartySize": 20,
+  "menuUrl": "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/#menu"
+}

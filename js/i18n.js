@@ -163,7 +163,8 @@ window.TRANSLATIONS = {
     "page.terms.p4": "Allergen notice: dishes are prepared in a kitchen handling nuts, gluten, soy, and other allergens. Everything on our menu is plant-based, but please tell us about allergies when ordering.",
     "page.api.title": "Book or order programmatically",
     "page.api.lead": "Agents and integrations can submit orders and table reservations to our public endpoint. Responses include a reference id on success.",
-    "page.api.limits": "Maximum 30 submissions per IP address per 15 minutes. Request body limit 10 KB. Include an empty botcheck field; do not populate honeypot fields.",
+    "page.api.limits": "Maximum 30 submissions per IP address per 15 minutes. Request body limit 10 KB. Include an empty botcheck field; do not populate honeypot fields. Opening hours 08:00–21:00 (Asia/Ho_Chi_Minh).",
+    "page.api.confirm": "Bookings are requests, not instant confirmations. The API returns a reference id and status pending_confirmation. The restaurant owner confirms in the admin panel; guests with an email address receive notification.",
 
     "cart.title": "Your order",
     "cart.empty": "Your order is empty. Add some dishes from the menu!",
@@ -355,7 +356,8 @@ window.TRANSLATIONS = {
     "page.terms.p4": "Lưu ý dị ứng: món chế biến trong bếp có thể tiếp xúc hạt, gluten, đậu nành và chất gây dị ứng khác. Toàn bộ thực đơn thuần chay — vui lòng báo dị ứng khi gọi món.",
     "page.api.title": "Đặt bàn hoặc gọi món qua API",
     "page.api.lead": "Agent và tích hợp có thể gửi đơn món và đặt bàn qua endpoint công khai. Phản hồi thành công có mã tham chiếu.",
-    "page.api.limits": "Tối đa 30 yêu cầu mỗi IP trong 15 phút. Giới hạn body 10 KB. Để trống trường botcheck; không điền honeypot.",
+    "page.api.limits": "Tối đa 30 yêu cầu mỗi IP trong 15 phút. Giới hạn body 10 KB. Để trống trường botcheck; không điền honeypot. Giờ mở cửa 08:00–21:00 (Asia/Ho_Chi_Minh).",
+    "page.api.confirm": "Đặt bàn là yêu cầu, không phải xác nhận tức thì. API trả về mã tham chiếu và trạng thái pending_confirmation. Chủ nhà hàng xác nhận trong admin; khách có email sẽ được thông báo.",
 
     "cart.title": "Đơn của bạn",
     "cart.empty": "Đơn hàng đang trống. Hãy thêm vài món từ thực đơn nhé!",

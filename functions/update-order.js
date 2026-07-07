@@ -1,7 +1,9 @@
 "use strict";
-/** update-order — POST { id, status: "handled" } or { id, delete: true } (auth required). */
+/** update-order — POST { id, status } or { id, delete: true } (auth required). */
 const session = require("./_lib/session");
 const JSON_HEADERS = { "Content-Type": "application/json" };
+
+const ALLOWED = ["handled", "new", "pending", "confirmed", "declined"];
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST")
@@ -24,10 +26,16 @@ exports.handler = async function (event) {
     if (body.delete === true) {
       try { await store.delete("o/" + body.id); } catch (_) {}
       index = index.filter((r) => r.id !== body.id);
-    } else if (body.status === "handled" || body.status === "new") {
+    } else if (ALLOWED.includes(body.status)) {
       index = index.map((r) => (r.id === body.id ? { ...r, status: body.status } : r));
       const order = await store.get("o/" + body.id, { type: "json" });
-      if (order) { order.status = body.status; await store.setJSON("o/" + body.id, order); }
+      if (order) {
+        order.status = body.status;
+        await store.setJSON("o/" + body.id, order);
+        if (body.status === "confirmed") {
+          try { await require("./_lib/notify").sendConfirmation(order); } catch (_) {}
+        }
+      }
     } else {
       return { statusCode: 400, headers: JSON_HEADERS, body: JSON.stringify({ error: "Nothing to do." }) };
     }

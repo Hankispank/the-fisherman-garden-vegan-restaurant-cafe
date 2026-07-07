@@ -412,6 +412,26 @@
       if (am.petsAllowed) restaurant.petsAllowed = true;
     }
 
+    if (seo.enableActions !== false) {
+      var bookUrl = seo.bookingApiUrl || (base + "/.netlify/functions/submit-order");
+      restaurant.potentialAction = [{
+        "@type": "ReserveAction",
+        name: "Reserve a table",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: bookUrl,
+          httpMethod: "POST",
+          contentType: "application/json",
+          encodingType: "application/json",
+          actionPlatform: [
+            "https://schema.org/DesktopWebPlatform",
+            "https://schema.org/MobileWebPlatform"
+          ]
+        },
+        result: { "@type": "FoodEstablishmentReservation", name: "Table reservation" }
+      }];
+    }
+
     var graph = [
       restaurant,
       menu,

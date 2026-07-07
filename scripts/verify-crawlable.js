@@ -160,6 +160,7 @@ async function main() {
       if (!/## FAQ/.test(llms)) failures.push("llms.txt: missing FAQ section");
       if (!/- Pricing: all menu prices/.test(llms)) failures.push("llms.txt: missing pricing line");
       if (!/- Menu last updated:/.test(llms)) failures.push("llms.txt: missing menu last updated line");
+      if (!/## Booking for AI agents/.test(llms)) failures.push("llms.txt: missing Booking for AI agents block");
       if (publicEmail && llms.includes("- Email: " + publicEmail)) {
         failures.push("llms.txt should not list email when not visible (default hidden)");
       }
@@ -227,6 +228,18 @@ async function main() {
     failures.push("baked HTML missing nav__logo-text--short span");
   } else if (shortName && !html.includes(shortName)) {
     failures.push(`baked HTML missing mobile nav short name: "${shortName}"`);
+  }
+
+  // 12. ReserveAction in JSON-LD for AI agent discovery.
+  if (restaurant && restaurant.potentialAction) {
+    const actions = Array.isArray(restaurant.potentialAction) ? restaurant.potentialAction : [restaurant.potentialAction];
+    const reserve = actions.find((a) => a["@type"] === "ReserveAction");
+    if (!reserve) failures.push("JSON-LD: missing ReserveAction potentialAction");
+    else if (!reserve.target || reserve.target.httpMethod !== "POST") {
+      failures.push("JSON-LD: ReserveAction target missing POST EntryPoint");
+    }
+  } else if (restaurant) {
+    failures.push("JSON-LD: Restaurant missing potentialAction (ReserveAction)");
   }
 
   // ---- report ----

@@ -65,6 +65,21 @@
   status = 200
 
 [[redirects]]
+  from = "/mcp"
+  to   = "/.netlify/functions/mcp"
+  status = 200
+
+[[redirects]]
+  from = "/api/book"
+  to   = "/.netlify/functions/submit-order"
+  status = 200
+
+[[redirects]]
+  from = "/api/availability"
+  to   = "/.netlify/functions/check-availability"
+  status = 200
+
+[[redirects]]
   from = "/admin/*"
   to   = "/admin/admin.html"
   status = 200

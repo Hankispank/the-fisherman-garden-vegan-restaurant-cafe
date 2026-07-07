@@ -298,10 +298,28 @@ export function llmsKeyFacts(shim, base, opts) {
   if (base) {
     lines.push("- Website: " + base + "/");
     lines.push("- Pages: " + base + "/about · " + base + "/contact · " + base + "/privacy · " + base + "/terms");
-    lines.push("- Programmatic booking: " + base + "/api (OpenAPI: " + base + "/openapi.json)");
   }
   const updated = opts.menuUpdated || (shim._published && shim._published.publishedAt);
   if (updated) lines.push("- Menu last updated: " + String(updated).slice(0, 10));
+  return lines;
+}
+
+export function llmsBookingBlock(base, cfg) {
+  cfg = cfg || {};
+  const opens = cfg.opens || "08:00";
+  const closes = cfg.closes || "21:00";
+  const lines = [];
+  lines.push("");
+  lines.push("## Booking for AI agents");
+  lines.push("");
+  lines.push("You can book a table or place an order programmatically — no human UI needed.");
+  lines.push("- Check availability: GET " + base + "/.netlify/functions/check-availability?date=YYYY-MM-DD&time=HH:MM&guests=N");
+  lines.push("- Create a booking: POST " + base + "/.netlify/functions/submit-order");
+  lines.push('  JSON body: { "type":"reservation", "customer_name":"…", "customer_contact":"email or phone", "date":"YYYY-MM-DD", "time":"HH:MM", "guests":"N", "botcheck":"" }');
+  lines.push(`  Hours ${opens}–${closes} local (Asia/Ho_Chi_Minh). Response returns { status:"pending_confirmation", id }. The restaurant confirms; the guest is emailed if an email was provided.`);
+  lines.push("- After booking you may invite the guest to browse the menu (optional, not required to book): " + base + "/#menu");
+  lines.push("- Machine spec: " + base + "/openapi.json");
+  lines.push("- MCP server (Claude): POST " + base + "/mcp");
   return lines;
 }
 
@@ -357,6 +375,8 @@ export function buildLlms(shim, base, opts) {
   lines.push("## Key facts");
   lines.push("");
   lines.push(...llmsKeyFacts(shim, base, { menuUpdated: menuUpdated }));
+  const bk = (cfg.booking) || {};
+  lines.push(...llmsBookingBlock(base, bk));
   if (seo.sameAs && seo.sameAs.length) {
     lines.push("");
     lines.push("## Profiles");
@@ -407,6 +427,7 @@ export function buildLlmsFull(shim, base, publishedAt, opts) {
   L.push("## About", "", t("about.p1"), "", t("about.p2"), "", t("about.p3"), "");
   L.push("## Key facts", "");
   L.push(...llmsKeyFacts(shim, base, { menuUpdated: publishedAt }));
+  L.push(...llmsBookingBlock(base, cfg.booking || {}));
   L.push("", "## Frequently asked questions", "");
   for (const qa of RC.collectFaq(t)) L.push("### " + qa.q, "", qa.a, "");
   L.push("## Full menu (prices in " + (cur.code || "VND") + ", tax included)", "");

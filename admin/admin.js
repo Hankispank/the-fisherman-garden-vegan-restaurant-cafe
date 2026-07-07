@@ -580,7 +580,7 @@
     fetch(FN + "/get-orders", { credentials: "include" })
       .then(function (r) { return r.ok ? r.json() : { orders: [] }; })
       .then(function (j) {
-        var n = (j.orders || []).filter(function (o) { return o.status === "new"; }).length;
+        var n = (j.orders || []).filter(function (o) { return o.status === "new" || o.status === "pending"; }).length;
         var btn = el("adminOrdersBtn");
         if (btn) btn.textContent = n ? "📋 Orders (" + n + ")" : "📋 Orders";
       })
@@ -604,7 +604,7 @@
       return;
     }
     body.innerHTML = orders.map(function (o) {
-      return '<div class="admin-order' + (o.status === "new" ? " admin-order--new" : "") + '" data-id="' + escHtml(o.id) + '">' +
+      return '<div class="admin-order' + ((o.status === "new" || o.status === "pending") ? " admin-order--new" : "") + '" data-id="' + escHtml(o.id) + '" data-status="' + escHtml(o.status || "") + '" data-type="' + escHtml(o.type || "") + '">' +
         '<div class="admin-order__row">' +
           '<span class="admin-order__type">' + (o.type === "reservation" ? "📅 Booking" : "🍽️ Order") + "</span>" +
           '<span class="admin-order__when">' + escHtml(fmtWhen(o.at)) + "</span>" +
@@ -633,21 +633,27 @@
         var link = o.contact_method === "email"
           ? '<a href="mailto:' + contact + '">' + contact + "</a>"
           : '<a href="tel:' + contact.replace(/[^\d+]/g, "") + '">' + contact + "</a>";
+        var actions = "";
+        if (o.type === "reservation" && o.status === "pending") {
+          actions += '<button class="admin-btn admin-btn--primary" data-act="confirmed">✓ Confirm</button>' +
+            '<button class="admin-btn" data-act="declined">✗ Decline</button>';
+        }
+        actions += '<button class="admin-btn" data-act="handled">✓ Mark handled</button>' +
+          '<button class="admin-btn admin-btn--danger" data-act="delete">🗑 Delete</button>';
         box.innerHTML =
           "<pre class='admin-order__items'>" + escHtml(o.items || o.message || "") + "</pre>" +
-          "<p>Contact: " + link + (o.guests ? " · Guests: " + escHtml(o.guests) : "") +
+          "<p>Status: " + escHtml(o.status || "—") + " · Contact: " + link +
+          (o.guests ? " · Guests: " + escHtml(o.guests) : "") +
           (o.date ? " · " + escHtml(o.date) + " " + escHtml(o.time || "") : "") + "</p>" +
-          '<div class="admin-order__actions">' +
-            '<button class="admin-btn" data-act="handled">✓ Mark handled</button>' +
-            '<button class="admin-btn admin-btn--danger" data-act="delete">🗑 Delete</button>' +
-          "</div>";
+          '<div class="admin-order__actions">' + actions + "</div>";
         box.hidden = false;
         box.querySelectorAll("[data-act]").forEach(function (b) {
           b.addEventListener("click", function (e) {
             e.stopPropagation();
-            var payload = b.dataset.act === "delete"
+            var act = b.dataset.act;
+            var payload = act === "delete"
               ? { id: row.dataset.id, delete: true }
-              : { id: row.dataset.id, status: "handled" };
+              : { id: row.dataset.id, status: act === "handled" ? "handled" : act };
             fetch(FN + "/update-order", {
               method: "POST", credentials: "include",
               headers: { "Content-Type": "application/json" },

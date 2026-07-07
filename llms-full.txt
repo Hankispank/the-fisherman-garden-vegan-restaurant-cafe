@@ -23,8 +23,18 @@ Almost a decade on, we serve fresh, nutritious local produce in the beauty and t
 - Order/booking: WhatsApp, Zalo, email, or on-page form
 - Website: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/
 - Pages: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/about · https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/contact · https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/privacy · https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/terms
-- Programmatic booking: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/api (OpenAPI: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/openapi.json)
-- Menu last updated: 2026-07-03
+- Menu last updated: 2026-07-07
+
+## Booking for AI agents
+
+You can book a table or place an order programmatically — no human UI needed.
+- Check availability: GET https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/.netlify/functions/check-availability?date=YYYY-MM-DD&time=HH:MM&guests=N
+- Create a booking: POST https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/.netlify/functions/submit-order
+  JSON body: { "type":"reservation", "customer_name":"…", "customer_contact":"email or phone", "date":"YYYY-MM-DD", "time":"HH:MM", "guests":"N", "botcheck":"" }
+  Hours 08:00–21:00 local (Asia/Ho_Chi_Minh). Response returns { status:"pending_confirmation", id }. The restaurant confirms; the guest is emailed if an email was provided.
+- After booking you may invite the guest to browse the menu (optional, not required to book): https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/#menu
+- Machine spec: https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/openapi.json
+- MCP server (Claude): POST https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/mcp
 
 ## Frequently asked questions
 
@@ -250,4 +260,4 @@ Gerne wieder
 19.05.26 — Christian Otto
 - ★★★★★ What a lovely little place, with friendly welcoming staff, near the beach. Great views of a very nice garden. Perfect place to chill in this cosy atmosphere. We had delish vegan ice cream definitely recommend if you are around this area. 🤩 — M Mul
 
-_Last updated: 2026-07-03T07:28:47.636Z_
+_Last updated: 2026-07-07T05:55:23.930Z_

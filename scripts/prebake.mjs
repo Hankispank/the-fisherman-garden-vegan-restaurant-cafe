@@ -110,6 +110,29 @@ function main() {
     fs.writeFileSync(path.join(outDir, "openapi.json"), openapi);
   }
 
+  const bk = shim.SITE_CONFIG.booking || {};
+  const hrs = (shim.SITE_CONFIG.hours || [])[0] || {};
+  const bookingCfg = {
+    tzOffsetMinutes: bk.tzOffsetMinutes ?? 420,
+    opens: bk.opens || hrs.opens || "08:00",
+    closes: bk.closes || hrs.closes || "21:00",
+    slotMinutes: bk.slotMinutes || 90,
+    capacityPerSlot: bk.capacityPerSlot || 8,
+    maxPartySize: bk.maxPartySize || 20,
+    menuUrl: bk.menuUrl || ((base || origin || "") + "/#menu"),
+  };
+  fs.writeFileSync(
+    path.join(root, "functions", "_lib", "booking-config.json"),
+    JSON.stringify(bookingCfg, null, 2)
+  );
+
+  const pluginSrc = path.join(root, ".well-known", "ai-plugin.json");
+  if (fs.existsSync(pluginSrc)) {
+    const pluginTxt = readTextStrict(pluginSrc).replace(/__BASE_URL__/g, base || origin || "");
+    fs.mkdirSync(wellKnownDir, { recursive: true });
+    fs.writeFileSync(path.join(wellKnownDir, "ai-plugin.json"), pluginTxt);
+  }
+
   // admin/admin.html duplicates the Visit/footer/nav — fill its i18n text + facts
   // too (it has no menu markers, so no grid bake), so it carries no template data.
   const adminSrc = path.join(root, "admin", "admin.html");

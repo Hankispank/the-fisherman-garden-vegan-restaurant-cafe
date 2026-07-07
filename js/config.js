@@ -37,6 +37,16 @@ window.SITE_CONFIG = {
   },
   geo:              {"lat":15.9122433,"lng":108.3416928},
   hours: [{ "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], "opens": "08:00", "closes": "21:00" }],
+
+  booking: {
+    tzOffsetMinutes: 420,
+    opens: "08:00",
+    closes: "21:00",
+    slotMinutes: 90,
+    capacityPerSlot: 8,
+    maxPartySize: 20,
+  },
+
   mapEmbedSrc:      "https://www.google.com/maps?q=An%20Bang%20Beach%2C%20H%E1%BB%99i%20An%20T%C3%A2y%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng%2C%20Vietnam&output=embed",
   directionsHref:   "https://www.google.com/maps/search/?api=1&query=An%20Bang%20Beach%2C%20H%E1%BB%99i%20An%20T%C3%A2y%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng%2C%20Vietnam",
   logo:             "🎣",

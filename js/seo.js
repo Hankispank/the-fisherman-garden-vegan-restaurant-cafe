@@ -57,6 +57,11 @@ window.SEO_CONFIG = {
     "The Fisherman Vegan Restaurant & Cafe",
   ],
 
+  enableActions: true,
+
+  // Optional override for ReserveAction JSON-LD (blank → submit-order URL at bake time).
+  bookingApiUrl: "",
+
   // Keywords for answer-engine entity matching.
   keywords: "vegan restaurant, plant-based, An Bang Beach, Hoi An",
 

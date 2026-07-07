@@ -27,15 +27,33 @@
     <div class="container" style="max-width:720px">
       <h1 class="section__title" style="margin-bottom:1rem" data-i18n="page.api.title">Book or order programmatically</h1>
       <p data-i18n="page.api.lead">Agents and integrations can submit orders and table reservations to our public endpoint. Responses include a reference id on success.</p>
-      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Endpoint</h2>
-      <p><code>POST /.netlify/functions/submit-order</code></p>
-      <p><a href="/openapi.json">OpenAPI 3.1 specification</a> · <a href="/llms-full.txt">Full site summary (llms-full.txt)</a></p>
-      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Example</h2>
-      <pre style="background:var(--c-surface);padding:1rem;border-radius:var(--radius-sm);overflow:auto;font-size:.85rem">curl -X POST "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/.netlify/functions/submit-order" \
+
+      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Check availability</h2>
+      <p><code>GET /.netlify/functions/check-availability?date=YYYY-MM-DD&amp;time=HH:MM&amp;guests=N</code></p>
+      <p>Also available at <code>/api/availability</code> (clean URL redirect).</p>
+
+      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Book or order</h2>
+      <p><code>POST /.netlify/functions/submit-order</code> · also <code>/api/book</code></p>
+      <p><a href="/openapi.json">OpenAPI 3.1 specification</a> · <a href="/.well-known/ai-plugin.json">ChatGPT plugin manifest</a> · <a href="/llms-full.txt">Full site summary</a></p>
+
+      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Example — reservation</h2>
+      <pre style="background:var(--c-surface);padding:1rem;border-radius:var(--radius-sm);overflow:auto;font-size:.85rem">curl "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/.netlify/functions/check-availability?date=2026-07-10&amp;time=19:00&amp;guests=2"
+
+curl -X POST "https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/.netlify/functions/submit-order" \
   -H "Content-Type: application/json" \
-  -d '{"type":"reservation","customer_name":"Anna","customer_contact":"+84901234567","date":"2026-07-10","time":"19:00","guests":"2","contact_method":"phone","channel":"zalo","botcheck":""}'</pre>
+  -d '{"type":"reservation","customer_name":"Anna","customer_contact":"anna@example.com","date":"2026-07-10","time":"19:00","guests":"2","botcheck":""}'</pre>
+
+      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Confirmation model</h2>
+      <p data-i18n="page.api.confirm">Bookings are requests, not instant confirmations. The API returns a reference id and status pending_confirmation. The restaurant owner confirms in the admin panel; guests with an email address receive notification.</p>
+
+      <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Connect an AI assistant</h2>
+      <p><strong>ChatGPT:</strong> Custom GPT → Actions → Import from URL → <code>https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/openapi.json</code> (Auth: None).</p>
+      <p><strong>Claude:</strong> Add MCP connector URL <code>https://the-fisherman-garden-vegan-restaurant-cafe.netlify.app/mcp</code> (tools: <code>check_availability</code>, <code>book_table</code>).</p>
+      <p><strong>Gemini / others:</strong> Import the same OpenAPI spec as a function/tool.</p>
+
       <h2 style="font-size:1.1rem;margin:1.5rem 0 .5rem">Limits</h2>
-      <p data-i18n="page.api.limits">Maximum 30 submissions per IP address per 15 minutes. Request body limit 10 KB. Include an empty botcheck field; do not populate honeypot fields.</p>
+      <p data-i18n="page.api.limits">Maximum 30 submissions per IP address per 15 minutes. Request body limit 10 KB. Include an empty botcheck field; do not populate honeypot fields. Opening hours 08:00–21:00 (Asia/Ho_Chi_Minh).</p>
+
       <p style="margin-top:1.5rem"><a href="/contact" class="btn btn--outline" data-i18n="footer.contactLink">Contact</a></p>
     </div>
   </main>
