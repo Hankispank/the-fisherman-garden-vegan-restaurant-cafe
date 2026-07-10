@@ -72,7 +72,9 @@ exports.handler = async function (event) {
 
   try {
     const { getStore } = require("./_lib/blobs");
-    const store = getStore({ name: "media", consistency: "strong" }, event);
+    // Eventual (default) consistency; keys are immutable UUIDs so
+    // read-after-write is handled client-side (admin preview retry).
+    const store = getStore("media", event);
     await store.set(key, buffer, {
       metadata: { type, originalName: name || key },
     });

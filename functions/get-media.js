@@ -26,11 +26,15 @@ exports.handler = async function (event) {
 
   try {
     const { getStore } = require("./_lib/blobs");
-    const store = getStore({ name: "media", consistency: "strong" }, event);
+    const store = getStore("media", event);
     const blob  = await store.get(key, { type: "arrayBuffer" });
 
     if (!blob) {
-      return { statusCode: 404, body: "Not found." };
+      return {
+        statusCode: 404,
+        headers: { "Cache-Control": "no-store" },
+        body: "Not found.",
+      };
     }
 
     return {
@@ -43,6 +47,10 @@ exports.handler = async function (event) {
       body: Buffer.from(blob).toString("base64"),
     };
   } catch (err) {
-    return { statusCode: 500, body: "Storage error: " + err.message };
+    return {
+      statusCode: 500,
+      headers: { "Cache-Control": "no-store" },
+      body: "Storage error: " + err.message,
+    };
   }
 };

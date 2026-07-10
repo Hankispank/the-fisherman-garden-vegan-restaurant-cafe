@@ -1932,8 +1932,10 @@
     var prog = document.getElementById(progressId);
     if (prog) prog.textContent = "Compressing…";
 
+    var dataUrl = null;
     compressImage(file)
       .then(function (result) {
+        dataUrl = "data:" + result.type + ";base64," + result.base64;
         if (prog) prog.textContent = "Uploading…";
         return fetch(FN + "/upload-image", {
           method: "POST",
@@ -1946,7 +1948,7 @@
       .then(function (res) {
         if (res.ok && res.body.url) {
           if (prog) prog.textContent = "Uploaded ✓";
-          onSuccess(res.body.url);
+          onSuccess(res.body.url, dataUrl);
         } else {
           if (prog) prog.textContent = "Error: " + (res.body.error || "Upload failed");
         }
@@ -2191,5 +2193,20 @@
   function show(id) { var e = el(id); if (e) e.style.display = ""; }
   function hide(id) { var e = el(id); if (e) e.style.display = "none"; }
   function val(id)  { var e = el(id); return e ? e.value : ""; }
+
+  /* Retry get-media images that 404 in the eventual-consistency window
+   * right after upload: up to 5 attempts with exponential backoff. */
+  document.addEventListener("error", function (e) {
+    var img = e.target;
+    if (!img || img.tagName !== "IMG") return;
+    if ((img.getAttribute("src") || "").indexOf("/get-media") === -1) return;
+    var n = parseInt(img.dataset.mediaRetry || "0", 10);
+    if (n >= 5) return;
+    img.dataset.mediaRetry = String(n + 1);
+    setTimeout(function () {
+      var base = img.src.replace(/[?&]r=\d+/, "");
+      img.src = base + (base.indexOf("?") > -1 ? "&" : "?") + "r=" + Date.now();
+    }, 400 * Math.pow(2, n));
+  }, true);
 
 })();
