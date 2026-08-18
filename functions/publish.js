@@ -121,7 +121,13 @@ exports.handler = async function (event) {
 
     // Post-publish SEO check (warn-only; surfaced in the admin UI).
     const menuCount = (toPublish.menuItems && toPublish.menuItems.length) || null;
-    const warnings = origin ? await seoWarnings(origin, menuCount) : [];
+    const warnings = [];
+    const cats = new Set((toPublish.menuCategories || []).map((c) => c.id));
+    const orphanCount = (toPublish.menuItems || []).filter((m) => !cats.has(m.cat)).length;
+    if (orphanCount) {
+      warnings.push(orphanCount + " dish(es) have a category that no longer exists — they are hidden from the menu tabs. Re-add the category or reassign the dishes.");
+    }
+    if (origin) warnings.push(...(await seoWarnings(origin, menuCount)));
 
     return {
       statusCode: 200,

@@ -341,24 +341,36 @@
     }
 
     // menu
+    function mapMenuItem(m) {
+      return {
+        "@type": "MenuItem",
+        name: pick(m.name, lang),
+        description: pick(m.desc, lang),
+        offers: { "@type": "Offer", price: String(m.price), priceCurrency: cur.code || "USD" },
+        suitableForDiet: [
+          "https://schema.org/VeganDiet",
+          "https://schema.org/VegetarianDiet",
+        ],
+      };
+    }
+
     var sections = (p.menuCategories || []).map(function (c) {
       var items = (p.menuItems || [])
         .filter(function (m) { return m.cat === c.id; })
-        .map(function (m) {
-          var item = {
-            "@type": "MenuItem",
-            name: pick(m.name, lang),
-            description: pick(m.desc, lang),
-            offers: { "@type": "Offer", price: String(m.price), priceCurrency: cur.code || "USD" },
-            suitableForDiet: [
-              "https://schema.org/VeganDiet",
-              "https://schema.org/VegetarianDiet",
-            ],
-          };
-          return item;
-        });
+        .map(mapMenuItem);
       return { "@type": "MenuSection", name: pick(c.name, lang), hasMenuItem: items };
     }).filter(function (s) { return s.hasMenuItem.length > 0; });
+
+    // Safety net: items whose cat matches no category still belong on the menu.
+    var catIds = (p.menuCategories || []).map(function (c) { return c.id; });
+    var orphans = (p.menuItems || []).filter(function (m) { return catIds.indexOf(m.cat) === -1; });
+    if (orphans.length) {
+      sections.push({
+        "@type": "MenuSection",
+        name: lang === "vi" ? "Món khác" : "More dishes",
+        hasMenuItem: orphans.map(mapMenuItem),
+      });
+    }
 
     var menu = { "@type": "Menu", "@id": restaurantUrl + "#menu", hasMenuSection: sections };
 

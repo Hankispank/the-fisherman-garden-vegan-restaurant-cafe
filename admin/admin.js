@@ -1244,8 +1244,15 @@
       item.querySelector('[data-ci]').addEventListener("click", function (e) { e.stopPropagation(); editCategory(i); });
       item.querySelector('[data-di]').addEventListener("click", function (e) {
         e.stopPropagation();
-        var usedBy = (window.MENU_ITEMS || []).filter(function (m) { return m.cat === cat.id; }).length;
-        if (usedBy > 0 && !confirm("This category has " + usedBy + " dish(es). Delete anyway?")) return;
+        var usedBy = (window.MENU_ITEMS || []).filter(function (m) { return m.cat === cat.id; });
+        if (usedBy.length) {
+          var rest = window.MENU_CATEGORIES.filter(function (c) { return c.id !== cat.id; });
+          if (!rest.length) { alert("Cannot delete the last category."); return; }
+          if (!confirm("This category has " + usedBy.length + " dish(es). They will be moved to \"" +
+                       (rest[0].name.en || rest[0].id) + "\". Delete anyway?")) return;
+          usedBy.forEach(function (m) { m.cat = rest[0].id; });
+          draft.menuItems = JSON.parse(JSON.stringify(window.MENU_ITEMS));
+        }
         window.MENU_CATEGORIES.splice(i, 1);
         draft.menuCategories = JSON.parse(JSON.stringify(window.MENU_CATEGORIES));
         document.dispatchEvent(new CustomEvent("languagechange", { detail: LANG() }));

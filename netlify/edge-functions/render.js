@@ -28,12 +28,13 @@ async function loadSeed(origin) {
   return shim;
 }
 
-async function loadContent(origin) {
+async function loadContent(origin, url) {
   const shim = await loadSeed(origin);
   // Merge admin-published content (if any) over the seed defaults.
   let published = null;
   try {
-    const r = await fetch(origin + "/.netlify/functions/get-content");
+    const bust = url && url.searchParams.has("_seocheck") ? "?_seocheck=" + Date.now() : "";
+    const r = await fetch(origin + "/.netlify/functions/get-content" + bust);
     if (r.ok) published = await r.json();
   } catch (_) { /* no published content yet → seed only */ }
 
@@ -73,7 +74,7 @@ export default async function handler(request) {
   if (path === "/robots.txt" || path === "/sitemap.xml" || path === "/llms.txt"
       || path === "/llms-full.txt" || path === "/.well-known/llms.txt") {
     try {
-      const shim = await loadContent(origin);
+      const shim = await loadContent(origin, url);
       const base = effectiveBase(shim, origin);
       const lastmod = (shim._published && shim._published.publishedAt) || null;
       const generatedAt = lastmod || new Date().toISOString();
@@ -97,7 +98,7 @@ export default async function handler(request) {
 
   // Home page: bake content + JSON-LD into the served HTML.
   try {
-    const shim = await loadContent(origin);
+    const shim = await loadContent(origin, url);
     const res = await fetch(origin + "/index.html");
     const indexHtml = await res.text();
     const html = bakeHtml(indexHtml, shim, { origin: origin, lang: "en" });
