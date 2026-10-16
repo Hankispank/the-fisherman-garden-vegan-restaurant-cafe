@@ -79,7 +79,7 @@ window.SEO_CONFIG = {
   // unknown keys are ignored. Only list what is genuinely TRUE for this venue —
   // wrong amenity data harms trust and can violate attribute policy. Editable
   // here or via Admin → ✎ Edit AMENITIES.
-  amenities: ["garden","freeWifi","familyFriendly","dogsWelcome"],
+  amenities: ["familyFriendly","kidsPlayground","highChairs","freeWifi","digitalNomads","powerOutlets","garden","showers","wheelchairAccessible","carParking","scooterParking","dogsWelcome"],
 
   // Owner-added amenities (admin). Each: { id, icon, group, en, vi }.
   // Enable by including id in amenities[] above.

@@ -1,0 +1,11 @@
+.tmp-export
+.tmp-docx
+.tmp-hero-preview
+.claude
+pipeline
+Researcher
+scripts/__pycache__
+.git
+plan
+.github
+*.pyc

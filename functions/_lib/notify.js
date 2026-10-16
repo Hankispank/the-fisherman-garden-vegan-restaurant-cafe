@@ -15,6 +15,8 @@ const isEmail = (s) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(s || ""));
 const owner = () => process.env.OWNER_EMAIL || process.env.SMTP_USER;
 
 const cfgBase = () => {
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  if (vercel) return "https://" + String(vercel).replace(/^https?:\/\//, "");
   try { return require("./booking-config.json").baseUrl || process.env.URL || ""; }
   catch { return process.env.URL || ""; }
 };

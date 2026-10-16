@@ -1,10 +1,10 @@
 "use strict";
 /**
- * blobs.js — Netlify Blobs wrapper with local filesystem fallback.
+ * blobs.js — storage wrapper used by admin, media, and orders functions.
  *
- * On Netlify (production or linked `netlify dev`): delegates to @netlify/blobs.
- * Locally without a linked site: stores files under .netlify/blobs-local/<store>/<key>
- * so every function works offline with zero Netlify account setup.
+ * Netlify production (Lambda): @netlify/blobs.
+ * Vercel (BLOB_READ_WRITE_TOKEN): @vercel/blob.
+ * Local / netlify dev: filesystem under .netlify/blobs-local/<store>/<key>.
  */
 
 const fs   = require("fs");
@@ -78,6 +78,63 @@ function localStore(storeName) {
   };
 }
 
+function useVercelBlob() {
+  return !!process.env.BLOB_READ_WRITE_TOKEN;
+}
+
+function vercelStore(storeName) {
+  const { put, del, head } = require("@vercel/blob");
+  const prefix = storeName.replace(/\/+$/, "") + "/";
+
+  async function locate(key) {
+    try {
+      return await head(prefix + key);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  return {
+    async get(key, opts) {
+      const hit = await locate(key);
+      if (!hit) return null;
+      const res = await fetch(hit.url);
+      if (!res.ok) return null;
+      if (opts && opts.type === "json") return await res.json();
+      if (opts && opts.type === "text") return await res.text();
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (opts && opts.type === "arrayBuffer") {
+        return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+      }
+      return buf;
+    },
+
+    async set(key, value, opts) {
+      const buf = Buffer.isBuffer(value) ? value : Buffer.from(value);
+      const type = (opts && opts.metadata && opts.metadata.type) || "application/octet-stream";
+      await put(prefix + key, buf, {
+        access: "public",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+        contentType: type,
+      });
+    },
+
+    async setJSON(key, data) {
+      await put(prefix + key, JSON.stringify(data), {
+        access: "public",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+        contentType: "application/json",
+      });
+    },
+
+    async delete(key) {
+      await del(prefix + key);
+    },
+  };
+}
+
 /**
  * getStore(nameOrOpts, event)
  * Drop-in replacement for @netlify/blobs getStore().
@@ -86,6 +143,7 @@ function localStore(storeName) {
 function getStore(nameOrOpts, event) {
   if (useNetlifyBlobs()) return netlifyStore(nameOrOpts, event);
   const name = typeof nameOrOpts === "string" ? nameOrOpts : nameOrOpts.name;
+  if (useVercelBlob()) return vercelStore(name);
   return localStore(name);
 }
 

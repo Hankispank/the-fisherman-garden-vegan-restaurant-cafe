@@ -1,0 +1,31 @@
+name: Deploy to Vercel (preview)
+
+# Runs on the parallel vercel-port branch only so Netlify production on main
+# is not affected.
+on:
+  push:
+    branches: [vercel-port]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - name: Pull Vercel project and deploy preview
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "Set VERCEL_TOKEN, VERCEL_ORG_ID, and VERCEL_PROJECT_ID repo secrets, then re-run."
+            exit 0
+          fi
+          npx vercel pull --yes --environment=preview --token "$VERCEL_TOKEN"
+          npx vercel build --token "$VERCEL_TOKEN"
+          npx vercel deploy --prebuilt --token "$VERCEL_TOKEN"

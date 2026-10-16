@@ -7,13 +7,6 @@
  */
 window.MENU_CATEGORIES = [
  {
-  "id": "popular",
-  "name": {
-   "en": "Popular",
-   "vi": "Phổ biến"
-  }
- },
- {
   "id": "breakfast",
   "name": {
    "en": "Breakfast",
@@ -68,6 +61,13 @@ window.MENU_CATEGORIES = [
    "en": "Drinks",
    "vi": "Đồ uống"
   }
+ },
+ {
+  "id": "popular",
+  "name": {
+   "en": "Popular",
+   "vi": "Phổ biến"
+  }
  }
 ];
 
@@ -77,8 +77,6 @@ window.MENU_ITEMS = [
   "cat": "popular",
   "price": 70000,
   "emoji": "🍜",
-  "base": "assets/menu/veganpho",
-  "widths": [480, 960],
   "w": 1024,
   "h": 1536,
   "image": "assets/menu/veganpho-960.webp",
@@ -86,21 +84,24 @@ window.MENU_ITEMS = [
    "popular"
   ],
   "name": {
-   "en": "Vegan Pho (Vietnamese noodles soup with vegetables)",
+   "en": "Vegan Pho",
    "vi": "Phở chay"
   },
   "desc": {
-   "en": "Noodles, carrot, onion, mushroom, white cabbage, spring onion served with lettuce, mint, basil, bean sprout and soy sauce",
-   "vi": "Bún/phở, cà rốt, hành, nấm, bắp cải, hành lá ăn kèm rau sống, húng, rau mùi, giá đỗ và nước tương."
-  }
+   "en": "Vietnamese noodle soup with vegetables, herbs and soy sauce.",
+   "vi": "Vietnamese noodle soup with vegetables, herbs and soy sauce."
+  },
+  "base": "assets/menu/veganpho",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "chickpeacurry",
   "cat": "popular",
   "price": 90000,
   "emoji": "🍛",
-  "base": "assets/menu/chickpeacurry",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/chickpeacurry-960.webp",
@@ -112,17 +113,20 @@ window.MENU_ITEMS = [
    "vi": "Cà ri đậu gà"
   },
   "desc": {
-   "en": "Curried chickpea with onion, coconut, tomato base, a dollop of coconut yogurt with a side of brown rice and salad",
-   "vi": "Đậu gà nấu cà ri với hành, cốt dừa, cà chua, sữa chua dừa ăn kèm cơm gạo lứt và salad."
-  }
+   "en": "Curried chickpea in coconut tomato base with brown rice and salad.",
+   "vi": "Curried chickpea in coconut tomato base with brown rice and salad."
+  },
+  "base": "assets/menu/chickpeacurry",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "buddhabowl",
   "cat": "popular",
   "price": 95000,
   "emoji": "🥗",
-  "base": "assets/menu/buddhabowl",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/buddhabowl-960.webp",
@@ -131,20 +135,23 @@ window.MENU_ITEMS = [
   ],
   "name": {
    "en": "Buddha bowl",
-   "vi": "Buddha bowl"
+   "vi": "Bát Buddha"
   },
   "desc": {
-   "en": "Bowl of brown rice with chickpea, pumpkin, avocado, black beans and salad",
-   "vi": "Cơm gạo lứt với đậu gà, bí đỏ, bơ, đậu đen và salad."
-  }
+   "en": "Brown rice with chickpea, pumpkin, avocado, black beans and salad.",
+   "vi": "Brown rice with chickpea, pumpkin, avocado, black beans and salad."
+  },
+  "base": "assets/menu/buddhabowl",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "specialveganpizza",
   "cat": "popular",
   "price": 120000,
   "emoji": "🍕",
-  "base": "assets/menu/specialveganpizza",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/specialveganpizza-960.webp",
@@ -156,17 +163,20 @@ window.MENU_ITEMS = [
    "vi": "Pizza chay đặc biệt"
   },
   "desc": {
-   "en": "Housemade vegan cheese, tomato sauce, fresh tomato, capsicum, vegan ham, corn, green olives",
-   "vi": "Phô mai chay tự làm, sốt cà chua, cà chua tươi, ớt chuông, giăm bông chay, bắp, ô liu xanh."
-  }
+   "en": "Housemade vegan cheese, tomato, capsicum, vegan ham, corn and olives.",
+   "vi": "Housemade vegan cheese, tomato, capsicum, vegan ham, corn and olives."
+  },
+  "base": "assets/menu/specialveganpizza",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "specialofthefishermansta",
   "cat": "popular",
   "price": 140000,
   "emoji": "⭐",
-  "base": "assets/menu/specialofthefishermansta",
-  "widths": [480, 960],
   "w": 960,
   "h": 1280,
   "image": "assets/menu/specialofthefishermansta-960.webp",
@@ -175,20 +185,23 @@ window.MENU_ITEMS = [
   ],
   "name": {
    "en": "Special of the Fisherman starter",
-   "vi": "Khai vị đặc biệt The Fisherman"
+   "vi": "Món khai vị Fisherman đặc biệt"
   },
   "desc": {
-   "en": "Falafel (2pcs), fresh spring rolls (2pcs), fried vegetable spring rolls (2pcs) mixed salad, brown bread, crispy potatoes with sauce hummus, guacamole, tahini, tomato chutney",
-   "vi": "Falafel (2 viên), gỏi cuốn (2 cuốn), chả giò rau (2 cuốn), salad trộn, bánh mì nâu, khoai tây giòn với hummus, guacamole, tahini, sốt cà chua."
-  }
+   "en": "Falafel, spring rolls, salad, bread, potatoes with hummus, guacamole and chutney.",
+   "vi": "Falafel, spring rolls, salad, bread, potatoes with hummus, guacamole and chutney."
+  },
+  "base": "assets/menu/specialofthefishermansta",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "veganpancakes",
   "cat": "popular",
   "price": 70000,
   "emoji": "🥞",
-  "base": "assets/menu/veganpancakes",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/veganpancakes-960.webp",
@@ -200,69 +213,83 @@ window.MENU_ITEMS = [
    "vi": "Bánh pancake chay"
   },
   "desc": {
-   "en": "Banana and oatmeal pancakes with strawberries, fresh banana, shredded coconut and housemade coconut yogurt",
-   "vi": "Bánh pancake chuối yến mạch với dâu tây, chuối tươi, dừa bào và sữa chua dừa tự làm."
-  }
+   "en": "Banana oatmeal pancakes with fruit, coconut and house coconut yogurt.",
+   "vi": "Banana oatmeal pancakes with fruit, coconut and house coconut yogurt."
+  },
+  "base": "assets/menu/veganpancakes",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "peanutbuttertoasts",
   "cat": "breakfast",
   "price": 60000,
   "emoji": "🍽️",
-  "base": "assets/menu/peanutbuttertoasts",
-  "widths": [480, 960],
   "w": 238,
   "h": 178,
   "image": "assets/menu/peanutbuttertoasts-960.webp",
   "tags": [],
   "name": {
    "en": "Peanut butter toasts",
-   "vi": "Bánh mì bơ đậu phộng"
+   "vi": "Peanut butter toasts"
   },
   "desc": {
-   "en": "Peanut butter, strawberry,banana and chia seeds on toasted brown bread",
-   "vi": "Bơ đậu phộng, dâu tây, chuối và hạt chia trên bánh mì nâu nướng."
-  }
+   "en": "Peanut butter, strawberry, banana and chia seeds on toasted brown bread.",
+   "vi": "Peanut butter, strawberry, banana and chia seeds on toasted brown bread."
+  },
+  "base": "assets/menu/peanutbuttertoasts",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "beetroothummustoasts",
   "cat": "breakfast",
   "price": 60000,
   "emoji": "🍽️",
-  "base": "assets/menu/beetroothummustoasts",
-  "widths": [480, 960],
   "w": 1242,
   "h": 834,
   "image": "assets/menu/beetroothummustoasts-960.webp",
   "tags": [],
   "name": {
-   "en": "Beetroot Hummus toasts",
-   "vi": "Bánh mì hummus củ dền"
+   "en": "Beetroot hummus toasts",
+   "vi": "Beetroot hummus toasts"
   },
   "desc": {
-   "en": "Housemade beetroot hummus, grill mushroom on toasted brown bread",
-   "vi": "Hummus củ dền tự làm, nấm nướng trên bánh mì nâu nướng."
-  }
+   "en": "Housemade beetroot hummus and grilled mushroom on toasted brown bread.",
+   "vi": "Housemade beetroot hummus and grilled mushroom on toasted brown bread."
+  },
+  "base": "assets/menu/beetroothummustoasts",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "avotoasts",
   "cat": "breakfast",
   "price": 60000,
   "emoji": "🍽️",
-  "base": "assets/menu/avotoasts",
-  "widths": [480, 960],
   "w": 1242,
   "h": 932,
   "image": "assets/menu/avotoasts-960.webp",
   "tags": [],
   "name": {
    "en": "Avo toasts",
-   "vi": "Bánh mì bơ"
+   "vi": "Avo toasts"
   },
   "desc": {
-   "en": "Avocado smashed with lime on toasted brown bread",
-   "vi": "Bơ nghiền với chanh trên bánh mì nâu nướng."
-  }
+   "en": "Avocado smashed with lime on toasted brown bread.",
+   "vi": "Avocado smashed with lime on toasted brown bread."
+  },
+  "base": "assets/menu/avotoasts",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "spicychickpeatoast",
@@ -270,18 +297,21 @@ window.MENU_ITEMS = [
   "price": 60000,
   "emoji": "🍽️",
   "base": "assets/menu/spicychickpeatoast",
-  "widths": [480, 960],
+  "widths": [
+   480,
+   960
+  ],
   "w": 1024,
   "h": 767,
   "image": "assets/menu/spicychickpeatoast-960.webp",
   "tags": [],
   "name": {
    "en": "Spicy chickpea toast",
-   "vi": "Bánh mì đậu gà cay"
+   "vi": "Spicy chickpea toast"
   },
   "desc": {
    "en": "Chickpea, chilli, tomato chutney and vegan yogurt on toast.",
-   "vi": "Đậu gà cay trên bánh mì nâu nướng."
+   "vi": "Chickpea, chilli, tomato chutney and vegan yogurt on toast."
   }
  },
  {
@@ -292,32 +322,43 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Fresh fruit bowl",
-   "vi": "Trái cây tươi"
+   "vi": "Fresh fruit bowl"
   },
   "desc": {
-   "en": "Wide selection of seasonal fruits and mint",
-   "vi": "Nhiều loại trái cây theo mùa và bạc hà."
-  }
+   "en": "Seasonal fruits and mint.",
+   "vi": "Seasonal fruits and mint."
+  },
+  "image": "assets/menu/freshfruitbowl-960.webp",
+  "base": "assets/menu/freshfruitbowl",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "strawesomesmoothiebowl",
   "cat": "breakfast",
   "price": 70000,
   "emoji": "🍽️",
-  "base": "assets/menu/strawesomesmoothiebowl",
-  "widths": [480, 960],
   "w": 960,
   "h": 1280,
   "image": "assets/menu/strawesomesmoothiebowl-960.webp",
   "tags": [],
   "name": {
    "en": "Strawesome smoothie bowl",
-   "vi": "Smoothie bowl dâu tây"
+   "vi": "Strawesome smoothie bowl"
   },
   "desc": {
-   "en": "Banana and strawberry base with peanut butter, oats, fresh fruit, chia seeds, shredded coconut, nuts, topped with housemade coconut yogurt",
-   "vi": "Chuối và dâu tây với bơ đậu phộng, yến mạch, trái cây tươi, hạt chia, dừa bào, hạt, sữa chua dừa tự làm."
-  }
+   "en": "Banana and strawberry base with peanut butter, oats, fruit, chia, coconut and yogurt.",
+   "vi": "Banana and strawberry base with peanut butter, oats, fruit, chia, coconut and yogurt."
+  },
+  "base": "assets/menu/strawesomesmoothiebowl",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "sunrisesmoothiebowl",
@@ -327,52 +368,66 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Sunrise smoothie bowl",
-   "vi": "Smoothie bowl Sunrise"
+   "vi": "Sunrise smoothie bowl"
   },
   "desc": {
-   "en": "Mango smoothie base, with peanut butter, oats, fresh fruit, chia seeds, shredded coconut, nuts, topped with housemade coconut yogurt",
-   "vi": "Xoài xay với bơ đậu phộng, yến mạch, trái cây tươi, hạt chia, dừa bào, hạt, sữa chua dừa tự làm."
-  }
+   "en": "Mango smoothie base with peanut butter, oats, fruit, chia, coconut and yogurt.",
+   "vi": "Mango smoothie base with peanut butter, oats, fruit, chia, coconut and yogurt."
+  },
+  "image": "assets/menu/sunrisesmoothiebowl-960.webp",
+  "base": "assets/menu/sunrisesmoothiebowl",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1122,
+  "h": 1402
  },
  {
   "id": "pinklovesmoothiebowl",
   "cat": "breakfast",
   "price": 80000,
   "emoji": "🍽️",
-  "base": "assets/menu/pinklovesmoothiebowl",
-  "widths": [480, 960],
   "w": 960,
   "h": 1280,
   "image": "assets/menu/pinklovesmoothiebowl-960.webp",
   "tags": [],
   "name": {
    "en": "Pink Love smoothie bowl",
-   "vi": "Smoothie bowl Pink Love"
+   "vi": "Pink Love smoothie bowl"
   },
   "desc": {
-   "en": "Red dragon and banana base with peanut butter, oats, fresh fruit, chia seeds, shredded coconut, nuts, topped with housemade coconut yogurt",
-   "vi": "Thanh long đỏ và chuối với bơ đậu phộng, yến mạch, trái cây tươi, hạt chia, dừa bào, hạt, sữa chua dừa tự làm."
-  }
+   "en": "Red dragon fruit and banana base with peanut butter, oats, fruit and yogurt.",
+   "vi": "Red dragon fruit and banana base with peanut butter, oats, fruit and yogurt."
+  },
+  "base": "assets/menu/pinklovesmoothiebowl",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "brekkyburrito",
   "cat": "breakfast",
   "price": 80000,
   "emoji": "🍽️",
-  "base": "assets/menu/brekkyburrito",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/brekkyburrito-960.webp",
   "tags": [],
   "name": {
    "en": "Brekky burrito",
-   "vi": "Burrito buổi sáng"
+   "vi": "Brekky burrito"
   },
   "desc": {
-   "en": "Tofu scrambled with turmeric, black bean, capsicum with tomato and avocado in housemade wrap",
-   "vi": "Đậu phụ xào nghệ, đậu đen, ớt chuông, cà chua và bơ trong bánh cuốn tự làm."
-  }
+   "en": "Tofu scramble, black bean, capsicum, tomato and avocado in house wrap.",
+   "vi": "Tofu scramble, black bean, capsicum, tomato and avocado in house wrap."
+  },
+  "base": "assets/menu/brekkyburrito",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "crispypotatoesbreakfast",
@@ -381,13 +436,21 @@ window.MENU_ITEMS = [
   "emoji": "🍽️",
   "tags": [],
   "name": {
-   "en": "Crispy potatoes",
-   "vi": "Khoai tây giòn"
+   "en": "Crispy potatoes (breakfast)",
+   "vi": "Crispy potatoes (breakfast)"
   },
   "desc": {
-   "en": "Crispy potatoes and chickpeas tossed with paprika, spinach, cherry tomatoes and leek with a side of kidney beans baked in a garlic, herb and tomato base",
-   "vi": "Khoai tây giòn và đậu gà trộn paprika, rau chân vịt, cà chua bi và tỏi tây kèm đậu thận nướng trong sốt tỏi thảo mộc cà chua."
-  }
+   "en": "Crispy potatoes and chickpeas with paprika, spinach, tomatoes and kidney beans.",
+   "vi": "Crispy potatoes and chickpeas with paprika, spinach, tomatoes and kidney beans."
+  },
+  "image": "assets/menu/crispypotatoesbreakfast-960.webp",
+  "base": "assets/menu/crispypotatoesbreakfast",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1402,
+  "h": 1122
  },
  {
   "id": "tofuscrambledwithveggies",
@@ -397,32 +460,43 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Tofu scrambled with veggies",
-   "vi": "Đậu phụ xào rau củ"
+   "vi": "Tofu scrambled with veggies"
   },
   "desc": {
-   "en": "Tofu scramble with turmeric, capsicum, onion, tomato, mushroom served with brown bread",
-   "vi": "Đậu phụ xào nghệ, ớt chuông, hành, cà chua, nấm ăn kèm bánh mì nâu."
-  }
+   "en": "Tofu scramble with turmeric, capsicum, onion, tomato and mushroom with brown bread.",
+   "vi": "Tofu scramble with turmeric, capsicum, onion, tomato and mushroom with brown bread."
+  },
+  "image": "assets/menu/tofuscrambledwithveggies-960.webp",
+  "base": "assets/menu/tofuscrambledwithveggies",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1449
  },
  {
   "id": "veganquesadilla",
   "cat": "breakfast",
   "price": 90000,
   "emoji": "🍽️",
-  "base": "assets/menu/veganquesadilla",
-  "widths": [480, 960],
   "w": 1113,
   "h": 1474,
   "image": "assets/menu/veganquesadilla-960.webp",
   "tags": [],
   "name": {
-   "en": "Vegan Quesadilla",
-   "vi": "Quesadilla chay"
+   "en": "Vegan quesadilla",
+   "vi": "Vegan quesadilla"
   },
   "desc": {
-   "en": "Black bean, corn, tomato, onions, capsicum, smash avo, housemade vegan cheese, wrapped in a tortilla",
-   "vi": "Đậu đen, bắp, cà chua, hành, ớt chuông, bơ nghiền, phô mai chay tự làm, cuộn trong bánh tortilla."
-  }
+   "en": "Black bean, corn, tomato, capsicum, avocado and housemade vegan cheese in tortillas.",
+   "vi": "Black bean, corn, tomato, capsicum, avocado and housemade vegan cheese in tortillas."
+  },
+  "base": "assets/menu/veganquesadilla",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "brownriceextra",
@@ -431,13 +505,21 @@ window.MENU_ITEMS = [
   "emoji": "🍚",
   "tags": [],
   "name": {
-   "en": "Brown rice",
-   "vi": "Cơm gạo lứt"
+   "en": "Brown rice (extra)",
+   "vi": "Brown rice (extra)"
   },
   "desc": {
    "en": "Side of brown rice.",
-   "vi": "Cơm gạo lứt thêm."
-  }
+   "vi": "Side of brown rice."
+  },
+  "image": "assets/menu/brownriceextra-960.webp",
+  "base": "assets/menu/brownriceextra",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "sauteedmorninggloryextra",
@@ -446,13 +528,21 @@ window.MENU_ITEMS = [
   "emoji": "🥬",
   "tags": [],
   "name": {
-   "en": "Sautéed morning glory",
-   "vi": "Rau muống xào"
+   "en": "Sautéed morning glory (extra)",
+   "vi": "Sautéed morning glory (extra)"
   },
   "desc": {
    "en": "Side of morning glory.",
-   "vi": "Rau muống xào thêm."
-  }
+   "vi": "Side of morning glory."
+  },
+  "image": "assets/menu/sauteedmorninggloryextra-960.webp",
+  "base": "assets/menu/sauteedmorninggloryextra",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "crispypotatoesextra",
@@ -461,13 +551,21 @@ window.MENU_ITEMS = [
   "emoji": "🥔",
   "tags": [],
   "name": {
-   "en": "Crispy potatoes",
-   "vi": "Khoai tây giòn"
+   "en": "Crispy potatoes (extra)",
+   "vi": "Crispy potatoes (extra)"
   },
   "desc": {
    "en": "Side of crispy potatoes.",
-   "vi": "Khoai tây giòn thêm."
-  }
+   "vi": "Side of crispy potatoes."
+  },
+  "image": "assets/menu/crispypotatoesextra-960.webp",
+  "base": "assets/menu/crispypotatoesextra",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "grilledtofuextra",
@@ -476,13 +574,21 @@ window.MENU_ITEMS = [
   "emoji": "🧈",
   "tags": [],
   "name": {
-   "en": "Grilled tofu",
-   "vi": "Đậu phụ nướng"
+   "en": "Grilled tofu (extra)",
+   "vi": "Grilled tofu (extra)"
   },
   "desc": {
    "en": "Side of grilled tofu.",
-   "vi": "Đậu phụ nướng thêm."
-  }
+   "vi": "Side of grilled tofu."
+  },
+  "image": "assets/menu/grilledtofuextra-960.webp",
+  "base": "assets/menu/grilledtofuextra",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "brownbreadextra",
@@ -536,13 +642,21 @@ window.MENU_ITEMS = [
   "emoji": "🥑",
   "tags": [],
   "name": {
-   "en": "Guacamole",
-   "vi": "Guacamole"
+   "en": "Guacamole (extra)",
+   "vi": "Guacamole (extra)"
   },
   "desc": {
    "en": "Side of guacamole.",
-   "vi": "Sốt guacamole thêm."
-  }
+   "vi": "Side of guacamole."
+  },
+  "image": "assets/menu/guacamoleextra-960.webp",
+  "base": "assets/menu/guacamoleextra",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "falafel3pcsextra",
@@ -551,13 +665,21 @@ window.MENU_ITEMS = [
   "emoji": "🧆",
   "tags": [],
   "name": {
-   "en": "Falafel (3pcs)",
-   "vi": "Falafel (3 viên)"
+   "en": "Falafel (3 pcs, extra)",
+   "vi": "Falafel (3 pcs, extra)"
   },
   "desc": {
    "en": "Three falafel pieces.",
-   "vi": "Falafel thêm 3 viên."
-  }
+   "vi": "Three falafel pieces."
+  },
+  "image": "assets/menu/falafel3pcsextra-960.webp",
+  "base": "assets/menu/falafel3pcsextra",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1023,
+  "h": 1537
  },
  {
   "id": "avocadoextra",
@@ -572,7 +694,15 @@ window.MENU_ITEMS = [
   "desc": {
    "en": "Side of avocado.",
    "vi": "Side of avocado."
-  }
+  },
+  "image": "assets/menu/avocadoextra-960.webp",
+  "base": "assets/menu/avocadoextra",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1198,
+  "h": 1600
  },
  {
   "id": "sweetpotatofries",
@@ -582,32 +712,43 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Sweet potato fries",
-   "vi": "Khoai lang chiên"
+   "vi": "Sweet potato fries"
   },
   "desc": {
-   "en": "Sweet potato chips served with vegan mayo and house tomato chutney",
-   "vi": "Khoai lang chiên ăn kèm sốt mayo chay và sốt cà chua tự làm."
-  }
+   "en": "Sweet potato chips with vegan mayo and tomato chutney.",
+   "vi": "Sweet potato chips with vegan mayo and tomato chutney."
+  },
+  "image": "assets/menu/sweetpotatofries-960.webp",
+  "base": "assets/menu/sweetpotatofries",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "frenchfries",
   "cat": "starters",
   "price": 50000,
   "emoji": "🍟",
-  "base": "assets/menu/frenchfries",
-  "widths": [480, 960],
   "w": 1447,
   "h": 1087,
   "image": "assets/menu/frenchfries-960.webp",
   "tags": [],
   "name": {
    "en": "French fries",
-   "vi": "Khoai tây chiên"
+   "vi": "French fries"
   },
   "desc": {
-   "en": "French fries chips served with vegan mayo and house tomato chutney",
-   "vi": "Khoai tây chiên ăn kèm sốt mayo chay và sốt cà chua tự làm."
-  }
+   "en": "French fries with vegan mayo and tomato chutney.",
+   "vi": "French fries with vegan mayo and tomato chutney."
+  },
+  "base": "assets/menu/frenchfries",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "dipyourbread",
@@ -617,52 +758,66 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Dip your bread",
-   "vi": "Chấm bánh mì"
+   "vi": "Dip your bread"
   },
   "desc": {
-   "en": "Vegan brown bread with dips, hummus, guacamole, tomato chutney",
-   "vi": "Bánh mì nâu chay với các loại sốt chấm: hummus, guacamole, sốt cà chua."
-  }
+   "en": "Vegan brown bread with hummus, guacamole and tomato chutney.",
+   "vi": "Vegan brown bread with hummus, guacamole and tomato chutney."
+  },
+  "image": "assets/menu/dipyourbread-960.webp",
+  "base": "assets/menu/dipyourbread",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "dipyourtortillas",
   "cat": "starters",
   "price": 60000,
   "emoji": "🍽️",
-  "base": "assets/menu/dipyourtortillas",
-  "widths": [480, 960],
-  "w": 1536,
-  "h": 2048,
+  "w": 1200,
+  "h": 1600,
   "image": "assets/menu/dipyourtortillas-960.webp",
   "tags": [],
   "name": {
    "en": "Dip your tortillas",
-   "vi": "Chấm tortilla"
+   "vi": "Dip your tortillas"
   },
   "desc": {
-   "en": "Tortillas with dips, hummus, guacamole, beetroot hummus",
-   "vi": "Bánh tortilla với các loại sốt chấm: hummus, guacamole, hummus củ dền."
-  }
+   "en": "Tortillas with hummus, guacamole and beetroot hummus.",
+   "vi": "Tortillas with hummus, guacamole and beetroot hummus."
+  },
+  "base": "assets/menu/dipyourtortillas",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "freshspringrolls6pcs",
   "cat": "starters",
   "price": 65000,
   "emoji": "🍽️",
-  "base": "assets/menu/freshspringrolls6pcs",
-  "widths": [480, 960],
   "w": 1280,
   "h": 960,
   "image": "assets/menu/freshspringrolls6pcs-960.webp",
   "tags": [],
   "name": {
-   "en": "Fresh spring rolls (6pcs)",
-   "vi": "Gỏi cuốn (6 cuốn)"
+   "en": "Fresh spring rolls (6 pcs)",
+   "vi": "Fresh spring rolls (6 pcs)"
   },
   "desc": {
-   "en": "Lettuce, tofu, noodles, kimchi, cucumber with tahini sauce",
-   "vi": "Rau xà lách, đậu phụ, bún, kim chi, dưa chuột với sốt tahini."
-  }
+   "en": "Lettuce, tofu, noodles, kimchi and cucumber with tahini.",
+   "vi": "Lettuce, tofu, noodles, kimchi and cucumber with tahini."
+  },
+  "base": "assets/menu/freshspringrolls6pcs",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "friedvegetablespringroll",
@@ -684,20 +839,23 @@ window.MENU_ITEMS = [
   "cat": "starters",
   "price": 65000,
   "emoji": "🍽️",
-  "base": "assets/menu/vegangoldenbag",
-  "widths": [480, 960],
   "w": 960,
   "h": 720,
   "image": "assets/menu/vegangoldenbag-960.webp",
   "tags": [],
   "name": {
    "en": "Vegan golden bag",
-   "vi": "Túi vàng chay"
+   "vi": "Vegan golden bag"
   },
   "desc": {
-   "en": "Green bean paper, carrot, onion, mushroom, corn, bean sprout, peanut and soy sauce",
-   "vi": "Bánh đậu xanh, cà rốt, hành, nấm, bắp, giá đỗ, đậu phộng và nước tương."
-  }
+   "en": "Green bean paper with carrot, mushroom, corn, bean sprout, peanut and soy sauce.",
+   "vi": "Green bean paper with carrot, mushroom, corn, bean sprout, peanut and soy sauce."
+  },
+  "base": "assets/menu/vegangoldenbag",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "summersalad",
@@ -707,52 +865,66 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Summer salad",
-   "vi": "Salad mùa hè"
+   "vi": "Summer salad"
   },
   "desc": {
-   "en": "Lettuce, mango, carrot, cucumber, bell pepper, cabbage, mint, bean sprout, peanuts & sweet and sour sauce",
-   "vi": "Rau xà lách, xoài, cà rốt, dưa chuột, ớt chuông, bắp cải, bạc hà, giá đỗ, đậu phộng & sốt chua ngọt."
-  }
+   "en": "Lettuce, mango, carrot, cucumber, bell pepper, cabbage, mint and peanuts.",
+   "vi": "Lettuce, mango, carrot, cucumber, bell pepper, cabbage, mint and peanuts."
+  },
+  "image": "assets/menu/summersalad-960.webp",
+  "base": "assets/menu/summersalad",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 960,
+  "h": 720
  },
  {
   "id": "papayasaladwithgrilledto",
   "cat": "starters",
   "price": 70000,
   "emoji": "🍽️",
-  "base": "assets/menu/papayasaladwithgrilledto",
-  "widths": [480, 960],
-  "w": 1920,
-  "h": 2560,
+  "w": 1200,
+  "h": 1600,
   "image": "assets/menu/papayasaladwithgrilledto-960.webp",
   "tags": [],
   "name": {
    "en": "Papaya salad with grilled tofu",
-   "vi": "Gỏi đu đủ đậu phụ nướng"
+   "vi": "Papaya salad with grilled tofu"
   },
   "desc": {
-   "en": "Green papaya, carrot, onion, cabbage, mint, grill tofu, nut and sweet & sour sauce",
-   "vi": "Đu đủ xanh, cà rốt, hành, bắp cải, bạc hà, đậu phụ nướng, hạt và sốt chua ngọt."
-  }
+   "en": "Green papaya, carrot, cabbage, mint, grilled tofu and sweet & sour sauce.",
+   "vi": "Green papaya, carrot, cabbage, mint, grilled tofu and sweet & sour sauce."
+  },
+  "base": "assets/menu/papayasaladwithgrilledto",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "freshvegetablesdip",
   "cat": "starters",
   "price": 70000,
   "emoji": "🍽️",
-  "base": "assets/menu/freshvegetablesdip",
-  "widths": [480, 960],
   "w": 1412,
   "h": 1114,
   "image": "assets/menu/freshvegetablesdip-960.webp",
   "tags": [],
   "name": {
-   "en": "Fresh vegetables dip tahini & hummus sauce",
-   "vi": "Rau tươi chấm tahini & hummus"
+   "en": "Fresh vegetables dip",
+   "vi": "Fresh vegetables dip"
   },
   "desc": {
-   "en": "Carrot, cherry tomato, cucumber, cauliflower, green bean",
-   "vi": "Cà rốt, cà chua bi, dưa chuột, súp lơ, đậu que."
-  }
+   "en": "Carrot, cherry tomato, cucumber, cauliflower and green bean with tahini and hummus.",
+   "vi": "Carrot, cherry tomato, cucumber, cauliflower and green bean with tahini and hummus."
+  },
+  "base": "assets/menu/freshvegetablesdip",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "avocadosalad",
@@ -762,12 +934,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Avocado salad",
-   "vi": "Salad bơ"
+   "vi": "Avocado salad"
   },
   "desc": {
-   "en": "Mash avo, corn, tomato, cucumber, shallot, coriander, lime & toast",
-   "vi": "Bơ nghiền, bắp, cà chua, dưa chuột, hành tím, rau mùi, chanh & bánh mì nướng."
-  }
+   "en": "Mashed avocado, corn, tomato, cucumber, shallot, lime and toast.",
+   "vi": "Mashed avocado, corn, tomato, cucumber, shallot, lime and toast."
+  },
+  "image": "assets/menu/avocadosalad-960.webp",
+  "base": "assets/menu/avocadosalad",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1242,
+  "h": 931
  },
  {
   "id": "mushroombroccolisoup",
@@ -789,40 +969,46 @@ window.MENU_ITEMS = [
   "cat": "starters",
   "price": 60000,
   "emoji": "🍲",
-  "base": "assets/menu/pumpkinsoup",
-  "widths": [480, 960],
   "w": 1369,
   "h": 1149,
   "image": "assets/menu/pumpkinsoup-960.webp",
   "tags": [],
   "name": {
    "en": "Pumpkin soup",
-   "vi": "Súp bí đỏ"
+   "vi": "Pumpkin soup"
   },
   "desc": {
-   "en": "Pumpkin, onion and carrot soup with a swirl of coconut cream.",
-   "vi": "Súp bí đỏ, hành và cà rốt với kem dừa, ăn kèm bánh mì nướng."
-  }
+   "en": "Pumpkin, onion and carrot with coconut cream; served with toast.",
+   "vi": "Pumpkin, onion and carrot with coconut cream; served with toast."
+  },
+  "base": "assets/menu/pumpkinsoup",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "zoodleswithavopesto",
   "cat": "mains",
   "price": 80000,
   "emoji": "🍽️",
-  "base": "assets/menu/zoodleswithavopesto",
-  "widths": [480, 960],
   "w": 1087,
   "h": 1447,
   "image": "assets/menu/zoodleswithavopesto-960.webp",
   "tags": [],
   "name": {
    "en": "Zoodles with avo pesto",
-   "vi": "Mì bí ngòi sốt pesto bơ"
+   "vi": "Zoodles with avo pesto"
   },
   "desc": {
-   "en": "Noodles made from zucchini tossed through avocado, Vietnamese basil with cherry tomatoes",
-   "vi": "Mì làm từ bí ngòi trộn bơ, húng quế Việt Nam với cà chua bi."
-  }
+   "en": "Zucchini noodles with avocado, basil, cashew sauce and cherry tomatoes.",
+   "vi": "Zucchini noodles with avocado, basil, cashew sauce and cherry tomatoes."
+  },
+  "base": "assets/menu/zoodleswithavopesto",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "zoodleswithtomatosauce",
@@ -832,12 +1018,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Zoodles with tomato sauce",
-   "vi": "Mì bí ngòi sốt cà chua"
+   "vi": "Zoodles with tomato sauce"
   },
   "desc": {
-   "en": "Noodles made from zucchini, onion, capsicum, and homemade tomato",
-   "vi": "Mì làm từ bí ngòi, hành, ớt chuông và sốt cà chua tự làm."
-  }
+   "en": "Zucchini noodles with onion, capsicum and house tomato sauce.",
+   "vi": "Zucchini noodles with onion, capsicum and house tomato sauce."
+  },
+  "image": "assets/menu/zoodleswithtomatosauce-960.webp",
+  "base": "assets/menu/zoodleswithtomatosauce",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1273,
+  "h": 1236
  },
  {
   "id": "pumpkingnocchi",
@@ -847,12 +1041,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Pumpkin gnocchi",
-   "vi": "Gnocchi bí đỏ"
+   "vi": "Pumpkin gnocchi"
   },
   "desc": {
-   "en": "Home made pumpkin pasta tossed through sautéed spinach, mushroom, cherry tomatoes, leek and basil pesto",
-   "vi": "Mì gnocchi bí đỏ tự làm xào rau chân vịt, nấm, cà chua bi, tỏi tây và sốt pesto húng quế."
-  }
+   "en": "Housemade pumpkin gnocchi with spinach, mushroom, cherry tomatoes and basil pesto.",
+   "vi": "Housemade pumpkin gnocchi with spinach, mushroom, cherry tomatoes and basil pesto."
+  },
+  "image": "assets/menu/pumpkingnocchi-960.webp",
+  "base": "assets/menu/pumpkingnocchi",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "hamcheeseburger",
@@ -861,53 +1063,67 @@ window.MENU_ITEMS = [
   "emoji": "🍔",
   "tags": [],
   "name": {
-   "en": "Ham & Cheese burger + sweet potato fries",
-   "vi": "Burger giăm bông phô mai + khoai lang chiên"
+   "en": "Ham & cheese burger",
+   "vi": "Ham & cheese burger"
   },
   "desc": {
-   "en": "Vegan ham & housemade vegan cheese, vegan mayo, lettuce, tomato, cucumber, avo, tomato chutney in a toasted burger bun with a side of sweet potato fries",
-   "vi": "Giăm bông & phô mai chay tự làm, sốt mayo chay, rau xà lách, cà chua, dưa chuột, bơ, sốt cà chua trong bánh burger nướng kèm khoai lang chiên."
-  }
+   "en": "Vegan ham and cheese burger with sweet potato fries.",
+   "vi": "Vegan ham and cheese burger with sweet potato fries."
+  },
+  "image": "assets/menu/hamcheeseburger-960.webp",
+  "base": "assets/menu/hamcheeseburger",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "veganburger",
   "cat": "mains",
   "price": 120000,
   "emoji": "🍔",
-  "base": "assets/menu/veganburger",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/veganburger-960.webp",
   "tags": [],
   "name": {
-   "en": "Vegan burger + sweet potato fries",
-   "vi": "Burger chay + khoai lang chiên"
+   "en": "Vegan burger",
+   "vi": "Vegan burger"
   },
   "desc": {
-   "en": "Chickpea and black bean patty, vegan mayo, lettuce, tomato, cucumber, avo, tomato chutney in a toasted burger bun with a side of sweet potato fries",
-   "vi": "Burger đậu gà đậu đen, sốt mayo chay, rau xà lách, cà chua, dưa chuột, bơ, sốt cà chua trong bánh burger nướng kèm khoai lang chiên."
-  }
+   "en": "Chickpea and black bean patty with sweet potato fries.",
+   "vi": "Chickpea and black bean patty with sweet potato fries."
+  },
+  "base": "assets/menu/veganburger",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "vegansandwich",
   "cat": "mains",
   "price": 110000,
   "emoji": "🥪",
-  "base": "assets/menu/vegansandwich",
-  "widths": [480, 960],
-  "w": 1242,
-  "h": 1656,
+  "w": 1200,
+  "h": 1600,
   "image": "assets/menu/vegansandwich-960.webp",
   "tags": [],
   "name": {
-   "en": "Vegan sandwich + sweet potato fries",
-   "vi": "Sandwich chay + khoai lang chiên"
+   "en": "Vegan sandwich",
+   "vi": "Vegan sandwich"
   },
   "desc": {
-   "en": "White cabbage and corn patty, vegan mayo, lettuce, tomato, cucumber, tomato chutney in a toasted",
-   "vi": "Bắp cải trắng và bắp viên, sốt mayo chay, rau xà lách, cà chua, dưa chuột, sốt cà chua trong bánh mì nướng."
-  }
+   "en": "Chickpea and corn patty sandwich with sweet potato fries.",
+   "vi": "Chickpea and corn patty sandwich with sweet potato fries."
+  },
+  "base": "assets/menu/vegansandwich",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "hamcheesesandwich",
@@ -916,53 +1132,67 @@ window.MENU_ITEMS = [
   "emoji": "🥪",
   "tags": [],
   "name": {
-   "en": "Ham & Cheese sandwich + sweet potato fries",
-   "vi": "Sandwich giăm bông phô mai + khoai lang chiên"
+   "en": "Ham & cheese sandwich",
+   "vi": "Ham & cheese sandwich"
   },
   "desc": {
-   "en": "Vegan ham & housemade vegan cheese, vegan mayo, lettuce, tomato, cucumber, tomato chutney in a toasted",
-   "vi": "Giăm bông & phô mai chay tự làm, sốt mayo chay, rau xà lách, cà chua, dưa chuột, sốt cà chua trong bánh mì nướng."
-  }
+   "en": "Vegan ham and cheese sandwich with sweet potato fries.",
+   "vi": "Vegan ham and cheese sandwich with sweet potato fries."
+  },
+  "image": "assets/menu/hamcheesesandwich-960.webp",
+  "base": "assets/menu/hamcheesesandwich",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "tofuchips",
   "cat": "mains",
   "price": 80000,
   "emoji": "🍽️",
-  "base": "assets/menu/tofuchips",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/tofuchips-960.webp",
   "tags": [],
   "name": {
-   "en": "Tofu & Chip",
-   "vi": "Đậu phụ & khoai tây chiên"
+   "en": "Tofu & chips",
+   "vi": "Tofu & chips"
   },
   "desc": {
-   "en": "Deep fried tofu & French fries with coleslaw, tomato chutney and tartar sauce",
-   "vi": "Đậu phụ chiên giòn & khoai tây chiên với salad trộn, sốt cà chua và sốt tartar."
-  }
+   "en": "Deep fried tofu and fries with coleslaw, chutney and tartar sauce.",
+   "vi": "Deep fried tofu and fries with coleslaw, chutney and tartar sauce."
+  },
+  "base": "assets/menu/tofuchips",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "crispymushroom",
   "cat": "mains",
   "price": 70000,
   "emoji": "🍽️",
-  "base": "assets/menu/crispymushroom",
-  "widths": [480, 960],
   "w": 1085,
   "h": 1450,
   "image": "assets/menu/crispymushroom-960.webp",
   "tags": [],
   "name": {
-   "en": "Crispy Mushroom",
-   "vi": "Nấm chiên giòn"
+   "en": "Crispy mushroom",
+   "vi": "Crispy mushroom"
   },
   "desc": {
-   "en": "Deep fried mushroom served with coleslaw and chilli sauce, vegan mayo",
-   "vi": "Nấm chiên giòn ăn kèm salad trộn, sốt ớt, sốt mayo chay."
-  }
+   "en": "Deep fried mushroom with coleslaw, chilli sauce and vegan mayo.",
+   "vi": "Deep fried mushroom with coleslaw, chilli sauce and vegan mayo."
+  },
+  "base": "assets/menu/crispymushroom",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "zucchinifritters",
@@ -971,53 +1201,67 @@ window.MENU_ITEMS = [
   "emoji": "🍽️",
   "tags": [],
   "name": {
-   "en": "Zucchini Fritters",
-   "vi": "Bánh bí ngòi chiên"
+   "en": "Zucchini fritters",
+   "vi": "Zucchini fritters"
   },
   "desc": {
-   "en": "Zucchini & carrot patty, served with tomato chutney and tartar sauce",
-   "vi": "Bánh bí ngòi & cà rốt, ăn kèm sốt cà chua và sốt tartar."
-  }
+   "en": "Zucchini and carrot patty with tomato chutney and tartar sauce.",
+   "vi": "Zucchini and carrot patty with tomato chutney and tartar sauce."
+  },
+  "image": "assets/menu/zucchinifritters-960.webp",
+  "base": "assets/menu/zucchinifritters",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "noodleswithvegetables",
   "cat": "mains",
   "price": 85000,
   "emoji": "🍽️",
-  "base": "assets/menu/noodleswithvegetables",
-  "widths": [480, 960],
   "w": 1445,
   "h": 1088,
   "image": "assets/menu/noodleswithvegetables-960.webp",
   "tags": [],
   "name": {
    "en": "Noodles with vegetables",
-   "vi": "Bún xào rau củ"
+   "vi": "Noodles with vegetables"
   },
   "desc": {
-   "en": "Rice noodles with carrot, mushroom, bell pepper, onion, zucchini and bok choy",
-   "vi": "Bún xào với cà rốt, nấm, ớt chuông, hành, bí ngòi và cải thìa."
-  }
+   "en": "Rice noodles with carrot, mushroom, bell pepper, onion and bok choy.",
+   "vi": "Rice noodles with carrot, mushroom, bell pepper, onion and bok choy."
+  },
+  "base": "assets/menu/noodleswithvegetables",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "noodleswithfalafeltofu",
   "cat": "mains",
-  "price": 80000,
+  "price": 90000,
   "emoji": "🍽️",
-  "base": "assets/menu/noodleswithfalafeltofu",
-  "widths": [480, 960],
   "w": 1190,
   "h": 1322,
   "image": "assets/menu/noodleswithfalafeltofu-960.webp",
   "tags": [],
   "name": {
-   "en": "Noodles with falafel & Tofu",
-   "vi": "Bún falafel & đậu phụ"
+   "en": "Noodles with falafel & tofu",
+   "vi": "Noodles with falafel & tofu"
   },
   "desc": {
-   "en": "Rice noodles, vegetable, falafel, fried spring rolls, and tofu served with sweet & sour sauce",
-   "vi": "Bún, rau củ, falafel, chả giò và đậu phụ ăn kèm sốt chua ngọt."
-  }
+   "en": "Rice noodles with vegetables, falafel, fried spring rolls and tofu.",
+   "vi": "Rice noodles with vegetables, falafel, fried spring rolls and tofu."
+  },
+  "base": "assets/menu/noodleswithfalafeltofu",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "greencurry",
@@ -1027,12 +1271,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Green curry",
-   "vi": "Cà ri xanh"
+   "vi": "Green curry"
   },
   "desc": {
-   "en": "Green bean, fresh tofu, carrot, baby corn, zucchini, mushroom, broccoli with a side of brown rice & salad",
-   "vi": "Đậu que, đậu phụ tươi, cà rốt, bắp non, bí ngòi, nấm, bông cải ăn kèm cơm gạo lứt & salad."
-  }
+   "en": "Green bean, tofu, carrot, baby corn, zucchini, mushroom and broccoli with rice and salad.",
+   "vi": "Green bean, tofu, carrot, baby corn, zucchini, mushroom and broccoli with rice and salad."
+  },
+  "image": "assets/menu/greencurry-960.webp",
+  "base": "assets/menu/greencurry",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "stirfriedpastawithvegeta",
@@ -1041,13 +1293,21 @@ window.MENU_ITEMS = [
   "emoji": "🍽️",
   "tags": [],
   "name": {
-   "en": "Stir – fried Pasta with vegetable & Tofu",
-   "vi": "Mì Ý xào rau củ & đậu phụ"
+   "en": "Stir-fried pasta with vegetables & tofu",
+   "vi": "Stir-fried pasta with vegetables & tofu"
   },
   "desc": {
-   "en": "Brown pasta, carrot, onion, capsicum, broccoli, mushroom, tofu and bok choy",
-   "vi": "Mì Ý nâu, cà rốt, hành, ớt chuông, bông cải, nấm, đậu phụ và cải thìa."
-  }
+   "en": "Brown pasta with carrot, onion, capsicum, broccoli, mushroom and bok choy.",
+   "vi": "Brown pasta with carrot, onion, capsicum, broccoli, mushroom and bok choy."
+  },
+  "image": "assets/menu/stirfriedpastawithvegeta-960.webp",
+  "base": "assets/menu/stirfriedpastawithvegeta",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "redcurry",
@@ -1057,12 +1317,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Red curry",
-   "vi": "Cà ri đỏ"
+   "vi": "Red curry"
   },
   "desc": {
-   "en": "Mushroom, green bean, fresh tofu, carrot, onion, capsicum, zucchini, eggplant, chilli with a side of brown rice and salad",
-   "vi": "Nấm, đậu que, đậu phụ, cà rốt, hành, ớt chuông, bí ngòi, cà tím, ớt ăn kèm cơm gạo lứt và salad."
-  }
+   "en": "Mushroom, green bean, tofu, carrot, capsicum, zucchini and eggplant with rice and salad.",
+   "vi": "Mushroom, green bean, tofu, carrot, capsicum, zucchini and eggplant with rice and salad."
+  },
+  "image": "assets/menu/redcurry-960.webp",
+  "base": "assets/menu/redcurry",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1169,
+  "h": 1346
  },
  {
   "id": "potatocarrotcurry",
@@ -1071,13 +1339,21 @@ window.MENU_ITEMS = [
   "emoji": "🍛",
   "tags": [],
   "name": {
-   "en": "Potato & Carrot Curry",
-   "vi": "Cà ri khoai tây cà rốt"
+   "en": "Potato & carrot curry",
+   "vi": "Potato & carrot curry"
   },
   "desc": {
-   "en": "Potato & carrot, mushroom, onion, tomato, with brown rice and salad",
-   "vi": "Khoai tây, cà rốt, nấm, hành, cà chua ăn kèm cơm gạo lứt và salad."
-  }
+   "en": "Potato, carrot, mushroom and onion with brown rice and salad.",
+   "vi": "Potato, carrot, mushroom and onion with brown rice and salad."
+  },
+  "image": "assets/menu/potatocarrotcurry-960.webp",
+  "base": "assets/menu/potatocarrotcurry",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "falafelwithfreshsalad",
@@ -1087,12 +1363,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Falafel with fresh salad",
-   "vi": "Falafel salad tươi"
+   "vi": "Falafel with fresh salad"
   },
   "desc": {
-   "en": "Falafel style patties served with fresh salad greens, tahini sauce",
-   "vi": "Falafel ăn kèm salad rau tươi và sốt tahini."
-  }
+   "en": "Falafel patties with salad greens and tahini.",
+   "vi": "Falafel patties with salad greens and tahini."
+  },
+  "image": "assets/menu/falafelwithfreshsalad-960.webp",
+  "base": "assets/menu/falafelwithfreshsalad",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "mushroomandtofupatties",
@@ -1100,7 +1384,10 @@ window.MENU_ITEMS = [
   "price": 80000,
   "emoji": "🍽️",
   "base": "assets/menu/mushroomandtofupatties",
-  "widths": [480, 960],
+  "widths": [
+   480,
+   960
+  ],
   "w": 768,
   "h": 1024,
   "image": "assets/menu/mushroomandtofupatties-960.webp",
@@ -1119,10 +1406,8 @@ window.MENU_ITEMS = [
   "cat": "mains",
   "price": 100000,
   "emoji": "🍽️",
-  "base": "assets/menu/falafelbowl",
-  "widths": [480, 960],
-  "w": 1536,
-  "h": 2048,
+  "w": 1200,
+  "h": 1600,
   "image": "assets/menu/falafelbowl-960.webp",
   "tags": [],
   "name": {
@@ -1130,49 +1415,60 @@ window.MENU_ITEMS = [
    "vi": "Falafel bowl"
   },
   "desc": {
-   "en": "Falafel with baby tomato, fresh salad, corn, hummus, tofu and tahini dressing",
-   "vi": "Falafel với cà chua bi, salad tươi, bắp, hummus, đậu phụ và sốt tahini."
-  }
+   "en": "Falafel with tomato, salad, corn, hummus, tofu and tahini dressing.",
+   "vi": "Falafel with tomato, salad, corn, hummus, tofu and tahini dressing."
+  },
+  "base": "assets/menu/falafelbowl",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "specialbowl",
   "cat": "mains",
   "price": 110000,
   "emoji": "🍽️",
-  "base": "assets/menu/specialbowl",
-  "widths": [480, 960],
   "w": 1101,
   "h": 1489,
   "image": "assets/menu/specialbowl-960.webp",
   "tags": [],
   "name": {
    "en": "Special bowl",
-   "vi": "Bowl đặc biệt"
+   "vi": "Special bowl"
   },
   "desc": {
-   "en": "Bowl of brown rice with smash avo, red cabbage, corn, red bean, baked sweet potato, mushroom,tortillas, tahini dressing",
-   "vi": "Cơm gạo lứt với bơ nghiền, bắp cải tím, bắp, đậu đỏ, khoai lang nướng, nấm, bánh tortilla, sốt tahini."
-  }
+   "en": "Brown rice with avocado, red cabbage, corn, red bean, sweet potato, mushroom and tortillas.",
+   "vi": "Brown rice with avocado, red cabbage, corn, red bean, sweet potato, mushroom and tortillas."
+  },
+  "base": "assets/menu/specialbowl",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "mexicanwrap",
   "cat": "mains",
   "price": 120000,
   "emoji": "🍽️",
-  "base": "assets/menu/mexicanwrap",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/mexicanwrap-960.webp",
   "tags": [],
   "name": {
-   "en": "Mexican wrap + Extra side",
-   "vi": "Cuốn Mexico + phần thêm"
+   "en": "Mexican wrap",
+   "vi": "Mexican wrap"
   },
   "desc": {
-   "en": "Black beans, brown rice, corn, onion, bell pepper, tomato, lettuce, spices and lime wrapped in a fresh tortillas with a side of crispy potatoes, chutney, smashed avo and coconut yogurt",
-   "vi": "Đậu đen, cơm gạo lứt, bắp, hành, ớt chuông, cà chua, rau xà lách, gia vị và chanh cuộn trong bánh tortilla tươi kèm khoai tây giòn, sốt cà chua, bơ nghiền và sữa chua dừa."
-  }
+   "en": "Black beans, rice, corn, peppers, tomato and lime in tortillas with sides.",
+   "vi": "Black beans, rice, corn, peppers, tomato and lime in tortillas with sides."
+  },
+  "base": "assets/menu/mexicanwrap",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "tofutomato",
@@ -1182,12 +1478,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Tofu & tomato",
-   "vi": "Đậu phụ sốt cà chua"
+   "vi": "Tofu & tomato"
   },
   "desc": {
-   "en": "Fried tofu, tomato base and onion in tomato sauce served with brown rice and salad",
-   "vi": "Đậu phụ chiên, sốt cà chua và hành ăn kèm cơm gạo lứt và salad."
-  }
+   "en": "Fried tofu in tomato sauce with brown rice and salad.",
+   "vi": "Fried tofu in tomato sauce with brown rice and salad."
+  },
+  "image": "assets/menu/tofutomato-960.webp",
+  "base": "assets/menu/tofutomato",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 281,
+  "h": 211
  },
  {
   "id": "friedbrownricewithvegeta",
@@ -1197,12 +1501,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Fried brown rice with vegetables",
-   "vi": "Cơm chiên rau củ"
+   "vi": "Fried brown rice with vegetables"
   },
   "desc": {
-   "en": "Fried brown rice with carrot, green bean, corn, onion, zucchini served soy sauce",
-   "vi": "Cơm gạo lứt chiên với cà rốt, đậu que, bắp, hành, bí ngòi, nước tương."
-  }
+   "en": "Fried brown rice with carrot, green bean, corn, onion and zucchini.",
+   "vi": "Fried brown rice with carrot, green bean, corn, onion and zucchini."
+  },
+  "image": "assets/menu/friedbrownricewithvegeta-960.webp",
+  "base": "assets/menu/friedbrownricewithvegeta",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1103,
+  "h": 1426
  },
  {
   "id": "friedbrownricewithpineap",
@@ -1211,53 +1523,67 @@ window.MENU_ITEMS = [
   "emoji": "🍚",
   "tags": [],
   "name": {
-   "en": "Fried brown rice with Pineapple",
-   "vi": "Cơm chiên dứa"
+   "en": "Fried brown rice with pineapple",
+   "vi": "Fried brown rice with pineapple"
   },
   "desc": {
-   "en": "Fried brown rice, onion, capsicum, pineapple, spring onion served soy sauce",
-   "vi": "Cơm gạo lứt chiên, hành, ớt chuông, dứa, hành lá, nước tương."
-  }
+   "en": "Fried brown rice with onion, capsicum, pineapple and spring onion.",
+   "vi": "Fried brown rice with onion, capsicum, pineapple and spring onion."
+  },
+  "image": "assets/menu/friedbrownricewithpineap-960.webp",
+  "base": "assets/menu/friedbrownricewithpineap",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "veganbibimbap",
   "cat": "mains",
   "price": 95000,
   "emoji": "🍽️",
-  "base": "assets/menu/veganbibimbap",
-  "widths": [480, 960],
   "w": 1448,
   "h": 1086,
   "image": "assets/menu/veganbibimbap-960.webp",
   "tags": [],
   "name": {
    "en": "Vegan bibimbap",
-   "vi": "Bibimbap chay"
+   "vi": "Vegan bibimbap"
   },
   "desc": {
-   "en": "Tofu, spinach, carrot, mushroom, zucchini, bean sprout and brown rice",
-   "vi": "Đậu phụ, rau chân vịt, cà rốt, nấm, bí ngòi, giá đỗ và cơm gạo lứt."
-  }
+   "en": "Tofu, spinach, carrot, mushroom, zucchini, bean sprout and brown rice.",
+   "vi": "Tofu, spinach, carrot, mushroom, zucchini, bean sprout and brown rice."
+  },
+  "base": "assets/menu/veganbibimbap",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "morningglorywithmushroom",
   "cat": "mains",
   "price": 65000,
   "emoji": "🍽️",
-  "base": "assets/menu/morningglorywithmushroom",
-  "widths": [480, 960],
   "w": 1448,
   "h": 1086,
   "image": "assets/menu/morningglorywithmushroom-960.webp",
   "tags": [],
   "name": {
    "en": "Morning glory with mushroom",
-   "vi": "Rau muống xào nấm"
+   "vi": "Morning glory with mushroom"
   },
   "desc": {
-   "en": "Sautéed morning glory with mushroom and garlic",
-   "vi": "Rau muống xào nấm và tỏi."
-  }
+   "en": "Sautéed morning glory with mushroom and garlic.",
+   "vi": "Sautéed morning glory with mushroom and garlic."
+  },
+  "base": "assets/menu/morningglorywithmushroom",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "eggplantheaven",
@@ -1267,12 +1593,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Eggplant heaven",
-   "vi": "Cà tím thiên đường"
+   "vi": "Eggplant heaven"
   },
   "desc": {
-   "en": "Eggplant cooked with potatoes and onion in tomato gravy with brown rice",
-   "vi": "Cà tím nấu khoai tây, hành trong sốt cà chua ăn kèm cơm gạo lứt."
-  }
+   "en": "Eggplant with potatoes and onion in tomato gravy with brown rice.",
+   "vi": "Eggplant with potatoes and onion in tomato gravy with brown rice."
+  },
+  "image": "assets/menu/eggplantheaven-960.webp",
+  "base": "assets/menu/eggplantheaven",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "braisedeggplantinclaypot",
@@ -1282,32 +1616,43 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Braised eggplant in clay pot",
-   "vi": "Cà tím kho nồi đất"
+   "vi": "Braised eggplant in clay pot"
   },
   "desc": {
-   "en": "Eggplant, onion, cooked with soy sauce served with brown rice",
-   "vi": "Cà tím, hành kho nước tương ăn kèm cơm gạo lứt."
-  }
+   "en": "Eggplant, onion and celery in soy sauce with brown rice.",
+   "vi": "Eggplant, onion and celery in soy sauce with brown rice."
+  },
+  "image": "assets/menu/braisedeggplantinclaypot-960.webp",
+  "base": "assets/menu/braisedeggplantinclaypot",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "braisedtofuandmushroomin",
   "cat": "mains",
   "price": 90000,
   "emoji": "🍽️",
-  "base": "assets/menu/braisedtofuandmushroomin",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/braisedtofuandmushroomin-960.webp",
   "tags": [],
   "name": {
    "en": "Braised tofu and mushroom in clay pot",
-   "vi": "Đậu phụ nấm kho nồi đất"
+   "vi": "Braised tofu and mushroom in clay pot"
   },
   "desc": {
-   "en": "Tofu, mushroom, carrot, onion, ginger, shallot, chilli, spring onion served with brown rice",
-   "vi": "Đậu phụ, nấm, cà rốt, hành, gừng, hành tím, ớt, hành lá ăn kèm cơm gạo lứt."
-  }
+   "en": "Tofu, mushroom, carrot, ginger and chilli with brown rice.",
+   "vi": "Tofu, mushroom, carrot, ginger and chilli with brown rice."
+  },
+  "base": "assets/menu/braisedtofuandmushroomin",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "fivespicetofu",
@@ -1316,13 +1661,21 @@ window.MENU_ITEMS = [
   "emoji": "🍽️",
   "tags": [],
   "name": {
-   "en": "Five – Spice Tofu",
-   "vi": "Đậu phụ ngũ vị"
+   "en": "Five-spice tofu",
+   "vi": "Five-spice tofu"
   },
   "desc": {
-   "en": "Sauteed tofu with capsicum, cucumber, tomato & shallot served with french fries & salad",
-   "vi": "Đậu phụ xào ớt chuông, dưa chuột, cà chua & hành tím ăn kèm khoai tây chiên & salad."
-  }
+   "en": "Sautéed tofu with capsicum, cucumber, tomato and shallot; fries and salad.",
+   "vi": "Sautéed tofu with capsicum, cucumber, tomato and shallot; fries and salad."
+  },
+  "image": "assets/menu/fivespicetofu-960.webp",
+  "base": "assets/menu/fivespicetofu",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "spinachmushroomgarlicpiz",
@@ -1331,13 +1684,21 @@ window.MENU_ITEMS = [
   "emoji": "🍕",
   "tags": [],
   "name": {
-   "en": "Spinach Mushroom & Garlic Pizza",
-   "vi": "Pizza rau chân vịt nấm tỏi"
+   "en": "Spinach mushroom & garlic pizza",
+   "vi": "Spinach mushroom & garlic pizza"
   },
   "desc": {
-   "en": "Housemade vegan cheese, tomato sauce, fresh tomato, spinach, mushroom & garlic",
-   "vi": "Phô mai chay tự làm, sốt cà chua, cà chua tươi, rau chân vịt, nấm & tỏi."
-  }
+   "en": "Housemade vegan cheese, tomato, spinach, mushroom and garlic.",
+   "vi": "Housemade vegan cheese, tomato, spinach, mushroom and garlic."
+  },
+  "image": "assets/menu/spinachmushroomgarlicpiz-960.webp",
+  "base": "assets/menu/spinachmushroomgarlicpiz",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "hamcheesepizza",
@@ -1346,13 +1707,21 @@ window.MENU_ITEMS = [
   "emoji": "🍕",
   "tags": [],
   "name": {
-   "en": "Ham & Cheese Pizza",
-   "vi": "Pizza giăm bông phô mai"
+   "en": "Ham & cheese pizza",
+   "vi": "Ham & cheese pizza"
   },
   "desc": {
-   "en": "Housemade vegan cheese, tomato sauce, fresh tomato, vegan ham, olives",
-   "vi": "Phô mai chay tự làm, sốt cà chua, cà chua tươi, giăm bông chay, ô liu."
-  }
+   "en": "Housemade vegan cheese, tomato, vegan ham and olives.",
+   "vi": "Housemade vegan cheese, tomato, vegan ham and olives."
+  },
+  "image": "assets/menu/hamcheesepizza-960.webp",
+  "base": "assets/menu/hamcheesepizza",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "tomatopizza",
@@ -1374,20 +1743,23 @@ window.MENU_ITEMS = [
   "cat": "pizza-pasta",
   "price": 90000,
   "emoji": "🍝",
-  "base": "assets/menu/veganspaghettiwithtomato",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/veganspaghettiwithtomato-960.webp",
   "tags": [],
   "name": {
-   "en": "Vegan Spaghetti with tomato sauce",
-   "vi": "Mì Ý sốt cà chua"
+   "en": "Vegan spaghetti with tomato sauce",
+   "vi": "Vegan spaghetti with tomato sauce"
   },
   "desc": {
-   "en": "Spaghetti pasta, onion, fresh tomato, tomato sauce",
-   "vi": "Mì spaghetti, hành, cà chua tươi, sốt cà chua."
-  }
+   "en": "Spaghetti with onion and fresh tomato sauce.",
+   "vi": "Spaghetti with onion and fresh tomato sauce."
+  },
+  "base": "assets/menu/veganspaghettiwithtomato",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "veganspaghettiwithtofubo",
@@ -1396,13 +1768,21 @@ window.MENU_ITEMS = [
   "emoji": "🍝",
   "tags": [],
   "name": {
-   "en": "Vegan Spaghetti with Tofu Bolognese",
-   "vi": "Mì Ý đậu phụ Bolognese"
+   "en": "Vegan spaghetti with tofu bolognese",
+   "vi": "Vegan spaghetti with tofu bolognese"
   },
   "desc": {
-   "en": "Spaghetti pasta, fresh tofu, onion, carrot, fresh tomato, tomato sauce",
-   "vi": "Mì spaghetti, đậu phụ tươi, hành, cà rốt, cà chua tươi, sốt cà chua."
-  }
+   "en": "Spaghetti with fresh tofu, carrot and tomato sauce.",
+   "vi": "Spaghetti with fresh tofu, carrot and tomato sauce."
+  },
+  "image": "assets/menu/veganspaghettiwithtofubo-960.webp",
+  "base": "assets/menu/veganspaghettiwithtofubo",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "veganspaghettiwithmushro",
@@ -1456,13 +1836,21 @@ window.MENU_ITEMS = [
   "emoji": "🍝",
   "tags": [],
   "name": {
-   "en": "Vegan Spaghetti Carbonara",
-   "vi": "Mì Ý Carbonara chay"
+   "en": "Vegan spaghetti carbonara",
+   "vi": "Vegan spaghetti carbonara"
   },
   "desc": {
-   "en": "Spaghetti pasta, vegan ham, onion and cream soy milk",
-   "vi": "Mì spaghetti, giăm bông chay, hành và kem sữa đậu nành."
-  }
+   "en": "Spaghetti with vegan ham, onion and soy cream.",
+   "vi": "Spaghetti with vegan ham, onion and soy cream."
+  },
+  "image": "assets/menu/veganspaghetticarbonara-960.webp",
+  "base": "assets/menu/veganspaghetticarbonara",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "icecream",
@@ -1471,13 +1859,21 @@ window.MENU_ITEMS = [
   "emoji": "🍨",
   "tags": [],
   "name": {
-   "en": "Ice cream (Mango, strawberry, coconut, avocado, chocolate)",
-   "vi": "Kem"
+   "en": "Ice cream",
+   "vi": "Ice cream"
   },
   "desc": {
-   "en": "",
-   "vi": "Kem các vị: xoài, dâu tây, dừa, bơ, sô-cô-la."
-  }
+   "en": "Mango, strawberry, coconut, avocado or chocolate.",
+   "vi": "Mango, strawberry, coconut, avocado or chocolate."
+  },
+  "image": "assets/menu/icecream-960.webp",
+  "base": "assets/menu/icecream",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "bananafritterswithchocol",
@@ -1486,13 +1882,21 @@ window.MENU_ITEMS = [
   "emoji": "🍌",
   "tags": [],
   "name": {
-   "en": "Banana fritters with vegan chocolate mousse",
-   "vi": "Chuối chiên mousse sô-cô-la"
+   "en": "Banana fritters with chocolate mousse",
+   "vi": "Banana fritters with chocolate mousse"
   },
   "desc": {
    "en": "Banana fritters with vegan chocolate mousse.",
-   "vi": "Chuối chiên với mousse sô-cô-la chay."
-  }
+   "vi": "Banana fritters with vegan chocolate mousse."
+  },
+  "image": "assets/menu/bananafritterswithchocol-960.webp",
+  "base": "assets/menu/bananafritterswithchocol",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1201,
+  "h": 1309
  },
  {
   "id": "veganyogurtwithfreshfrui",
@@ -1502,12 +1906,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Vegan yogurt with fresh fruit",
-   "vi": "Sữa chua chay trái cây"
+   "vi": "Vegan yogurt with fresh fruit"
   },
   "desc": {
    "en": "House coconut yogurt with seasonal fruit.",
-   "vi": "Sữa chua chay với trái cây tươi."
-  }
+   "vi": "House coconut yogurt with seasonal fruit."
+  },
+  "image": "assets/menu/veganyogurtwithfreshfrui-960.webp",
+  "base": "assets/menu/veganyogurtwithfreshfrui",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "veganchocolatemousse",
@@ -1517,12 +1929,20 @@ window.MENU_ITEMS = [
   "tags": [],
   "name": {
    "en": "Vegan chocolate mousse",
-   "vi": "Mousse sô-cô-la chay"
+   "vi": "Vegan chocolate mousse"
   },
   "desc": {
    "en": "Rich vegan chocolate mousse.",
-   "vi": "Mousse sô-cô-la chay."
-  }
+   "vi": "Rich vegan chocolate mousse."
+  },
+  "image": "assets/menu/veganchocolatemousse-960.webp",
+  "base": "assets/menu/veganchocolatemousse",
+  "widths": [
+   480,
+   960
+  ],
+  "w": 1086,
+  "h": 1448
  },
  {
   "id": "freshfruits",
@@ -2504,8 +2924,6 @@ window.MENU_ITEMS = [
   "cat": "mains",
   "price": 70000,
   "emoji": "🍽️",
-  "base": "assets/menu/noodlesbowl",
-  "widths": [480, 960],
   "w": 1122,
   "h": 1402,
   "image": "assets/menu/noodlesbowl-960.webp",
@@ -2517,15 +2935,18 @@ window.MENU_ITEMS = [
   "desc": {
    "en": "Brown noodles, tofu, bok choy, bean sprouts, mushroom",
    "vi": "Bún nâu, đậu phụ, cải thìa, giá đỗ, nấm."
-  }
+  },
+  "base": "assets/menu/noodlesbowl",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "veganmexicanburritobowl",
   "cat": "mains",
   "price": 110000,
   "emoji": "🍽️",
-  "base": "assets/menu/veganmexicanburritobowl",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/veganmexicanburritobowl-960.webp",
@@ -2537,15 +2958,18 @@ window.MENU_ITEMS = [
   "desc": {
    "en": "Black beans, corn, onion, bell pepper, tomato, lettuce, spices and lime with tahini sauce",
    "vi": "Đậu đen, bắp, hành, ớt chuông, cà chua, rau xà lách, gia vị và chanh với sốt tahini."
-  }
+  },
+  "base": "assets/menu/veganmexicanburritobowl",
+  "widths": [
+   480,
+   960
+  ]
  },
  {
   "id": "falafelwrap",
   "cat": "mains",
   "price": 110000,
   "emoji": "🍽️",
-  "base": "assets/menu/falafelwrap",
-  "widths": [480, 960],
   "w": 1086,
   "h": 1448,
   "image": "assets/menu/falafelwrap-960.webp",
@@ -2557,8 +2981,13 @@ window.MENU_ITEMS = [
   "desc": {
    "en": "",
    "vi": "Falafel cuộn trong bánh tortilla."
-  }
- },
+  },
+  "base": "assets/menu/falafelwrap",
+  "widths": [
+   480,
+   960
+  ]
+ }
 ];
 
 window.GALLERY = [
@@ -2813,5 +3242,14 @@ window.REVIEWS = [
   },
   "url": "https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT201T2JFeHJiRTl6UkU1cVNtWlRkbWQxU2t0dk1WRRAB!2m1!1s0x0:0x9b489c6dad4a16aa!3m1!1s2@1:CAIQACodChtycF9oOm5ObExrbE9zRE5qSmZTdmd1SktvMVE%7C%7C?hl=en",
   "source": "Google"
+ },
+ {
+  "stars": 5,
+  "name": "Guest · 🌍",
+  "text": {
+   "en": "",
+   "vi": ""
+  }
  }
 ];
+

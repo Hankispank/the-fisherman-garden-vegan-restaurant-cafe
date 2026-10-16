@@ -1,0 +1,50 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "functions": {
+    "api/ssr.js": {
+      "includeFiles": "netlify/edge-functions/lib/bake-core.mjs",
+      "maxDuration": 30
+    },
+    "api/get-content.js": {
+      "includeFiles": "content/published.json"
+    }
+  },
+  "rewrites": [
+    { "source": "/", "destination": "/api/ssr" },
+    { "source": "/robots.txt", "destination": "/api/ssr" },
+    { "source": "/sitemap.xml", "destination": "/api/ssr" },
+    { "source": "/llms.txt", "destination": "/api/ssr" },
+    { "source": "/llms-full.txt", "destination": "/api/ssr" },
+    { "source": "/.well-known/llms.txt", "destination": "/api/ssr" },
+    { "source": "/.netlify/functions/:fn", "destination": "/api/:fn" },
+    { "source": "/admin", "destination": "/admin/admin.html" },
+    { "source": "/admin/:path*", "destination": "/admin/admin.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/api", "destination": "/api.html" },
+    { "source": "/mcp", "destination": "/api/mcp" },
+    { "source": "/confirm", "destination": "/api/booking-action" },
+    { "source": "/api/book", "destination": "/api/submit-order" },
+    { "source": "/api/availability", "destination": "/api/check-availability" }
+  ],
+  "headers": [
+    {
+      "source": "/admin/:path*",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "same-origin" }
+      ]
+    },
+    {
+      "source": "/api/:path*",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    }
+  ]
+}
