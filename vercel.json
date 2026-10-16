@@ -9,8 +9,9 @@
       "includeFiles": "netlify/edge-functions/lib/bake-core.mjs",
       "maxDuration": 30
     },
-    "api/get-content.js": {
-      "includeFiles": "content/published.json"
+    "api/fn.js": {
+      "includeFiles": "content/published.json",
+      "maxDuration": 30
     }
   },
   "rewrites": [
@@ -20,7 +21,7 @@
     { "source": "/llms.txt", "destination": "/api/ssr" },
     { "source": "/llms-full.txt", "destination": "/api/ssr" },
     { "source": "/.well-known/llms.txt", "destination": "/api/ssr" },
-    { "source": "/.netlify/functions/:fn", "destination": "/api/:fn" },
+    { "source": "/.netlify/functions/:fn", "destination": "/api/fn?fn=:fn" },
     { "source": "/admin", "destination": "/admin/admin.html" },
     { "source": "/admin/:path*", "destination": "/admin/admin.html" },
     { "source": "/about", "destination": "/about.html" },
@@ -28,10 +29,10 @@
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/api", "destination": "/api.html" },
-    { "source": "/mcp", "destination": "/api/mcp" },
-    { "source": "/confirm", "destination": "/api/booking-action" },
-    { "source": "/api/book", "destination": "/api/submit-order" },
-    { "source": "/api/availability", "destination": "/api/check-availability" }
+    { "source": "/mcp", "destination": "/api/fn?fn=mcp" },
+    { "source": "/confirm", "destination": "/api/fn?fn=booking-action" },
+    { "source": "/api/book", "destination": "/api/fn?fn=submit-order" },
+    { "source": "/api/availability", "destination": "/api/fn?fn=check-availability" }
   ],
   "headers": [
     {
