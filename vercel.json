@@ -2,6 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "buildCommand": "npm run build",
+  "outputDirectory": ".",
+  "ignoreCommand": "[ \"$VERCEL_GIT_COMMIT_REF\" != \"vercel-port\" ]",
   "functions": {
     "api/ssr.js": {
       "includeFiles": "netlify/edge-functions/lib/bake-core.mjs",
