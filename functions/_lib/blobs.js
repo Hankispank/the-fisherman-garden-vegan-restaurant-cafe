@@ -31,7 +31,9 @@ function netlifyStore(nameOrOpts, event) {
 
 /* ── Local filesystem path ───────────────────────────────────────── */
 // Resolve root relative to the repo root (two levels up from functions/_lib/)
-const LOCAL_ROOT = path.resolve(__dirname, "../../.netlify/blobs-local");
+const LOCAL_ROOT = process.env.VERCEL
+  ? path.join("/tmp", "blobs-local")
+  : path.resolve(__dirname, "../../.netlify/blobs-local");
 
 function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
