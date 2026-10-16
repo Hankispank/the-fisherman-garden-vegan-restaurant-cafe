@@ -9,3 +9,4 @@ scripts/__pycache__
 plan
 .github
 *.pyc
+.netlify
